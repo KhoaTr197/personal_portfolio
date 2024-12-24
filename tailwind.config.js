@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       animation: {
-        'infinite-scroll': 'infinite-scroll 20s linear infinite',
+        'infinite-scroll': 'infinite-scroll linear infinite',
         'cta': 'cta 1.5s ease-in-out infinite' //call-to-action
       },
       keyframes: {

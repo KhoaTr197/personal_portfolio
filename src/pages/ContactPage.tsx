@@ -51,7 +51,7 @@ const Contact = forwardRef(({}: ContactProps, ref: ContactRef) => {
       <div className="h-full pt-40">
         <div className="h-full flex flex-col bg-black">
           <Marquee
-            items={["- Contact ", "- Contact ", "- Contact "]}
+            items={["-", "Contact", "-", "Contact", "-", "Contact"]}
             marqueeBarStyle="bg-[#FFE]"
             marqueeTextStyle="*:mx-8 text-9xl text-black leading-tight"
           />
@@ -85,9 +85,9 @@ const Contact = forwardRef(({}: ContactProps, ref: ContactRef) => {
           </footer>
           <Marquee
             items={[
-              "-//- You reach the end of the website",
-              "-//- You reach the end of the website",
-              "-//- You reach the end of the website",
+              "-//-", "You reach the end of the website",
+              "-//-", "You reach the end of the website",
+              "-//-", "You reach the end of the website",
             ]}
             marqueeBarStyle="bg-[#FFE]"
             marqueeTextStyle="*:mx-2 text-4xl text-black uppercase"
