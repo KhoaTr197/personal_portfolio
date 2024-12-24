@@ -6,73 +6,70 @@ type cornerInfoTemplateType = {
   [index: string]: {
     left: string[],
     right: string[]
-  }
-}
+  };
+};
 
 const cornerInfoTemplate: cornerInfoTemplateType = {
-  'landing-page': {
-    left: [
-      'front-end developer',
-      '19 years old'
-    ],
-    right: ['scroll down']
+  "landing-page": {
+    left: ["software developer", "19 years old"],
+    right: ["scroll down"],
   },
-  'skillset-page': {
-    left: ['about'],
-    right: ['works']
+  "skillset-page": {
+    left: ["about"],
+    right: ["works"],
   },
-  'showcase-page': {
-    left: ['works'],
-    right: ['contact']
+  "showcase-page": {
+    left: ["works"],
+    right: ["contact"],
   },
-  'contact-page': {
-    left: [''],
-    right: ['']
+  "contact-page": {
+    left: [""],
+    right: [""],
   },
-}
+};
 
 const observerConfig = {
   root: document.getElementById('app'),
   rootMargin: "-10%",
 }
 
-const App:FC = () => {
-  const [currentPage, setCurrentPage] = useState('')
+const App: FC = () => {
+  const [currentPage, setCurrentPage] = useState("");
   const [cornerInfoContent, setCornerInfoContent] = useState<{
     left: string[],
     right: string[]
   }>({
     left: [],
-    right: []
+    right: [],
   });
   const sectionRefs = useRef<HTMLElement[]>([]);
 
   const handleClick = () => {
     if (sectionRefs.current) {
-      sectionRefs.current[3].scrollIntoView({ behavior: 'smooth' }); 
+      sectionRefs.current[3].scrollIntoView({ behavior: "smooth" });
     }
   };
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) {
-          setCornerInfoContent(cornerInfoTemplate[entry.target.id])
-          setCurrentPage(entry.target.id)
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setCornerInfoContent(cornerInfoTemplate[entry.target.id]);
+          setCurrentPage(entry.target.id);
         }
       });
-    }, observerConfig)
+    }, observerConfig);
 
-    sectionRefs.current.forEach(sectionRef => {
-      observer.observe(sectionRef)
-    })
+    sectionRefs.current.forEach((sectionRef) => {
+      observer.observe(sectionRef);
+    });
 
     return () => {
-      sectionRefs.current.forEach(sectionRef => {
-        observer.unobserve(sectionRef)
-      })
-    }
-  }, [sectionRefs]); 
+      sectionRefs.current.forEach((sectionRef) => {
+        observer.unobserve(sectionRef);
+      });
+    };
+  }, [sectionRefs]);
 
   return (
     <div
@@ -115,6 +112,6 @@ const App:FC = () => {
       }
     </div>
   );
-}
+};
 
 export default App;
