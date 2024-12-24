@@ -1,6 +1,8 @@
 import { FC, useState, useEffect, useRef } from "react";
 import { Header, CornerInfo, Typewriter} from "./components";
 import Pages from "./pages";
+import DeviceTypeContext from "./context/DeviceTypeContext";
+import useDeviceType from "./hook/useDeviceType";
 
 type cornerInfoTemplateType = {
   [index: string]: {
@@ -29,9 +31,9 @@ const cornerInfoTemplate: cornerInfoTemplateType = {
 };
 
 const observerConfig = {
-  root: document.getElementById('app'),
-  rootMargin: "-10%",
-}
+  root: document.getElementById("app"),
+  rootMargin: "-50%",
+};
 
 const App: FC = () => {
   const [currentPage, setCurrentPage] = useState("");
@@ -42,6 +44,8 @@ const App: FC = () => {
     left: [],
     right: [],
   });
+  const deviceType = useDeviceType()
+
   const sectionRefs = useRef<HTMLElement[]>([]);
 
   const handleClick = () => {
@@ -74,42 +78,46 @@ const App: FC = () => {
   return (
     <div
       id="app"
-      className="w-full h-screen overflow-y-scroll snap-y snap-mandatory *:text-[#FFE] bg-gradient-cosmic"
+      className="w-full h-screen overflow-hidden overflow-y-scroll snap-y snap-mandatory *:text-[#FFE] bg-gradient-cosmic"
     >
-      <Header onClick={handleClick}/>
-      <Pages.Landing ref={(el:HTMLElement) => sectionRefs.current[0] = el}/>
-      <Pages.Skillset ref={(el:HTMLElement) => sectionRefs.current[1] = el}/>
-      <Pages.Showcase ref={(el:HTMLElement) => sectionRefs.current[2] = el}/>
-      <Pages.Contact ref={(el:HTMLElement) => sectionRefs.current[3] = el}/>
-      {currentPage != 'contact-page' &&
-      <CornerInfo
-        position='bottom-left'
-        textTransform='uppercase'
-      >
-        {cornerInfoContent.left.map(info => (
-          <div className='flex' key={info}>
-            <span>[</span>
-            <Typewriter text={info} />
-            <span>]</span>
-          </div>
-        ))}
-      </CornerInfo>
-      }
-      {currentPage != 'contact-page' &&
-      <CornerInfo
-        position='bottom-right'
-        textTransform='uppercase'
-      >
-        {cornerInfoContent.right.map(info => (
-          <div className='flex' key={info}>
-            <span>[</span>
-            <span className='mr-1'>&darr;</span>
-            <Typewriter text={info} />
-            <span>]</span>
-          </div>
-        ))}
-      </CornerInfo>
-      }
+      <DeviceTypeContext.Provider value={deviceType}>
+        <Header onClick={handleClick} />
+        <Pages.Landing
+          ref={(el: HTMLElement) => (sectionRefs.current[0] = el)}
+        />
+        <Pages.Skillset
+          ref={(el: HTMLElement) => (sectionRefs.current[1] = el)}
+        />
+        <Pages.Showcase
+          ref={(el: HTMLElement) => (sectionRefs.current[2] = el)}
+        />
+        <Pages.Contact
+          ref={(el: HTMLElement) => (sectionRefs.current[3] = el)}
+        />
+        {currentPage != "contact-page" && (
+          <CornerInfo position="bottom-left" textTransform="uppercase">
+            {cornerInfoContent.left.map((info) => (
+              <div className="text-sm flex" key={info}>
+                <span>[</span>
+                <Typewriter text={info} />
+                <span>]</span>
+              </div>
+            ))}
+          </CornerInfo>
+        )}
+        {currentPage != "contact-page" && (
+          <CornerInfo position="bottom-right" textTransform="uppercase">
+            {cornerInfoContent.right.map((info) => (
+              <div className="text-sm flex" key={info}>
+                <span>[</span>
+                <span className="mr-1">&darr;</span>
+                <Typewriter text={info} />
+                <span>]</span>
+              </div>
+            ))}
+          </CornerInfo>
+        )}
+      </DeviceTypeContext.Provider>
     </div>
   );
 };
