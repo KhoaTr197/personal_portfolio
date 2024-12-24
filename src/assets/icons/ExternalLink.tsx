@@ -5,17 +5,15 @@ type ExternalLinkIconType = {
   style?: string;
 };
 
-const ExternalLinkIcon: FC<ExternalLinkIconType> = ({ size, style }) => {
-  const config = {
-    size: size || 32,
-    style: style,
-  };
-
+const ExternalLinkIcon: FC<ExternalLinkIconType> = ({
+  size=32,
+  style
+}) => {
   return (
     <svg
-      className={config.style}
-      width={config.size}
-      height={config.size}
+      className={style}
+      width={size}
+      height={size}
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
