@@ -13,7 +13,7 @@ const Marquee:FC<MarqueeProps> = ({
 }) => {
   return (
     <div className={`w-full ${marqueeBarStyle} overflow-x-hidden overflow-y-clip`}>
-      <ul className={`flex items-center justify-center w-max ${marqueeTextStyle} animate-infinite-scrol`}>
+      <ul className={`flex items-center justify-center w-max ${marqueeTextStyle} animate-infinite-scroll`}>
         {items.map((item, idx) => {
           return (
             <li key={idx}>

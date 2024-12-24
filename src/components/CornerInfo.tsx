@@ -1,16 +1,16 @@
 import { FC, ReactNode } from 'react'
 
-type CornerProps = {
+type CornerInfoProps = {
   children: ReactNode,
   position: "top-left" | "top-right" | "bottom-left" | "bottom-right",
   padding?: number[],
   textTransform?: "uppercase" | "lowercase" | "capitalize"
 }
 
-const getStyles = (
-  position: "top-left" | "top-right" | "bottom-left" | "bottom-right", 
-  textTransform: "uppercase" | "lowercase" | "capitalize"
-) : string => {
+const getStyles = ({
+  position, 
+  textTransform
+}: Pick<CornerInfoProps, "position" | "textTransform" >) => {
   const baseStyles = 'w-max absolute';
   const positionStyles = {
     "top-left": `top-4 left-4`,
@@ -21,12 +21,12 @@ const getStyles = (
   return `${baseStyles} ${positionStyles[position]} ${textTransform}`;
 }
 
-const CornerInfo:FC<CornerProps> = ({
+const CornerInfo:FC<CornerInfoProps> = ({
   children,
   position,
   textTransform="lowercase",
 }) => {
-  const styles = getStyles(position, textTransform)
+  const styles = getStyles({position, textTransform})
   return (
     <div className={styles}>
       {children}

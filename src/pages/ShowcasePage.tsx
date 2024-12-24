@@ -1,7 +1,12 @@
-import { FC } from "react";
-import { Grid, CornerInfo } from "../components";
+import { forwardRef, ReactNode, Ref } from "react";
+import { Grid } from "../components";
 import ExternalLinkIcon from "../assets/icons/ExternalLink";
 import weatherAppImg from "/images/projects/weather_tracker_app.jpg";
+
+type ShowcaseProps = {
+  children?: ReactNode;
+}
+type ShowcaseRef = Ref<HTMLElement>
 
 const projects = [
   {
@@ -15,27 +20,28 @@ const projects = [
   },
   {
     name: "Kickz",
-    url: "http://x.com",
+    url: "https://github.com/KhoaTr197/kickz",
   },
   {
     name: "Kickz API",
-    url: "http://twitter.com",
+    url: "https://github.com/KhoaTr197/kickz_api",
   },
 ];
 
 const projectsLength = projects.length;
 
-const Showcase: FC = () => {
+const Showcase = forwardRef(({}: ShowcaseProps, ref: ShowcaseRef) => {
   return (
-    <section id="showcase-page" className="w-full h-screen relative snap-start">
+    <section ref={ref} id="showcase-page" className="w-full h-screen relative snap-start">
       <div className="h-full flex justify-center items-center">
         <Grid.Layout size={[4, 4]} gap={16} styles="w-[616px] h-[616px]">
           {projects.map((project, idx) => {
             if (idx + 1 == Math.round(projectsLength / 2))
               return (
                 <Grid.Item
+                  key={project.name}
                   size={[2, 2]}
-                  styles={`relative bg-[#FFE] rounded-3xl shadow-[0_0_16px_0_rgba(0,0,0,0.1)]`}
+                  styles={`relative hover:scale-1.015 transition-transform duration-300 bg-[#FFE] rounded-3xl shadow-[0_0_16px_0_rgba(0,0,0,0.1)]`}
                 >
                   <a
                     className="block w-full h-full p-4 text-black"
@@ -54,9 +60,10 @@ const Showcase: FC = () => {
             else
               return (
                 <Grid.Item
+                  key={project.name}
                   size={[2, 2]}
                   background={project.image}
-                  styles={`relative bg-contain bg-center rounded-3xl shadow-[0_0_16px_0_rgba(0,0,0,0.1)]`}
+                  styles={`relative hover:scale-1.015 transition-transform duration-300 bg-contain bg-center rounded-3xl shadow-[0_0_16px_0_rgba(0,0,0,0.1)]`}
                 >
                   <a
                     className="block w-full h-full backdrop-brightness-90 backdrop-blur-[1px]"
@@ -78,16 +85,7 @@ const Showcase: FC = () => {
           })}
         </Grid.Layout>
       </div>
-      <CornerInfo position="bottom-left" textTransform="uppercase">
-        <p>[works]</p>
-      </CornerInfo>
-      <CornerInfo position="bottom-right" textTransform="uppercase">
-        <p>
-          [<span className="mr-1">&darr;</span>scroll down]
-        </p>
-      </CornerInfo>
     </section>
   );
-};
-
+});
 export default Showcase;

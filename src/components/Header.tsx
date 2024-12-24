@@ -1,7 +1,14 @@
 import { FC } from "react";
+import { Typewriter } from "./index";
 import Icons from "../assets/icons";
 
-const Header: FC = () => {
+type HeaderProps = {
+  onClick: () => void
+}
+
+const Header:FC<HeaderProps> = ({
+  onClick
+}) => {
   return (
     <header className="w-full h-20 bg-black text-white uppercase z-50 fixed top-0">
       <nav className="h-full flex justify-between items-center mx-4">
@@ -11,12 +18,15 @@ const Header: FC = () => {
           </a>
         </div>
         <div className="quote grow-0">
-          <div className="">passionate</div>
-          <div className="">resolve</div>
-          <div className="">inspired</div>
+          <Typewriter text="passionate" />
+          <Typewriter text="resolve" delay={80}/>
+          <Typewriter text="inspired" delay={80}/>
         </div>
         <div className="w-40 text-right">
-          <a href="">&gt; Contact</a>
+          <p className="w-fit ml-auto cursor-pointer" onClick={onClick}>
+            <span className='inline-block mr-1 animate-cta'>&gt;</span>
+            Contact
+          </p>
         </div>
       </nav>
     </header>
