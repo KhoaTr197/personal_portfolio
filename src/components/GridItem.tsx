@@ -10,7 +10,6 @@ type GridItemProps = {
 
 const getItemStyles = ({
   size,
-  coord=[1,1],
   background=''
 }: Pick<GridItemProps, "size" | "coord" | "background">) => {
   return {

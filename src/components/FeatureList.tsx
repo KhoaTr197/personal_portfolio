@@ -9,7 +9,6 @@ type FeatureListProps = {
 
 const FeatureList:FC<FeatureListProps> = ({
   title,
-  items,
   children,
   style=''
 }) => {

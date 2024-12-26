@@ -78,7 +78,7 @@ const App: FC = () => {
   return (
     <div
       id="app"
-      className="w-full h-screen overflow-hidden overflow-y-scroll snap-y snap-mandatory *:text-[#FFE] bg-gradient-cosmic"
+      className="w-full h-screen overflow-hidden overflow-y-scroll snap-y snap-mandatory snap-always *:text-[#FFE] bg-gradient-cosmic"
     >
       <DeviceTypeContext.Provider value={deviceType}>
         <Header onClick={handleClick} />

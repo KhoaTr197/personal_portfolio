@@ -8,7 +8,7 @@ type SkillsetProps = {
 type SkillsetRef = Ref<HTMLElement>
 
 const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
-  const [skillset, setSkillset] = useState({
+  const [skillset] = useState({
     languages: [
       {
         name: 'Javascript',
@@ -106,47 +106,51 @@ const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
   })
 
   return (
-    <section ref={ref} id='skillset-page' className='w-full h-screen relative snap-start'>
-      <div className="pt-20 h-full md:h-5/6 lg:h-5/6 bg-black flex flex-col md:flex-row">
-        <div className="md:pt-12 px-4 md:w-1/3">
-          <FeatureList
-            title='LANGUAGES'
-            style='h-1/3'
-          >
-            {skillset.languages.map(language => {
-              return (
-                <li key={language.name}>
-                  <a className='*:size-16 lg:*:size-24 tooltip' href={language.url} target='_blank' data-tooltip={language.name}>
-                    {language.icon}
+    <section ref={ref} id='skillset-page' className='w-full h-[200vh] md:h-screen relative snap-start'>
+      <div className="h-full md:h-5/6 lg:h-5/6 md:pt-20 flex flex-col-reverse md:flex-row">
+        <div className="h-1/2 md:w-1/3 snap-start md:snap-align-none">
+          <div className="h-[85%] pt-20 md:pt-12 px-4 bg-black">
+            <FeatureList
+              title='LANGUAGES'
+              style='h-1/3'
+            >
+              {skillset.languages.map(language => {
+                return (
+                  <li key={language.name}>
+                    <a className='*:size-16 lg:*:size-24 tooltip' href={language.url} target='_blank' data-tooltip={language.name}>
+                      {language.icon}
+                    </a>
+                  </li>
+                )
+              })}
+            </FeatureList>
+            <FeatureList
+              title='SKILLS'
+              style='h-2/3'
+            >
+              {skillset.techStacks.map(techStack => {
+                return (
+                  <a key={techStack.name} className='tooltip' href={techStack.url} target='_blank' data-tooltip={techStack.name}>
+                    {techStack.icon}
                   </a>
-                </li>
-              )
-            })}
-          </FeatureList>
-          <FeatureList
-            title='SKILLS'
-            style='h-2/3'
-          >
-            {skillset.techStacks.map(techStack => {
-              return (
-                <a key={techStack.name} className='tooltip' href={techStack.url} target='_blank' data-tooltip={techStack.name}>
-                  {techStack.icon}
-                </a>
-              )
-            })}
-          </FeatureList>
+                )
+              })}
+            </FeatureList>
+          </div>
         </div>
-        <div className="md:w-2/3 pt-12 px-4 bg-[#FFE] text-black">
-          <p className='md:text-3xl xl:text-4xl font-medium'>My expertise, creativity and technical skills allow me to solve your business problems efficiently. I leverage the latest technologies and coding practices to deliver innovative, high-quality solutions that drive your success.</p>
-          <div className="pt-16 xl:pt-24 flex justify-around xl:justify-evenly">
-            <Badge 
-              quantity={2}
-              info='total projects'
-            />
-            <Badge 
-              quantity={2}
-              info='year of experience'
-            />
+        <div className="h-1/2 md:h-full md:w-2/3 bg-black snap-start md:snap-align-none">
+          <div className="h-[85%] pt-20 md:pt-12 px-4 bg-[#FFE] text-black">
+            <p className='md:text-3xl xl:text-4xl font-medium'>My expertise, creativity and technical skills allow me to solve your business problems efficiently. I leverage the latest technologies and coding practices to deliver innovative, high-quality solutions that drive your success.</p>
+            <div className="pt-16 xl:pt-24 flex justify-around xl:justify-evenly">
+              <Badge 
+                quantity={2}
+                info='total projects'
+              />
+              <Badge 
+                quantity={2}
+                info='year of experience'
+              />
+            </div>
           </div>
         </div>
       </div>
