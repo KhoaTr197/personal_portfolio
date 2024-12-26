@@ -34,7 +34,7 @@ const Showcase = forwardRef(({}: ShowcaseProps, ref: ShowcaseRef) => {
   return (
     <section ref={ref} id="showcase-page" className="w-full h-screen relative snap-start">
       <div className="h-full flex justify-center items-center">
-        <Grid.Layout size={[4, 4]} gap={16} styles="w-[616px] h-[616px]">
+        <Grid.Layout size={[4, 4]} gap={16} styles="w-[313px] md:w-[616px] h-[313px] md:h-[616px]">
           {projects.map((project, idx) => {
             if (idx + 1 == Math.round(projectsLength / 2))
               return (
@@ -49,8 +49,8 @@ const Showcase = forwardRef(({}: ShowcaseProps, ref: ShowcaseRef) => {
                     target="_blank"
                   >
                     <div className="w-full h-full flex flex-col justify-between items-end">
-                      <ExternalLinkIcon size={64} style="*:stroke-[#000]" />
-                      <span className="uppercase text-3xl font-medium inline-flex items-center w-fit">
+                      <ExternalLinkIcon size={64} style="size-8 md:size-fit *:stroke-[#000]" />
+                      <span className="uppercase md:text-3xl font-medium inline-flex items-center w-fit">
                         {project.name}
                       </span>
                     </div>
@@ -70,12 +70,12 @@ const Showcase = forwardRef(({}: ShowcaseProps, ref: ShowcaseRef) => {
                     href={project.url}
                     target="_blank"
                   >
-                    <div className="absolute text-center left-0 right-0 bottom-4 text-3xl text-[#FFE]">
-                      <span className="inline-flex items-center font-medium">
+                    <div className="absolute text-center left-0 right-0 bottom-4">
+                      <span className="inline-flex items-center text-xs md:text-3xl font-medium text-[#FFE]">
                         {project.name}
                         <ExternalLinkIcon
                           size={32}
-                          style="ml-2 *:stroke-[#FFE]"
+                          style="size-4 md:size-fit ml-2 *:stroke-[#FFE]"
                         />
                       </span>
                     </div>

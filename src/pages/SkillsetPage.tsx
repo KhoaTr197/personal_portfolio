@@ -107,17 +107,19 @@ const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
 
   return (
     <section ref={ref} id='skillset-page' className='w-full h-screen relative snap-start'>
-      <div className="pt-20 h-5/6 bg-black flex">
-        <div className="pt-12 px-4 w-1/3">
+      <div className="pt-20 h-full md:h-5/6 lg:h-5/6 bg-black flex flex-col md:flex-row">
+        <div className="md:pt-12 px-4 md:w-1/3">
           <FeatureList
             title='LANGUAGES'
             style='h-1/3'
           >
             {skillset.languages.map(language => {
               return (
-                <a key={language.name} className='tooltip' href={language.url} target='_blank' data-tooltip={language.name}>
-                  {language.icon}
-                </a>
+                <li key={language.name}>
+                  <a className='*:size-16 lg:*:size-24 tooltip' href={language.url} target='_blank' data-tooltip={language.name}>
+                    {language.icon}
+                  </a>
+                </li>
               )
             })}
           </FeatureList>
@@ -134,9 +136,9 @@ const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
             })}
           </FeatureList>
         </div>
-        <div className="w-2/3 pt-12 px-4 bg-[#FFE] text-black">
-          <p className='text-4xl font-medium'>My expertise, creativity and technical skills allow me to solve your business problems efficiently. I leverage the latest technologies and coding practices to deliver innovative, high-quality solutions that drive your success.</p>
-          <div className="pt-24 flex justify-evenly">
+        <div className="md:w-2/3 pt-12 px-4 bg-[#FFE] text-black">
+          <p className='md:text-3xl xl:text-4xl font-medium'>My expertise, creativity and technical skills allow me to solve your business problems efficiently. I leverage the latest technologies and coding practices to deliver innovative, high-quality solutions that drive your success.</p>
+          <div className="pt-16 xl:pt-24 flex justify-around xl:justify-evenly">
             <Badge 
               quantity={2}
               info='total projects'

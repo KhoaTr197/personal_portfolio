@@ -13,10 +13,12 @@ const Badge:FC<BadgeProps> = ({
   const newQuantity = quantity > 10 ? quantity : '0' + Math.abs(quantity)
 
   return (
-    <div className='relative flex flex-col items-end'>
-      <div className='absolute top-0 right-full text-[4rem] w-fit h-fit leading-none'>{sign}</div>
-      <div className='w-48 text-10xl'>{newQuantity}</div>
-      <p className='w-48 text-right font-medium text-4xl uppercase text-wrap'>{info}</p>
+    <div className='w-fit flex flex-col items-center md:items-end'>
+      <div className='w-fit lg:w-48 text-[5rem] md:text-8xl lg:text-10xl relative leading-none'>
+        <div className='absolute top-0 right-full text-[4rem] w-fit h-fit'>{sign}</div>
+        {newQuantity}
+      </div>
+      <div className='w-40 lg:w-48 text-center md:text-right font-medium text-xl md:text-2xl lg:text-4xl uppercase text-wrap'>{info}</div>
     </div>
   )
 }

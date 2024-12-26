@@ -97,7 +97,7 @@ const App: FC = () => {
         {currentPage != "contact-page" && (
           <CornerInfo position="bottom-left" textTransform="uppercase">
             {cornerInfoContent.left.map((info) => (
-              <div className="text-sm flex" key={info}>
+              <div className="text-xs sm:text-sm flex" key={info}>
                 <span>[</span>
                 <Typewriter text={info} />
                 <span>]</span>
@@ -108,7 +108,7 @@ const App: FC = () => {
         {currentPage != "contact-page" && (
           <CornerInfo position="bottom-right" textTransform="uppercase">
             {cornerInfoContent.right.map((info) => (
-              <div className="text-sm flex" key={info}>
+              <div className="text-xs sm:text-sm flex" key={info}>
                 <span>[</span>
                 <span className="mr-1">&darr;</span>
                 <Typewriter text={info} />
