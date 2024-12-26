@@ -74,7 +74,7 @@ const Contact = forwardRef(({}: ContactProps, ref: ContactRef) => {
             </div>
             <div className="w-full lg:w-3/5 xl:w-4/6 text-center lg:text-left px-8 md:x-4 md:py-8">
               <div className="text-2xl sm:text-4xl uppercase">social media</div>
-              <ul className="lg:w-full mx-auto mt-8 flex flex-wrap justify-center gap-8 xl:gap-12">
+              <ul className="lg:w-full mx-auto mt-8 flex flex-wrap justify-center md:justify-normal gap-8 xl:gap-12">
                 {socialLinks.map(link => {
                   return (
                     <li key={link.key}>
