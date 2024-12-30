@@ -109,7 +109,7 @@ const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
     <section ref={ref} id='skillset-page' className='w-full h-[200vh] md:h-screen relative snap-start'>
       <div className="h-full md:h-5/6 lg:h-5/6 md:pt-20 bg-black flex flex-col-reverse md:flex-row">
         <div className="h-1/2 md:h-full md:w-1/3 snap-start md:snap-align-none">
-          <div className="h-[85%] md:h-full pt-20 md:pt-12 px-4 bg-black">
+          <div className="h-[70%] md:h-full pt-20 md:pt-12 px-4 bg-black">
             <FeatureList
               title='LANGUAGES'
               style='h-1/3'
@@ -139,7 +139,7 @@ const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
           </div>
         </div>
         <div className="h-1/2 md:h-full md:w-2/3 snap-start md:snap-align-none">
-          <div className="h-[85%] md:h-full pt-20 md:pt-12 px-4 bg-[#FFE] text-black">
+          <div className="h-[70%] md:h-full pt-20 md:pt-12 px-4 bg-[#FFE] text-black">
             <p className='md:text-3xl xl:text-4xl font-medium'>My expertise, creativity and technical skills allow me to solve your business problems efficiently. I leverage the latest technologies and coding practices to deliver innovative, high-quality solutions that drive your success.</p>
             <div className="pt-16 xl:pt-24 flex justify-around xl:justify-evenly">
               <Badge 
