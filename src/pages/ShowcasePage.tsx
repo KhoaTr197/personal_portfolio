@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode, Ref } from "react";
 import { Grid } from "../components";
 import ExternalLinkIcon from "../assets/icons/ExternalLink";
-import weatherAppImg from "/images/projects/weather_tracker_app.jpg";
+import weatherAppImg from "../assets/images/projects/weather_tracker_app.jpg";
 
 type ShowcaseProps = {
   children?: ReactNode;

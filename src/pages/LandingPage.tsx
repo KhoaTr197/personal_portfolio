@@ -1,6 +1,6 @@
 import { forwardRef, ReactNode, Ref, useContext } from "react";
 import { Marquee } from "../components";
-import DeviceTypeContext from "../context/DeviceTypeContext";
+import { useDeviceTypeContext } from "../context/DeviceTypeContext";
 
 type LandingProps = {
   children?: ReactNode;
@@ -15,7 +15,7 @@ const Landing = forwardRef(({}: LandingProps, ref: LandingRef) => {
     "tablet": 30,
     "desktop": 50
   }
-  const deviceType = useContext(DeviceTypeContext);
+  const deviceType = useDeviceTypeContext();
 
   return (
     <section
@@ -25,7 +25,7 @@ const Landing = forwardRef(({}: LandingProps, ref: LandingRef) => {
     >
       <Marquee
         items={["-", "Trần Hoàng Minh Khoa", "-", "Trần Hoàng Minh Khoa"]}
-        duration={marqueeConfig[deviceType]}
+        duration={marqueeConfig[deviceType.type]}
         marqueeTextStyle="*:mx-8 mb-20 md:mb-0 text-9xl leading-tight"
       />
     </section>

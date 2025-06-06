@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, Ref, useState } from 'react'
+import { forwardRef, ReactNode, Ref, useEffect, useState } from 'react'
 import { FeatureList, Badge } from '../components'
 import Devicon from 'devicons-react'
 
@@ -7,103 +7,66 @@ type SkillsetProps = {
 }
 type SkillsetRef = Ref<HTMLElement>
 
-const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
-  const [skillset] = useState({
-    languages: [
-      {
-        name: 'Javascript',
-        url: 'https://en.wikipedia.org/wiki/JavaScript',
-        icon: <Devicon.JavascriptOriginal size={48}/>,
-      },
-      {
-        name: 'Typescript',
-        url: 'https://www.typescriptlang.org/',
-        icon: <Devicon.TypescriptOriginal size={48} />,
-      },
-      {
-        name: 'C++',
-        url: 'https://en.wikipedia.org/wiki/C%2B%2B',
-        icon: <Devicon.CplusplusOriginal size={48} />,
-      },
-      {
-        name: 'PHP',
-        url: 'https://www.php.net/',
-        icon: <Devicon.PhpOriginal size={48} />,
-      },
-      {
-        name: 'Python',
-        url: 'https://www.python.org/',
-        icon: <Devicon.PythonOriginal size={48} />
-      }
-    ],
-    techStacks: [
-      {
-        name: 'HTML',
-        url: 'https://en.wikipedia.org/wiki/HTML',
-        icon: <Devicon.Html5Original size={48} />
-      },
-      {
-        name: 'CSS',
-        url: 'https://en.wikipedia.org/wiki/CSS',
-        icon: <Devicon.Css3Original size={48} />,
-      },
-      {
-        name: 'NodeJS',
-        url: 'https://nodejs.org/en',
-        icon: <Devicon.NodejsOriginal size={48} />,
-      },
-      {
-        name: 'ExpressJS',
-        url: 'https://expressjs.com/',
-        icon: <Devicon.ExpressOriginal fill='#fff' size={48} />,
-      },
-      {
-        name: 'React',
-        url: 'https://react.dev/',
-        icon: <Devicon.ReactOriginal size={48} />,
-      },
-      {
-        name: 'Firebase',
-        url: 'https://firebase.google.com/',
-        icon: <Devicon.FirebaseOriginal size={48} />,
-      },
-      {
-        name: 'MongoDB',
-        url: 'https://www.mongodb.com/',
-        icon: <Devicon.MongodbOriginal size={48} />,
-      },
-      {
-        name: 'MySQL',
-        url: 'https://www.mysql.com/',
-        icon: <Devicon.MysqlOriginal size={48} />,
-      },
-      {
-        name: 'Vite',
-        url: 'https://vite.dev/',
-        icon: <Devicon.VitejsOriginal size={48} />,
-      },
-      {
-        name: 'Tailwind CSS',
-        url: 'https://tailwindcss.com/',
-        icon: <Devicon.TailwindcssOriginal size={48} />,
-      },
-      {
-        name: 'Figma',
-        url: 'https://www.figma.com/',
-        icon: <Devicon.FigmaOriginal size={48} />,
-      },
-      {
-        name: 'Docker',
-        url: 'https://www.docker.com/',
-        icon: <Devicon.DockerOriginal size={48} />,
-      },
-      {
-        name: 'GitHub',
-        url: 'https://github.com/',
-        icon: <Devicon.GithubOriginal className='[&>g]:fill-white' size={48}/>
-      }
-    ]
-  })
+interface About {
+  summary: string;
+  totalProjects: number;
+  yearsExperience: number;
+}
+
+interface Skillset {
+  languages: Language[];
+  techStacks: TechStack[];
+}
+
+interface Language {
+  name: string;
+  url: string;
+  icon: string;
+}
+
+interface TechStack {
+  name: string;
+  url: string;
+  icon: string;
+}
+
+const languageIconMap: Record<string, ReactNode> = {
+  'JavaScript': <Devicon.JavascriptOriginal size={48} />,
+  'TypeScript': <Devicon.TypescriptOriginal size={48} />,
+  'C++': <Devicon.CplusplusOriginal size={48} />,
+  'PHP': <Devicon.PhpOriginal size={48} />,
+  'Python': <Devicon.PythonOriginal size={48} />
+}
+
+const techStackIconMap: Record<string, ReactNode> = {
+  'HTML': <Devicon.Html5Original size={48} />,
+  'CSS': <Devicon.Css3Original size={48} />,
+  'NodeJS': <Devicon.NodejsOriginal size={48} />,
+  'ExpressJS': <Devicon.ExpressOriginal fill='#fff' size={48} />,
+  'React': <Devicon.ReactOriginal size={48} />,
+  'Firebase': <Devicon.FirebaseOriginal size={48} />,
+  'MongoDB': <Devicon.MongodbOriginal size={48} />,
+  'MySQL': <Devicon.MysqlOriginal size={48} />,
+  'Vite': <Devicon.VitejsOriginal size={48} />,
+  'Tailwind CSS': <Devicon.TailwindcssOriginal size={48} />,
+  'Figma': <Devicon.FigmaOriginal size={48} />,
+  'Docker': <Devicon.DockerOriginal size={48} />,
+  'GitHub': <Devicon.GithubOriginal className='[&>g]:fill-white' size={48} />
+}
+
+const Skillset = forwardRef(({ }: SkillsetProps, ref: SkillsetRef) => {
+  const [about, setAbout] = useState<About | null>(null);
+  const [skills, setSkills] = useState<Skillset | null>(null);
+
+  useEffect(() => {
+    fetch("/content/about_me.json")
+      .then(res => res.json())
+      .then(data => setAbout(data));
+
+    fetch("/content/skillset.json")
+      .then(res => res.json())
+      .then(data => setSkills(data));
+  }, []);
 
   return (
     <section ref={ref} id='skillset-page' className='w-full h-[200vh] md:h-screen relative snap-start'>
@@ -114,11 +77,12 @@ const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
               title='LANGUAGES'
               style='h-1/3'
             >
-              {skillset.languages.map(language => {
+              {skills?.languages.map(language => {
+                const Icon = languageIconMap[language.name];
                 return (
                   <li key={language.name}>
                     <a className='*:size-16 lg:*:size-24 tooltip' href={language.url} target='_blank' data-tooltip={language.name}>
-                      {language.icon}
+                      {Icon}
                     </a>
                   </li>
                 )
@@ -128,10 +92,11 @@ const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
               title='SKILLS'
               style='h-2/3'
             >
-              {skillset.techStacks.map(techStack => {
+              {skills?.techStacks.map(techStack => {
+                const Icon = techStackIconMap[techStack.name];
                 return (
                   <a key={techStack.name} className='tooltip' href={techStack.url} target='_blank' data-tooltip={techStack.name}>
-                    {techStack.icon}
+                    {Icon}
                   </a>
                 )
               })}
@@ -140,14 +105,14 @@ const Skillset = forwardRef(({}: SkillsetProps, ref: SkillsetRef) => {
         </div>
         <div className="h-1/2 md:h-full md:w-2/3 snap-start md:snap-align-none">
           <div className="h-[70%] md:h-full pt-20 md:pt-12 px-4 bg-[#FFE] text-black">
-            <p className='md:text-3xl xl:text-4xl font-medium'>My expertise, creativity and technical skills allow me to solve your business problems efficiently. I leverage the latest technologies and coding practices to deliver innovative, high-quality solutions that drive your success.</p>
+            <p className='md:text-3xl xl:text-4xl font-medium'>{about?.summary}</p>
             <div className="pt-16 xl:pt-24 flex justify-around xl:justify-evenly">
-              <Badge 
-                quantity={2}
+              <Badge
+                quantity={about?.totalProjects || 0}
                 info='total projects'
               />
-              <Badge 
-                quantity={2}
+              <Badge
+                quantity={about?.yearsExperience || 0}
                 info='year of experience'
               />
             </div>

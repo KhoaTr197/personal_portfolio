@@ -1,8 +1,7 @@
-import { FC, useState, useEffect, useRef } from "react";
-import { Header, CornerInfo, Typewriter} from "./components";
+import { FC, useEffect, useState } from "react";
+import { Header, CornerInfo, Typewriter } from "./components";
 import Pages from "./pages";
-import DeviceTypeContext from "./context/DeviceTypeContext";
-import useDeviceType from "./hook/useDeviceType";
+import { useObserver } from "./hook/useObserver";
 
 type cornerInfoTemplateType = {
   [index: string]: {
@@ -30,11 +29,6 @@ const cornerInfoTemplate: cornerInfoTemplateType = {
   },
 };
 
-const observerConfig = {
-  root: document.getElementById("app"),
-  rootMargin: "-50%",
-};
-
 const App: FC = () => {
   const [currentPage, setCurrentPage] = useState("");
   const [cornerInfoContent, setCornerInfoContent] = useState<{
@@ -44,55 +38,69 @@ const App: FC = () => {
     left: [],
     right: [],
   });
-  const deviceType = useDeviceType()
+  const [observerConfig, setObserverConfig] = useState<{ root: HTMLElement | null; rootMargin: string }>({
+    root: null,
+    rootMargin: "-50%",
+  });
 
-  const sectionRefs = useRef<HTMLElement[]>([]);
-
-  const handleClick = () => {
-    if (sectionRefs.current) {
-      sectionRefs.current[3].scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const sectionRefs = useObserver(
+    {
+      Landing: null,
+      Skillset: null,
+      Showcase: null,
+      Contact: null
+    },
+    (entry: IntersectionObserverEntry) => {
+      if (entry.isIntersecting) {
+        setCornerInfoContent(cornerInfoTemplate[entry.target.id]);
+        setCurrentPage(entry.target.id);
+      }
+    },
+    observerConfig
+  );
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setCornerInfoContent(cornerInfoTemplate[entry.target.id]);
-          setCurrentPage(entry.target.id);
-        }
-      });
-    }, observerConfig);
-
-    sectionRefs.current.forEach((sectionRef) => {
-      observer.observe(sectionRef);
+    setObserverConfig({
+      root: document.getElementById("app"),
+      rootMargin: "-50%",
     });
+  }, []);
 
-    return () => {
-      sectionRefs.current.forEach((sectionRef) => {
-        observer.unobserve(sectionRef);
-      });
-    };
-  }, [sectionRefs]);
+  const handleClick = () => {
+    if (sectionRefs.current && "Contact" in sectionRefs.current) {
+      sectionRefs.current["Contact"]?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div
       id="app"
       className="w-full h-screen overflow-hidden overflow-y-scroll snap-y snap-mandatory snap-always *:text-[#FFE] bg-gradient-cosmic"
     >
-      <DeviceTypeContext.Provider value={deviceType}>
         <Header onClick={handleClick} />
         <Pages.Landing
-          ref={(el: HTMLElement) => (sectionRefs.current[0] = el)}
+          ref={(el: HTMLElement | null) => {
+            if (sectionRefs.current && "Landing" in sectionRefs.current)
+              sectionRefs.current["Landing"] = el;
+          }}
         />
         <Pages.Skillset
-          ref={(el: HTMLElement) => (sectionRefs.current[1] = el)}
+          ref={(el: HTMLElement | null) => {
+            if (sectionRefs.current && "Skillset" in sectionRefs.current)
+              sectionRefs.current["Skillset"] = el;
+          }}
         />
         <Pages.Showcase
-          ref={(el: HTMLElement) => (sectionRefs.current[2] = el)}
+          ref={(el: HTMLElement | null) => {
+            if (sectionRefs.current && "Showcase" in sectionRefs.current)
+              sectionRefs.current["Showcase"] = el;
+          }}
         />
         <Pages.Contact
-          ref={(el: HTMLElement) => (sectionRefs.current[3] = el)}
+          ref={(el: HTMLElement | null) => {
+            if (sectionRefs.current && "Contact" in sectionRefs.current)
+              sectionRefs.current["Contact"] = el;
+          }}
         />
         {currentPage != "contact-page" && (
           <CornerInfo position="bottom-left" textTransform="uppercase">
@@ -117,7 +125,6 @@ const App: FC = () => {
             ))}
           </CornerInfo>
         )}
-      </DeviceTypeContext.Provider>
     </div>
   );
 };

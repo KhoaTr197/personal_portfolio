@@ -1,7 +1,14 @@
 {
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@public/*": ["../../public/*"]
+    }
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "resolveJsonModule": true
 }
