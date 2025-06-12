@@ -104,7 +104,7 @@ const Skillset = forwardRef(({ }: SkillsetProps, ref: SkillsetRef) => {
           </div>
         </div>
         <div className="h-1/2 md:h-full md:w-2/3 snap-start md:snap-align-none">
-          <div className="h-[70%] md:h-full pt-20 md:pt-12 px-4 bg-[#FFE] text-black">
+          <div className="h-[70%] md:h-full pt-20 md:pt-12 px-4 bg-[#fffff0] text-black">
             <p className='md:text-3xl xl:text-4xl font-medium'>{about?.summary}</p>
             <div className="pt-16 xl:pt-24 flex justify-around xl:justify-evenly">
               <Badge

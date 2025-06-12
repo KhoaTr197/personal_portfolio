@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { useFrame, useThree } from '@react-three/fiber';
 
 const SkillNode = ({
   position,
   skill,
-  onClick
+  onClick,
+  onPointerEnter,
+  onPointerLeave,
 }: {
   position: THREE.Vector3;
   skill: {
@@ -15,6 +16,8 @@ const SkillNode = ({
     forceFill?: string;
   };
   onClick: (position: THREE.Vector3) => void;
+  onPointerEnter: (skill: { name: string, position: THREE.Vector3 }) => void;
+  onPointerLeave: () => void;
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
@@ -35,8 +38,6 @@ const SkillNode = ({
       texture.generateMipmaps = false;
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
-      texture.center.set(0.5, 0.5);
-      texture.repeat.set(-1, 1);
       setTexture(texture);
       URL.revokeObjectURL(url);
     };
@@ -59,8 +60,8 @@ const SkillNode = ({
       // Rotate the plane to face outward from the sphere center
       meshRef.current.quaternion.setFromRotationMatrix(
         new THREE.Matrix4().lookAt(
-          new THREE.Vector3(0, 0, 0),
           position,
+          new THREE.Vector3(0, 0, 0),
           new THREE.Vector3(0, 1, 0) // up vector
         )
       );
@@ -68,11 +69,19 @@ const SkillNode = ({
   }, [position, texture]);
 
   return (
-    <>
+    <group>
       {texture && (
         <mesh
           ref={meshRef}
           onClick={() => onClick(position)}
+          onPointerEnter={(e) => {
+            e.stopPropagation(); // Prevent bubbling to globe
+            onPointerEnter({ name: skill.name, position });
+          }}
+          onPointerLeave={(e) => {
+            e.stopPropagation();
+            onPointerLeave();
+          }}
         >
           <planeGeometry args={[0.4, 0.4]} />
           <meshBasicMaterial
@@ -82,8 +91,9 @@ const SkillNode = ({
             side={THREE.DoubleSide}
           />
         </mesh>
-      )}
-    </>
+      )
+      }
+    </group >
   );
 };
 

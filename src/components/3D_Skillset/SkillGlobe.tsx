@@ -3,7 +3,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import * as Devicon from "devicons-react";
 import SkillNode from "./SkillNode";
-import { OrbitControls } from "@react-three/drei";
+import { Html, OrbitControls } from "@react-three/drei";
 import { OrbitControls as OrbitControlsType } from 'three-stdlib';
 
 const skills = [
@@ -32,9 +32,10 @@ const SkillGlobe = () => {
   const controlsRef = useRef<OrbitControlsType>(null);
   const { camera } = useThree();
   const [focused, setFocused] = useState<THREE.Vector3 | null>(null);
+  const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: THREE.Vector3 } | null>(null);
 
   const radius = 2.5;
-  const sphereGeometry = useMemo(() => new THREE.IcosahedronGeometry(radius, 2), []);
+  const sphereGeometry = useMemo(() => new THREE.IcosahedronGeometry(radius, 1), []);
   const vertices = useMemo(() => {
     const posAttr = sphereGeometry.attributes.position;
     const verts: THREE.Vector3[] = [];
@@ -49,9 +50,18 @@ const SkillGlobe = () => {
       }
     }
 
-    const shuffled = verts.sort(() => Math.random() - 0.5);
+    return verts.sort(() => Math.random() - 0.5).slice(0, skills.length);
+  }, []);
 
-    return shuffled.slice(0, skills.length);
+  const nodePointerEnter = useCallback((skill: { name: string; position: THREE.Vector3 }) => {
+    setHoveredSkill({
+      name: skill.name,
+      position: skill.position.clone().add(new THREE.Vector3(0, 0.35, 0))
+    });
+  }, []);
+
+  const nodePointerLeave = useCallback(() => {
+    setHoveredSkill(null);
   }, []);
 
   const focusOn = useCallback((pos: THREE.Vector3) => {
@@ -95,14 +105,28 @@ const SkillGlobe = () => {
           position={vertex}
           skill={skills[index]}
           onClick={focusOn}
+          onPointerEnter={nodePointerEnter}
+          onPointerLeave={nodePointerLeave}
         />
       ))}
+      {hoveredSkill && (
+        <Html
+          position={hoveredSkill.position}
+          distanceFactor={8}
+          center
+          occlude
+        >
+          <div key={hoveredSkill.name} className='tooltip_canvas'>
+            {hoveredSkill.name}
+          </div>
+        </Html>
+      )}
       <OrbitControls
         ref={controlsRef}
         enableZoom={false}
         enablePan={false}
-        autoRotate={focused ? false : true}
-        autoRotateSpeed={2}
+      // autoRotate={focused ? false : true}
+      // autoRotateSpeed={2}
       />
     </group>
   );
