@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Header, CornerInfo, Typewriter } from "./components";
 import Pages from "./pages";
 import { useObserver } from "./hook/useObserver";
+import { Demo } from "./pages/Demo";
 
 type cornerInfoTemplateType = {
   [index: string]: {
@@ -77,7 +78,8 @@ const App: FC = () => {
       id="app"
       className="w-full h-screen overflow-hidden overflow-y-scroll snap-y snap-mandatory snap-always *:text-[#FFE] bg-gradient-cosmic"
     >
-        <Header onClick={handleClick} />
+      <Demo />
+        {/* <Header onClick={handleClick} />
         <Pages.Landing
           ref={(el: HTMLElement | null) => {
             if (sectionRefs.current && "Landing" in sectionRefs.current)
@@ -124,7 +126,7 @@ const App: FC = () => {
               </div>
             ))}
           </CornerInfo>
-        )}
+        )} */}
     </div>
   );
 };
