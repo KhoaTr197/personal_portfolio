@@ -1,78 +1,92 @@
-{
-  "languages": [
-    {
-      "name": "JavaScript",
-      "url": "https://en.wikipedia.org/wiki/JavaScript"
-    },
-    {
-      "name": "TypeScript",
-      "url": "https://www.typescriptlang.org/"
-    },
-    {
-      "name": "C++",
-      "url": "https://en.wikipedia.org/wiki/C%2B%2B"
-    },
-    {
-      "name": "PHP",
-      "url": "https://www.php.net/"
-    },
-    {
-      "name": "Python",
-      "url": "https://www.python.org/"
-    }
-  ],
-  "techStacks": [
-    {
-      "name": "HTML",
-      "url": "https://en.wikipedia.org/wiki/HTML"
-    },
-    {
-      "name": "CSS",
-      "url": "https://en.wikipedia.org/wiki/CSS"
-    },
-    {
-      "name": "NodeJS",
-      "url": "https://nodejs.org/en"
-    },
-    {
-      "name": "ExpressJS",
-      "url": "https://expressjs.com/"
-    },
-    {
-      "name": "React",
-      "url": "https://react.dev/"
-    },
-    {
-      "name": "Firebase",
-      "url": "https://firebase.google.com/"
-    },
-    {
-      "name": "MongoDB",
-      "url": "https://www.mongodb.com/"
-    },
-    {
-      "name": "MySQL",
-      "url": "https://www.mysql.com/"
-    },
-    {
-      "name": "Vite",
-      "url": "https://vite.dev/" 
-    },
-    {
-      "name": "Tailwind CSS",
-      "url": "https://tailwindcss.com/"
-    },
-    {
-      "name": "Figma",
-      "url": "https://www.figma.com/"
-    },
-    {
-      "name": "Docker",
-      "url": "https://www.docker.com/"
-    },
-    {
-      "name": "GitHub",
-      "url": "https://github.com/"
-    }
-  ]
-}
+[
+  {
+    "name": "HTML",
+    "url": "https://en.wikipedia.org/wiki/HTML",
+    "group": "web_development"
+  },
+  {
+    "name": "CSS",
+    "url": "https://en.wikipedia.org/wiki/CSS",
+    "group": "web_development"
+  },
+  {
+    "name": "JavaScript",
+    "url": "https://en.wikipedia.org/wiki/JavaScript",
+    "group": "programming_languages"
+  },
+  {
+    "name": "TypeScript",
+    "url": "https://www.typescriptlang.org/",
+    "group": "programming_languages"
+  },
+  {
+    "name": "C++",
+    "url": "https://en.wikipedia.org/wiki/C%2B%2B",
+    "group": "programming_languages"
+  },
+  {
+    "name": "PHP",
+    "url": "https://www.php.net/",
+    "group": "programming_languages"
+  },
+  {
+    "name": "Python",
+    "url": "https://www.python.org/",
+    "group": "programming_languages"
+  },
+  {
+    "name": "NodeJS",
+    "url": "https://nodejs.org/en",
+    "group": "web_development"
+  },
+  {
+    "name": "ExpressJS",
+    "url": "https://expressjs.com/",
+    "group": "web_development"
+  },
+  {
+    "name": "React",
+    "url": "https://react.dev/",
+    "group": "web_development"
+  },
+  {
+    "name": "Firebase",
+    "url": "https://firebase.google.com/",
+    "group": "baas"
+  },
+  {
+    "name": "MongoDB",
+    "url": "https://www.mongodb.com/",
+    "group": "database"
+  },
+  {
+    "name": "MySQL",
+    "url": "https://www.mysql.com/",
+    "group": "database"
+  },
+  {
+    "name": "Vite",
+    "url": "https://vite.dev/",
+    "group": "developing_tools"
+  },
+  {
+    "name": "Tailwind CSS",
+    "url": "https://tailwindcss.com/",
+    "group": "web_development"
+  },
+  {
+    "name": "Figma",
+    "url": "https://www.figma.com/",
+    "group": "design_tools"
+  },
+  {
+    "name": "Docker",
+    "url": "https://www.docker.com/",
+    "group": "developing_tools"
+  },
+  {
+    "name": "GitHub",
+    "url": "https://github.com/",
+    "group": "developing_tools"
+  }
+]

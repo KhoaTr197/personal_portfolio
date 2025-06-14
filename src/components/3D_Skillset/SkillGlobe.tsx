@@ -1,59 +1,95 @@
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useCallback, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import * as Devicon from "devicons-react";
 import SkillNode from "./SkillNode";
 import { Html, OrbitControls } from "@react-three/drei";
 import { OrbitControls as OrbitControlsType } from 'three-stdlib';
+import { SelectedSkill } from "../../pages/3DSkillsetPage";
+import { Skill } from "../../pages/3DSkillsetPage";
 
-const skills = [
-  { name: "HTML", icon: <Devicon.Html5Original size={48} /> },
-  { name: "CSS", icon: <Devicon.Css3Original size={48} /> },
-  { name: "JavaScript", icon: <Devicon.JavascriptOriginal size={48} /> },
-  { name: "PHP", icon: <Devicon.PhpOriginal size={48} /> },
-  { name: "Python", icon: <Devicon.PythonOriginal size={48} /> },
-  { name: "C++", icon: <Devicon.CplusplusOriginal size={48} /> },
-  { name: "TypeScript", icon: <Devicon.TypescriptOriginal size={48} /> },
-  { name: "NodeJS", icon: <Devicon.NodejsOriginal size={48} /> },
-  { name: "ExpressJS", icon: <Devicon.ExpressOriginal fill="#fff" size={48} /> },
-  { name: "MongoDB", icon: <Devicon.MongodbOriginal size={48} /> },
-  { name: "MySQL", icon: <Devicon.MysqlOriginal size={48} /> },
-  { name: "Firebase", icon: <Devicon.FirebaseOriginal size={48} /> },
-  { name: "React", icon: <Devicon.ReactOriginal size={48} /> },
-  { name: "Tailwind CSS", icon: <Devicon.TailwindcssOriginal size={48} /> },
-  { name: "Figma", icon: <Devicon.FigmaOriginal size={48} /> },
-  { name: "Vite", icon: <Devicon.VitejsOriginal size={48} /> },
-  { name: "Docker", icon: <Devicon.DockerPlainWordmark size={48} /> },
-  { name: "GitHub", icon: <Devicon.GithubOriginal size={48} />, forceFill: "#fff" },
-];
+const initializeGlobe = (radius: number, detail: number) => {
+  const geometry = new THREE.IcosahedronGeometry(radius, detail);
 
-const SkillGlobe = () => {
+  const posAttr = geometry.attributes.position;
+  const verts: THREE.Vector3[] = [];
+  const seen = new Set<string>();
+
+  for (let i = 0; i < posAttr.count; i++) {
+    const v = new THREE.Vector3().fromBufferAttribute(posAttr, i);
+    const key = v.toArray().map(n => n.toFixed(4)).join(',');
+    if (!seen.has(key)) {
+      seen.add(key);
+      verts.push(v.normalize().multiplyScalar(radius));
+    }
+  }
+
+  const yThreshold = radius * 0.99;
+
+  return { geometry, vertices: verts.filter(v => Math.abs(v.y) < yThreshold) };
+}
+
+const SkillGlobe = ({
+  config,
+  skills,
+  selectedSkill,
+  onSelectSkill
+}: {
+  config: {
+    globeRadius?: number;
+    globeDetail?: number;
+    globeColor?: string;
+    focusTransitionSpeed?: number;
+  }
+  skills: Skill[] | null,
+  selectedSkill: SelectedSkill | null;
+  onSelectSkill: (skill: SelectedSkill | null) => void;
+}) => {
+  if (!skills) return null;
+
   const groupRef = useRef<THREE.Group>(null);
   const controlsRef = useRef<OrbitControlsType>(null);
+  const targetCameraPos = useRef<THREE.Vector3 | null>(null);
+  const targetControlTarget = useRef<THREE.Vector3 | null>(null);
   const { camera } = useThree();
-  const [focused, setFocused] = useState<THREE.Vector3 | null>(null);
   const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: THREE.Vector3 } | null>(null);
 
-  const radius = 2.5;
-  const sphereGeometry = useMemo(() => new THREE.IcosahedronGeometry(radius, 1), []);
-  const vertices = useMemo(() => {
-    const posAttr = sphereGeometry.attributes.position;
-    const verts: THREE.Vector3[] = [];
-    const seen = new Set<string>();
+  // Initialize globe
+  const skillLength = skills.length;
+  const { geometry, vertices } = useMemo(() => initializeGlobe(config.globeRadius || 2.5, config.globeDetail || 1), []);
+  const skillPositions = useMemo(() => vertices.sort(() => Math.random() - 0.5).slice(0, skillLength), []);
 
-    for (let i = 0; i < posAttr.count; i++) {
-      const v = new THREE.Vector3().fromBufferAttribute(posAttr, i);
-      const key = v.toArray().map(n => n.toFixed(4)).join(',');
-      if (!seen.has(key)) {
-        seen.add(key);
-        verts.push(v.normalize().multiplyScalar(radius));
-      }
+  // Camera and control target transition
+  useFrame(() => {
+    if (!targetCameraPos.current || !targetControlTarget.current || !controlsRef.current) return;
+
+    const lerpAlpha = config.focusTransitionSpeed || 0.1; // Adjust this value for transition speed (higher values make the transition snappier)
+
+    // Camera position transition
+    camera.position.lerp(targetCameraPos.current, lerpAlpha);
+
+    // OrbitControls target transition
+    controlsRef.current.target.lerp(targetControlTarget.current, lerpAlpha);
+    controlsRef.current.update();
+
+    // Stop when close enough (0 won't ensure that works all the time because of the floating values so 0.01 is better value in this case)
+    const cameraDist = camera.position.distanceTo(targetCameraPos.current);
+    const targetDist = controlsRef.current.target.distanceTo(targetControlTarget.current);
+
+    console.log(cameraDist, cameraDist < 0.01, targetDist < 0.01);
+    if (
+      cameraDist < 0.01 ||
+      targetDist < 0.01
+    ) {
+      targetCameraPos.current = null;
+      targetControlTarget.current = null;
     }
+  });
 
-    return verts.sort(() => Math.random() - 0.5).slice(0, skills.length);
-  }, []);
-
+  //Event Handlers
   const nodePointerEnter = useCallback((skill: { name: string; position: THREE.Vector3 }) => {
+    if (selectedSkill) return;
+
     setHoveredSkill({
       name: skill.name,
       position: skill.position.clone().add(new THREE.Vector3(0, 0.35, 0))
@@ -64,25 +100,30 @@ const SkillGlobe = () => {
     setHoveredSkill(null);
   }, []);
 
-  const focusOn = useCallback((pos: THREE.Vector3) => {
-    setFocused(pos);
+  const focusOn = useCallback(({ name, position, description }: { name: string; position: THREE.Vector3, description: string }) => {
+    if (!controlsRef.current) return;
 
-    const direction = pos.clone().normalize();
-    const distance = 4;
+    onSelectSkill({
+      name,
+      description
+    });
 
-    camera.position.copy(direction.clone().multiplyScalar(distance));
+    const direction = position.clone().normalize();
 
-    controlsRef.current?.target.copy(direction.clone().multiplyScalar(2));
-    controlsRef.current?.update();
+    targetCameraPos.current = direction.clone().multiplyScalar(4);
+    targetControlTarget.current = direction.clone().multiplyScalar(2);
   }, []);
 
   const clearFocus = useCallback(() => {
-    setFocused(null);
+    if (!controlsRef.current) return;
 
-    camera.position.copy(new THREE.Vector3(0, 0, 5));
-    controlsRef.current?.target.set(0, 0, 0);
-    controlsRef.current?.update();
+    onSelectSkill(null);
+
+    targetCameraPos.current = new THREE.Vector3(0, 0, 5);
+    targetControlTarget.current = new THREE.Vector3(0, 0, 0);
   }, []);
+
+  console.log(`Camera: {${camera.position.x}, ${camera.position.y}, ${camera.position.z}}`, `Target: {${controlsRef.current?.target.x}, ${controlsRef.current?.target.y}, ${controlsRef.current?.target.z}}`);
 
   return (
     <group
@@ -90,19 +131,19 @@ const SkillGlobe = () => {
       onPointerMissed={clearFocus}
     >
       <mesh
-        geometry={sphereGeometry}
+        geometry={geometry}
       >
         <meshBasicMaterial
-          color="white"
+          color={config.globeColor || '#000'}
           wireframe
           transparent
           opacity={0.3}
         />
       </mesh>
-      {vertices.map((vertex, index) => (
+      {skillPositions.map((pos, index) => (
         <SkillNode
           key={index}
-          position={vertex}
+          position={pos}
           skill={skills[index]}
           onClick={focusOn}
           onPointerEnter={nodePointerEnter}
@@ -123,10 +164,11 @@ const SkillGlobe = () => {
       )}
       <OrbitControls
         ref={controlsRef}
+        enableDamping={false}
         enableZoom={false}
         enablePan={false}
-      // autoRotate={focused ? false : true}
-      // autoRotateSpeed={2}
+        autoRotate={selectedSkill ? false : true}
+        autoRotateSpeed={2}
       />
     </group>
   );

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { Html } from '@react-three/drei';
+import { Skill } from '../../pages/3DSkillsetPage';
 
 const SkillNode = ({
   position,
@@ -10,22 +12,18 @@ const SkillNode = ({
   onPointerLeave,
 }: {
   position: THREE.Vector3;
-  skill: {
-    name: string;
-    icon: JSX.Element;
-    forceFill?: string;
-  };
-  onClick: (position: THREE.Vector3) => void;
+  skill: Skill;
+  onClick: ({ name, position, description }: { name: string, position: THREE.Vector3, description: string }) => void;
   onPointerEnter: (skill: { name: string, position: THREE.Vector3 }) => void;
   onPointerLeave: () => void;
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
 
-  const generateTextureFromIcon = useCallback(({ icon, forceFill }: { icon: JSX.Element, forceFill?: string }) => {
-    let svgMarkup = renderToStaticMarkup(icon);
-    if (forceFill) {
-      svgMarkup = svgMarkup.replace(/fill=".*?"/, `fill="${forceFill}"`);
+  const generateTextureFromIcon = useCallback(({ icon }: Skill) => {
+    let svgMarkup = renderToStaticMarkup(icon.component);
+    if (icon?.forceFill) {
+      svgMarkup = svgMarkup.replace(/fill=".*?"/, `fill="${icon?.forceFill}"`);
     }
     const blob = new Blob([svgMarkup], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
@@ -73,7 +71,11 @@ const SkillNode = ({
       {texture && (
         <mesh
           ref={meshRef}
-          onClick={() => onClick(position)}
+          onClick={() => onClick({
+            name: skill.name,
+            position,
+            description: "No description provided."
+          })}
           onPointerEnter={(e) => {
             e.stopPropagation(); // Prevent bubbling to globe
             onPointerEnter({ name: skill.name, position });
@@ -91,8 +93,7 @@ const SkillNode = ({
             side={THREE.DoubleSide}
           />
         </mesh>
-      )
-      }
+      )}
     </group >
   );
 };
