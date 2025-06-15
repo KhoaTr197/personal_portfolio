@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import SkillGlobe from "../components/3D_Skillset/SkillGlobe";
 import Devicon from 'devicons-react'
@@ -53,7 +53,7 @@ const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
     icon: <Devicon.FigmaOriginal size={48} />,
   },
   'Docker': {
-    icon: <Devicon.DockerOriginal size={48} />,
+    icon: <Devicon.DockerPlainWordmark size={48} />,
   },
   'GitHub': {
     icon: <Devicon.GithubOriginal size={48} />,
@@ -79,6 +79,7 @@ export interface Skill {
 export const ThreeDSkillsetPage = () => {
   const [skills, setSkills] = useState<Skill[] | null>(null);
   const [selectedSkill, setSelectedSkill] = useState<SelectedSkill | null>(null);
+  const globeRef = useRef<any>();
 
   useEffect(() => {
     fetch("/content/skillset.json")
@@ -109,6 +110,7 @@ export const ThreeDSkillsetPage = () => {
         className="w-full h-full bg-black"
       >
         <SkillGlobe
+          ref={globeRef}
           config={{
             globeColor: "#fff"
           }}
@@ -129,14 +131,13 @@ export const ThreeDSkillsetPage = () => {
           <div className="font-bold mb-1">{selectedSkill.name}</div>
           <p className="">Your mastery level or description goes here.</p>
           <button
-            onClick={() => setSelectedSkill(null)}
+            onClick={() => globeRef.current.clearFocus()}
             className="mt-2 text-blue-500 hover:underline"
           >
             Close
           </button>
         </div>
       )}
-
     </>
   );
 };
