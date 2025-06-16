@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode, Ref, useEffect, useState } from "react";
 import { Marquee } from "../components";
 import Icons from "../assets/icons";
-import { PageProps, PageRef } from "../@types/Component";
+import { PageProps, PageRef } from "../@types/component";
 
 interface ContactInfo {
   telphone: string;
