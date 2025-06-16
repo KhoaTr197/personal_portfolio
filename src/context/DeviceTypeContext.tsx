@@ -1,8 +1,7 @@
 import { createContext, useContext } from 'react';
 import useDeviceType from '../hook/useDeviceType';
-import { DeviceType } from '../hook/useDeviceType';
+import { DeviceContextType } from '../@types/context';
 
-type DeviceContextType = DeviceType;
 
 export const DeviceTypeContext = createContext<DeviceContextType | undefined>(undefined);
 

@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Header, CornerInfo, Typewriter } from "./components";
 import Pages from "./pages";
 import { useObserver } from "./hook/useObserver";
+import { useDeviceTypeContext } from "./context/DeviceTypeContext";
 
 type cornerInfoTemplateType = {
   [index: string]: {
@@ -42,6 +43,8 @@ const App: FC = () => {
     root: null,
     rootMargin: "-50%",
   });
+  const deviceType = useDeviceTypeContext();
+  console.log(deviceType);
 
   const sectionRefs = useObserver(
     {
@@ -95,6 +98,7 @@ const App: FC = () => {
             if (sectionRefs.current && "Skillset" in sectionRefs.current)
               sectionRefs.current["Skillset"] = el;
           }}
+          deviceType={deviceType}
         />
         <Pages.Showcase
           ref={(el: HTMLElement | null) => {

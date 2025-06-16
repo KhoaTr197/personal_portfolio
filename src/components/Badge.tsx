@@ -1,14 +1,9 @@
-import { FC } from 'react'
+import { BadgeProps } from '../@types/component';
 
-type BadgeProps = {
-  quantity: number,
-  info: string
-} 
-
-const Badge:FC<BadgeProps> = ({
+const Badge = ({
   quantity,
   info
-}) => {
+}: BadgeProps) => {
   const sign = quantity > 0 ? '+' : '-';
   const newQuantity = quantity > 10 ? quantity : '0' + Math.abs(quantity)
 

@@ -1,11 +1,7 @@
 import { forwardRef, ReactNode, Ref, useEffect, useState } from "react";
 import { Marquee } from "../components";
 import Icons from "../assets/icons";
-
-interface ContactProps {
-  children?: ReactNode;
-}
-type ContactRef = Ref<HTMLElement>
+import { PageProps, PageRef } from "../@types/Component";
 
 interface ContactInfo {
   telphone: string;
@@ -29,7 +25,7 @@ const socialIconMap: Record<string, ReactNode> = {
   GitHub: <Icons.GitHub size={96}/>,
 };
 
-const Contact = forwardRef(({}: ContactProps, ref: ContactRef) => {
+const Contact = forwardRef(({}: PageProps, ref: PageRef) => {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLink[] | null>(null);
 

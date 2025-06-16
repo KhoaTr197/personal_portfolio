@@ -1,19 +1,5 @@
 import { useEffect, useRef } from "react";
-
-type ObserverCallback = (entry: IntersectionObserverEntry) => void;
-
-interface ObserverConfig {
-  root?: Element | null;
-  rootMargin?: string;
-  threshold?: number | number[];
-}
-
-export type ElementRef<T extends Element = Element> =
-  | T
-  | T[]
-  | Record<string, T | null>
-  | null
-  | undefined;
+import { ElementRef, ObserverCallback, ObserverConfig } from "../@types/observer";
 
 export const useObserver = (
   initialRef: ElementRef,

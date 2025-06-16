@@ -1,17 +1,11 @@
-import { FC, ReactNode, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { TypewriterPropsType } from '../@types/component';
 
-type TypewriterPropsType = {
-  text: string
-  delay?: number,
-  style?: string,
-  children?: ReactNode
-}
-
-const Typewriter:FC<TypewriterPropsType> = ({
+const Typewriter = ({
   text,
   delay = 50,
   style,
-}) => {
+}: TypewriterPropsType) => {
   const [currentText, setCurrentText] = useState('');
   const [textLength] = useState(text.length)
 

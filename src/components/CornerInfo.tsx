@@ -1,11 +1,4 @@
-import { FC, ReactNode } from 'react'
-
-type CornerInfoProps = {
-  children: ReactNode,
-  position: "top-left" | "top-right" | "bottom-left" | "bottom-right",
-  padding?: number[],
-  textTransform?: "uppercase" | "lowercase" | "capitalize"
-}
+import { CornerInfoProps } from '../@types/component';
 
 const getStyles = ({
   position, 
@@ -21,11 +14,11 @@ const getStyles = ({
   return `${baseStyles} ${positionStyles[position]} ${textTransform}`;
 }
 
-const CornerInfo:FC<CornerInfoProps> = ({
+const CornerInfo = ({
   children,
   position,
   textTransform="lowercase",
-}) => {
+}: CornerInfoProps) => {
   const styles = getStyles({position, textTransform})
   return (
     <div className={styles}>

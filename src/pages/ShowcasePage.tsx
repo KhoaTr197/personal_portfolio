@@ -2,11 +2,7 @@ import { forwardRef, ReactNode, Ref } from "react";
 import { Grid } from "../components";
 import ExternalLinkIcon from "../assets/icons/ExternalLink";
 import weatherAppImg from "../assets/images/projects/weather_tracker_app.jpg";
-
-type ShowcaseProps = {
-  children?: ReactNode;
-}
-type ShowcaseRef = Ref<HTMLElement>
+import { PageProps, PageRef } from "../@types/Component";
 
 const projects = [
   {
@@ -30,7 +26,7 @@ const projects = [
 
 const projectsLength = projects.length;
 
-const Showcase = forwardRef(({}: ShowcaseProps, ref: ShowcaseRef) => {
+const Showcase = forwardRef(({}: PageProps, ref: PageRef) => {
   return (
     <section ref={ref} id="showcase-page" className="w-full h-screen relative snap-start">
       <div className="h-full flex justify-center items-center">
