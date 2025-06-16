@@ -1,4 +1,4 @@
-import { CornerInfoProps } from '../@types/Component';
+import { CornerInfoProps } from '../@types/component';
 
 const getStyles = ({
   position, 
