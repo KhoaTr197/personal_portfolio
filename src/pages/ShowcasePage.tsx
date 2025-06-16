@@ -2,7 +2,7 @@ import { forwardRef, ReactNode, Ref } from "react";
 import { Grid } from "../components";
 import ExternalLinkIcon from "../assets/icons/ExternalLink";
 import weatherAppImg from "../assets/images/projects/weather_tracker_app.jpg";
-import { PageProps, PageRef } from "../@types/Component";
+import { PageProps, PageRef } from "../@types/component";
 
 const projects = [
   {

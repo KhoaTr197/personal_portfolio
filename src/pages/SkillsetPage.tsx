@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode, Ref, useEffect, useState } from 'react'
 import { FeatureList, Badge } from '../components'
 import Devicon from 'devicons-react'
-import { PageProps, PageRef } from '../@types/Component';
+import { PageProps, PageRef } from '../@types/component';
 
 interface About {
   summary: string;

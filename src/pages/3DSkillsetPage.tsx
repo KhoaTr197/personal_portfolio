@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import SkillGlobe from "../components/3D_Skillset/SkillGlobe";
 import Devicon from 'devicons-react'
 import { PiMouseLeftClickFill } from "react-icons/pi";
+import { PageProps, PageRef } from "../@types/component";
 
 const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
   'JavaScript': {
@@ -62,11 +63,6 @@ const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
   },
 }
 
-type SkillsetProps = {
-  children?: ReactNode;
-}
-type SkillsetRef = Ref<HTMLElement>
-
 export interface SelectedSkill {
   name: string;
   description: string;
@@ -82,7 +78,7 @@ export interface Skill {
   description: string;
 }
 
-const ThreeDSkillsetPage = forwardRef(({ }: SkillsetProps, ref: SkillsetRef) => {
+const ThreeDSkillsetPage = forwardRef(({ }: PageProps, ref: PageRef) => {
   const [skills, setSkills] = useState<Skill[] | null>(null);
   const [transitionDuration] = useState(1000); //ms
   const [selectedSkill, setSelectedSkill] = useState<SelectedSkill | null>(null);
