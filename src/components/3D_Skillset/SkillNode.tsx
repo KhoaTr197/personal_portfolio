@@ -13,7 +13,7 @@ const SkillNode = ({
 }: {
   position: THREE.Vector3;
   skill: Skill;
-  onClick: ({ name, position, description }: { name: string, position: THREE.Vector3, description: string }) => void;
+  onClick: ({ name, position, description }: { name: string, position: THREE.Vector3, description: string })  => void;
   onPointerEnter: (skill: { name: string, position: THREE.Vector3 }) => void;
   onPointerLeave: () => void;
 }) => {
@@ -74,7 +74,7 @@ const SkillNode = ({
           onClick={() => onClick({
             name: skill.name,
             position,
-            description: "No description provided."
+            description: skill.description,
           })}
           onPointerEnter={(e) => {
             e.stopPropagation(); // Prevent bubbling to globe

@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import { Header, CornerInfo, Typewriter } from "./components";
 import Pages from "./pages";
 import { useObserver } from "./hook/useObserver";
-import { ThreeDSkillsetPage } from "./pages/3DSkillsetPage";
 
 type cornerInfoTemplateType = {
   [index: string]: {
@@ -78,15 +77,20 @@ const App: FC = () => {
       id="app"
       className="w-full h-screen overflow-hidden overflow-y-scroll snap-y snap-mandatory snap-always *:text-[#FFE] bg-gradient-cosmic"
     >
-      <ThreeDSkillsetPage />
-      {/* <Header onClick={handleClick} />
+      <Header onClick={handleClick} />
         <Pages.Landing
           ref={(el: HTMLElement | null) => {
             if (sectionRefs.current && "Landing" in sectionRefs.current)
               sectionRefs.current["Landing"] = el;
           }}
         />
-        <Pages.Skillset
+        {/* <Pages.Skillset
+          ref={(el: HTMLElement | null) => {
+            if (sectionRefs.current && "Skillset" in sectionRefs.current)
+              sectionRefs.current["Skillset"] = el;
+          }}
+        /> */}
+        <Pages.ThreeDSkillset
           ref={(el: HTMLElement | null) => {
             if (sectionRefs.current && "Skillset" in sectionRefs.current)
               sectionRefs.current["Skillset"] = el;
@@ -126,7 +130,7 @@ const App: FC = () => {
               </div>
             ))}
           </CornerInfo>
-        )} */}
+        )}
     </div>
   );
 };

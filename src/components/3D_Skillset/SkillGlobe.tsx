@@ -53,6 +53,7 @@ const SkillGlobe = forwardRef(({
 
   const { camera } = useThree();
   const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: THREE.Vector3 } | null>(null);
+  const tempSkill = useRef<SelectedSkill | null>(null);
   const groupRef = useRef<THREE.Group>(null);
   const controlsRef = useRef<OrbitControlsType>(null);
   const targetCameraPos = useRef<THREE.Vector3 | null>(null);
@@ -60,8 +61,13 @@ const SkillGlobe = forwardRef(({
   const startTime = useRef<number | null>(null);
   const startCameraPos = useRef<THREE.Vector3 | null>(null);
   const startControlTarget = useRef<THREE.Vector3 | null>(null);
-  const duration = config.focusTransitionSpeed || 1000; // ms
   const transistionType = useRef<'focus' | 'clear' | null>(null);
+  const {
+    globeRadius = 2.5,
+    globeDetail = 1,
+    globeColor = '#000',
+    focusTransitionSpeed = 1000
+  } = config;
 
   // Expose methods or refs to parent
   useImperativeHandle(ref, () => ({
@@ -71,7 +77,7 @@ const SkillGlobe = forwardRef(({
   }));
 
   const skillLength = skills.length;
-  const { geometry, vertices } = useMemo(() => initializeGlobe(config.globeRadius || 2.5, config.globeDetail || 1), []);
+  const { geometry, vertices } = useMemo(() => initializeGlobe(globeRadius, globeDetail), []);
   const skillPositions = useMemo(() => vertices.sort(() => Math.random() - 0.5).slice(0, skillLength), []);
 
   useFrame(() => {
@@ -81,23 +87,28 @@ const SkillGlobe = forwardRef(({
       !targetCameraPos.current ||
       !targetControlTarget.current ||
       !controlsRef.current ||
-      !startTime.current) return;
+      !startTime.current
+    ) return;
     const elapsedTime = performance.now() - startTime.current;
-    const alpha = easeInOutQuad(Math.min(elapsedTime / duration, 1)); //apply ease-in-out for smooth transition
+    const alpha = easeInOutQuad(Math.min(elapsedTime / focusTransitionSpeed, 1)); //apply ease-in-out for smooth transition
 
     // Interpolate camera position and target
     const currentCamPos = startCameraPos.current.clone().lerp(targetCameraPos.current, alpha);
     const currentTarget = startControlTarget.current.clone().lerp(targetControlTarget.current, alpha);
-    
+
     camera.position.copy(currentCamPos);
     controlsRef.current.target.copy(currentTarget);
 
     if (alpha >= 1) {
       // Set final position
-      if(transistionType.current === 'clear') {
+      if (transistionType.current === 'clear') {
         camera.position.copy(targetCameraPos.current);
         controlsRef.current.target.copy(targetControlTarget.current);
         controlsRef.current.update();
+      }
+      else if (transistionType.current === 'focus') {
+        onSelectSkill(tempSkill.current);
+        tempSkill.current = null;
       }
       // Clear targets to stop interpolation
       targetCameraPos.current = null;
@@ -106,6 +117,13 @@ const SkillGlobe = forwardRef(({
     }
   });
 
+  useImperativeHandle(ref, () => ({
+    clearFocus() {
+      clearFocus();
+    }
+  }));
+
+  // Event handlers
   const nodePointerEnter = useCallback((skill: { name: string; position: THREE.Vector3 }) => {
     if (selectedSkill) return;
     setHoveredSkill({
@@ -118,15 +136,9 @@ const SkillGlobe = forwardRef(({
     setHoveredSkill(null);
   }, []);
 
-  useImperativeHandle(ref, () => ({
-    clearFocus() {
-      clearFocus();
-    }
-  }));
-
   const focusOn = useCallback(({ name, position, description }: { name: string; position: THREE.Vector3, description: string }) => {
     if (!controlsRef.current) return;
-    onSelectSkill({ name, description });
+    tempSkill.current = { name, description };
 
     const direction = position.clone().normalize();
     targetCameraPos.current = direction.clone().multiplyScalar(4);
@@ -141,6 +153,7 @@ const SkillGlobe = forwardRef(({
   const clearFocus = useCallback(() => {
     if (!controlsRef.current) return;
     onSelectSkill(null);
+
     targetCameraPos.current = startCameraPos.current;
     targetControlTarget.current = startControlTarget.current;
 
@@ -154,7 +167,7 @@ const SkillGlobe = forwardRef(({
     <group ref={groupRef} onPointerMissed={clearFocus}>
       <mesh geometry={geometry}>
         <meshBasicMaterial
-          color={config.globeColor || '#000'}
+          color={globeColor}
           wireframe
           transparent
           opacity={0.3}
@@ -166,7 +179,7 @@ const SkillGlobe = forwardRef(({
           key={index}
           position={pos}
           skill={skills[index]}
-          onClick={focusOn}
+          onClick={selectedSkill ? () => {} : focusOn}
           onPointerEnter={nodePointerEnter}
           onPointerLeave={nodePointerLeave}
         />

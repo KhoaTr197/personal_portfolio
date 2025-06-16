@@ -1,7 +1,8 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { forwardRef, ReactNode, Ref, useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import SkillGlobe from "../components/3D_Skillset/SkillGlobe";
 import Devicon from 'devicons-react'
+import { PiMouseLeftClickFill } from "react-icons/pi";
 
 const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
   'JavaScript': {
@@ -61,6 +62,11 @@ const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
   },
 }
 
+type SkillsetProps = {
+  children?: ReactNode;
+}
+type SkillsetRef = Ref<HTMLElement>
+
 export interface SelectedSkill {
   name: string;
   description: string;
@@ -76,8 +82,9 @@ export interface Skill {
   description: string;
 }
 
-export const ThreeDSkillsetPage = () => {
+const ThreeDSkillsetPage = forwardRef(({ }: SkillsetProps, ref: SkillsetRef) => {
   const [skills, setSkills] = useState<Skill[] | null>(null);
+  const [transitionDuration] = useState(1000); //ms
   const [selectedSkill, setSelectedSkill] = useState<SelectedSkill | null>(null);
   const globeRef = useRef<any>();
 
@@ -104,7 +111,7 @@ export const ThreeDSkillsetPage = () => {
   }, []);
 
   return (
-    <>
+    <section ref={ref} id='skillset-page' className="w-full h-[200vh] md:h-screen relative snap-start">
       <Canvas
         camera={{ fov: 75, near: 0.1, far: 1000 }}
         className="w-full h-full bg-black"
@@ -112,13 +119,24 @@ export const ThreeDSkillsetPage = () => {
         <SkillGlobe
           ref={globeRef}
           config={{
-            globeColor: "#fff"
+            globeColor: "#fff",
+            focusTransitionSpeed: transitionDuration,
           }}
           skills={skills}
           selectedSkill={selectedSkill}
           onSelectSkill={handleSelectSkill}
         />
       </Canvas>
+      <div
+        className="fixed bottom-12 right-4 w-80 bg-[rgba(28,28,28,0.9)] z-50 shadow-lg rounded-lg p-4 text-xs "
+      >
+        <p className="mt-2">
+          Click on a skill to see more
+        </p>
+        <p className="mt-2">
+          Hold <PiMouseLeftClickFill className="inline" size={24}/> and drag  to move the globe
+        </p>
+      </div>
       {selectedSkill && (
         <div
           style={{
@@ -126,10 +144,10 @@ export const ThreeDSkillsetPage = () => {
             left: "50%",
             transform: "translate(100px, -50%)",
           }}
-          className="fixed w-80 bg-[rgba(28,28,28,0.9)] z-50 shadow-lg rounded-lg p-3"
+          className="fixed w-80 bg-[rgba(28,28,28,0.9)] z-50 shadow-lg rounded-lg p-3 animate-modal"
         >
           <div className="font-bold mb-1">{selectedSkill.name}</div>
-          <p className="">Your mastery level or description goes here.</p>
+          <p className="">{selectedSkill.description}</p>
           <button
             onClick={() => globeRef.current.clearFocus()}
             className="mt-2 text-blue-500 hover:underline"
@@ -138,6 +156,7 @@ export const ThreeDSkillsetPage = () => {
           </button>
         </div>
       )}
-    </>
+    </section>
   );
-};
+});
+export default ThreeDSkillsetPage;

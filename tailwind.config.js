@@ -8,7 +8,8 @@ export default {
     extend: {
       animation: {
         'infinite-scroll': 'infinite-scroll linear infinite',
-        'cta': 'cta 1.5s ease-in-out infinite' //call-to-action
+        'cta': 'cta 1.5s ease-in-out infinite', //call-to-action
+        'modal': 'modal 0.2s ease-in-out forwards',
       },
       keyframes: {
         'infinite-scroll': {
@@ -19,6 +20,10 @@ export default {
           from: { transform: 'translateX(-30%)' },
           '50%': { transform: 'translateX(0)' },
           to: { transform: 'translateX(-30%)' },
+        },
+        'modal': {
+          from: { opacity: 0, },
+          to: { opacity: 1, },
         }
       },
       fontSize: {
