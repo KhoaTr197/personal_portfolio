@@ -1,17 +1,10 @@
-import { FC, ReactNode } from 'react'
+import { FeatureListProps } from '../@types/component'
 
-type FeatureListProps = {
-  title: string,
-  items?: string[],
-  children?: ReactNode,
-  style?: string
-}
-
-const FeatureList:FC<FeatureListProps> = ({
+const FeatureList = ({
   title,
   children,
   style=''
-}) => {
+}: FeatureListProps) => {
   return (
     <div className={style}>
       <div className='md:text-3xl xl:text-4xl'>{title}</div>

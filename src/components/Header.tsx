@@ -1,14 +1,10 @@
-import { FC } from "react";
 import { Typewriter } from "./index";
 import Icons from "../assets/icons";
+import { HeaderProps } from "../@types/component";
 
-type HeaderProps = {
-  onClick: () => void
-}
-
-const Header:FC<HeaderProps> = ({
+const Header = ({
   onClick
-}) => {
+}: HeaderProps) => {
   return (
     <header className="w-full h-16 md:h-20 bg-black text-white uppercase z-50 fixed top-0">
       <nav className="h-full flex justify-between items-center mx-4">

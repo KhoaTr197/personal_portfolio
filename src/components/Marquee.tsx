@@ -1,20 +1,12 @@
-import { FC } from 'react'
+import { MarqueeProps } from "../@types/component"
 
-type MarqueeProps = {
-  items: string[],
-  duration?: number,
-  direction?: 'normal' | 'reverse'
-  marqueeBarStyle?: string,
-  marqueeTextStyle?: string,
-}
-
-const Marquee:FC<MarqueeProps> = ({
+const Marquee = ({
   items,
   duration=20,
   direction='normal',
   marqueeBarStyle,
   marqueeTextStyle
-}) => {
+}: MarqueeProps) => {
   const animationDuration = String(duration) + 's'
 
   return (

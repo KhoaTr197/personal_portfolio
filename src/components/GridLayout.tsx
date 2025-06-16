@@ -1,11 +1,4 @@
-import { FC, ReactNode } from 'react'
-
-type GridLayoutProps = {
-  size: [number, number], //[x, y]
-  gap?: number,
-  styles: string,
-  children: ReactNode
-}
+import { GridLayoutProps } from "../@types/component";
 
 const getLayoutStyles = ({
   size,
@@ -18,12 +11,12 @@ const getLayoutStyles = ({
   };
 }
 
-const GridLayout:FC<GridLayoutProps> = ({
+const GridLayout = ({
   size,
   gap,
   styles,
   children
-}) => {
+}: GridLayoutProps) => {
   const layoutStyles = getLayoutStyles({size, gap});
 
   return (

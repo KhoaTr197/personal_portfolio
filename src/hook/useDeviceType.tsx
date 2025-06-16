@@ -1,13 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-export interface DeviceType {
-  type: 'tablet' | 'mobile' | 'desktop';
-  platform: 'ios' | 'android' | 'windows' | 'macos' | 'linux' | 'browser';
-  screenSize: {
-    width: number;
-    height: number;
-    isRetina: boolean;
-  };
-}
+import { DeviceType } from '../@types/DeviceType';
 
 const getDeviceType = (): DeviceType => {
   const userAgent = navigator.userAgent.toLowerCase();

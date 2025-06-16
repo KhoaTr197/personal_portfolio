@@ -1,12 +1,4 @@
-import { FC, ReactNode } from 'react'
-
-type GridItemProps = {
-  size: [number, number], //[x, y]
-  coord?: [number, number], //[offsetX, offsetY]
-  styles?: string,
-  background?: string,
-  children: ReactNode
-}
+import { GridItemProps } from '../@types/component';
 
 const getItemStyles = ({
   size,
@@ -19,13 +11,13 @@ const getItemStyles = ({
   };
 }
 
-const GridItem:FC<GridItemProps> = ({
+const GridItem = ({
   size,
   coord,
   styles,
   background,
   children
-}) => {
+}: GridItemProps) => {
   const itemStyles = getItemStyles({size, coord, background});  
 
   return (
