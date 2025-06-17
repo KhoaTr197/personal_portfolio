@@ -107,10 +107,10 @@ const ThreeDSkillsetPage = forwardRef(({ }: PageProps, ref: PageRef) => {
   }, []);
 
   return (
-    <section ref={ref} id='skillset-page' className="w-full h-[200vh] md:h-screen relative snap-start">
+    <section ref={ref} id='skillset-page' className="w-full h-[200vh] bg-black md:h-screen relative snap-start">
       <Canvas
-        camera={{ fov: 75, near: 0.1, far: 1000 }}
-        className="w-full h-full bg-black"
+        camera={{ fov: 70, near: 0.1, far: 1000 }}
+        className="w-full h-full pt-20"
       >
         <SkillGlobe
           ref={globeRef}
@@ -124,23 +124,23 @@ const ThreeDSkillsetPage = forwardRef(({ }: PageProps, ref: PageRef) => {
         />
       </Canvas>
       <div
-        className="fixed bottom-12 right-4 w-80 bg-[rgba(28,28,28,0.9)] z-50 shadow-lg rounded-lg p-4 text-xs "
+        className="absolute top-24 right-4 w-80 bg-[rgba(28,28,28,0.9)] z-40 shadow-lg rounded-lg px-4 py-2 text-xs"
       >
         <p className="mt-2">
           Click on a skill to see more
         </p>
         <p className="mt-2">
-          Hold <PiMouseLeftClickFill className="inline" size={24}/> and drag  to move the globe
+          Hold <PiMouseLeftClickFill className="inline" size={24} /> and drag to move the globe
         </p>
       </div>
       {selectedSkill && (
         <div
           style={{
-            top: "50%",
+            top: "calc(50% + 64px)",
             left: "50%",
             transform: "translate(100px, -50%)",
           }}
-          className="fixed w-80 bg-[rgba(28,28,28,0.9)] z-50 shadow-lg rounded-lg p-3 animate-modal"
+          className="fixed w-80 bg-[rgba(28,28,28,0.9)] z-40 shadow-lg rounded-lg p-3 animate-modal"
         >
           <div className="font-bold mb-1">{selectedSkill.name}</div>
           <p className="">{selectedSkill.description}</p>
