@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, Ref, useEffect, useState } from 'react'
+import { forwardRef, ReactNode, useEffect, useState } from 'react'
 import { FeatureList, Badge } from '../components'
 import Devicon from 'devicons-react'
 import { PageProps, PageRef } from '../@types/component';
@@ -50,10 +50,7 @@ const techStackIconMap: Record<string, ReactNode> = {
   'GitHub': <Devicon.GithubOriginal className='[&>g]:fill-white' size={48} />
 }
 
-const Skillset = forwardRef(({ 
-  deviceType,
-  ...props
-}: PageProps, ref: PageRef) => {
+const Skillset = forwardRef((props: PageProps, ref: PageRef) => {
   const [about, setAbout] = useState<About | null>(null);
   const [skills, setSkills] = useState<Skillset | null>(null);
 
