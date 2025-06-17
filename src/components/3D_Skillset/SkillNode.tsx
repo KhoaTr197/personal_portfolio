@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Html } from '@react-three/drei';
-import { Skill } from '../../pages/3DSkillsetPage';
+import { Skill } from '../../@types/state';
 
 const SkillNode = ({
   position,

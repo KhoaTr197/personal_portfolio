@@ -3,21 +3,19 @@ import { Header, CornerInfo, Typewriter } from "./components";
 import Pages from "./pages";
 import { useObserver } from "./hook/useObserver";
 import { useDeviceTypeContext } from "./context/DeviceTypeContext";
+import { CornerInfoContent } from "./@types/state";
 
-type cornerInfoTemplateType = {
-  [index: string]: {
-    left: string[],
-    right: string[]
-  };
-};
-
-const cornerInfoTemplate: cornerInfoTemplateType = {
+const cornerInfoMap: {[index: string]: CornerInfoContent} = {
   "landing-page": {
     left: ["software developer", "19 years old"],
     right: ["scroll down"],
   },
-  "skillset-page": {
+  "about-page": {
     left: ["about"],
+    right: ["skills"],
+  },
+  "skillset-page": {
+    left: ["skills"],
     right: ["works"],
   },
   "showcase-page": {
@@ -32,30 +30,42 @@ const cornerInfoTemplate: cornerInfoTemplateType = {
 
 const App: FC = () => {
   const [currentPage, setCurrentPage] = useState("");
-  const [cornerInfoContent, setCornerInfoContent] = useState<{
-    left: string[],
-    right: string[]
-  }>({
+  const [cornerInfoContent, setCornerInfoContent] = useState<CornerInfoContent>({
     left: [],
     right: [],
+    className: "#FFE",
   });
   const [observerConfig, setObserverConfig] = useState<{ root: HTMLElement | null; rootMargin: string }>({
     root: null,
     rootMargin: "-50%",
   });
   const deviceType = useDeviceTypeContext();
-  console.log(deviceType);
 
   const sectionRefs = useObserver(
     {
       Landing: null,
+      About: null,
       Skillset: null,
       Showcase: null,
       Contact: null
     },
     (entry: IntersectionObserverEntry) => {
       if (entry.isIntersecting) {
-        setCornerInfoContent(cornerInfoTemplate[entry.target.id]);
+        const content = cornerInfoMap[entry.target.id];
+        if(entry.target.getAttribute("data-bg") === "#FFE") {
+          setCornerInfoContent({
+            left: content.left,
+            right: content.right,
+            className: "*:text-[#000]",
+          });
+        }
+        else {
+          setCornerInfoContent({
+            left: content.left,
+            right: content.right,
+            className: "*:text-[#FFE]",
+          });
+        };
         setCurrentPage(entry.target.id);
       }
     },
@@ -87,12 +97,13 @@ const App: FC = () => {
               sectionRefs.current["Landing"] = el;
           }}
         />
-        {/* <Pages.Skillset
+        <Pages.About
           ref={(el: HTMLElement | null) => {
-            if (sectionRefs.current && "Skillset" in sectionRefs.current)
-              sectionRefs.current["Skillset"] = el;
+            if (sectionRefs.current && "About" in sectionRefs.current)
+              sectionRefs.current["About"] = el;
           }}
-        /> */}
+          deviceType={deviceType}
+        />
         <Pages.ThreeDSkillset
           ref={(el: HTMLElement | null) => {
             if (sectionRefs.current && "Skillset" in sectionRefs.current)
@@ -113,7 +124,11 @@ const App: FC = () => {
           }}
         />
         {currentPage != "contact-page" && (
-          <CornerInfo position="bottom-left" textTransform="uppercase">
+          <CornerInfo 
+            className={cornerInfoContent.className ? cornerInfoContent.className : ""}
+            position="bottom-left"
+            textTransform="uppercase"
+          >
             {cornerInfoContent.left.map((info) => (
               <div className="text-xs sm:text-sm flex" key={info}>
                 <span>[</span>
@@ -124,7 +139,11 @@ const App: FC = () => {
           </CornerInfo>
         )}
         {currentPage != "contact-page" && (
-          <CornerInfo position="bottom-right" textTransform="uppercase">
+          <CornerInfo 
+            className={cornerInfoContent.className ? cornerInfoContent.className : ""}
+            position="bottom-right"
+            textTransform="uppercase"
+          >
             {cornerInfoContent.right.map((info) => (
               <div className="text-xs sm:text-sm flex" key={info}>
                 <span>[</span>

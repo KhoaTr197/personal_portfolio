@@ -16,6 +16,7 @@ export interface BadgeProps {
 
 // CornerInfo.tsx
 export interface CornerInfoProps {
+  className?: string,
   children?: ReactNode,
   position: "top-left" | "top-right" | "bottom-left" | "bottom-right",
   padding?: number[],

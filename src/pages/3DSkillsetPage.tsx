@@ -4,6 +4,7 @@ import SkillGlobe from "../components/3D_Skillset/SkillGlobe";
 import Devicon from 'devicons-react'
 import { PiMouseLeftClickFill } from "react-icons/pi";
 import { PageProps, PageRef } from "../@types/component";
+import { SelectedSkill, Skill } from "../@types/state";
 
 const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
   'JavaScript': {
@@ -61,21 +62,6 @@ const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
     icon: <Devicon.GithubOriginal size={48} />,
     forceFill: "#fff"
   },
-}
-
-export interface SelectedSkill {
-  name: string;
-  description: string;
-}
-
-export interface Skill {
-  name: string;
-  url: string;
-  icon: {
-    component: ReactNode;
-    forceFill?: string;
-  };
-  description: string;
 }
 
 const ThreeDSkillsetPage = forwardRef(({ }: PageProps, ref: PageRef) => {

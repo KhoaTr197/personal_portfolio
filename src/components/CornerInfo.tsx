@@ -15,13 +15,15 @@ const getStyles = ({
 }
 
 const CornerInfo = ({
+  className,
   children,
   position,
   textTransform="lowercase",
 }: CornerInfoProps) => {
+  console.log(className);
   const styles = getStyles({position, textTransform})
   return (
-    <div className={styles}>
+    <div className={`${className} ${styles}`}>
       {children}
     </div>
   )
