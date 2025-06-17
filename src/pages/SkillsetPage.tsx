@@ -50,10 +50,7 @@ const techStackIconMap: Record<string, ReactNode> = {
   'GitHub': <Devicon.GithubOriginal className='[&>g]:fill-white' size={48} />
 }
 
-const Skillset = forwardRef(({ 
-  deviceType,
-  ...props
-}: PageProps, ref: PageRef) => {
+const Skillset = forwardRef(({}: PageProps, ref: PageRef) => {
   const [about, setAbout] = useState<About | null>(null);
   const [skills, setSkills] = useState<Skillset | null>(null);
 
