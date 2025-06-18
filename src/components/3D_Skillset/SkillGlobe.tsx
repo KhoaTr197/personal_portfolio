@@ -1,11 +1,10 @@
 import { forwardRef, useCallback, useMemo, useRef, useState, useImperativeHandle } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import * as Devicon from "devicons-react";
 import SkillNode from "./SkillNode";
 import { Html, OrbitControls } from "@react-three/drei";
 import { OrbitControls as OrbitControlsType } from 'three-stdlib';
-import { SelectedSkill, Skill } from "../../pages/3DSkillsetPage";
+import { SelectedSkill, Skill } from "../../@types/state";
 
 const initializeGlobe = (radius: number, detail: number) => {
   const geometry = new THREE.IcosahedronGeometry(radius, detail);

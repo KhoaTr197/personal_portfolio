@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, Ref, useEffect, useState } from 'react'
+import { forwardRef, ReactNode, useEffect, useState } from 'react'
 import { FeatureList, Badge } from '../components'
 import Devicon from 'devicons-react'
 import { PageProps, PageRef } from '../@types/component';
