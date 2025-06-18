@@ -4,14 +4,7 @@ import Pages from "./pages";
 import { useObserver } from "./hook/useObserver";
 import { useDeviceTypeContext } from "./context/DeviceTypeContext";
 
-type cornerInfoTemplateType = {
-  [index: string]: {
-    left: string[],
-    right: string[]
-  };
-};
-
-const cornerInfoTemplate: cornerInfoTemplateType = {
+const cornerInfoMap: { [index: string]: CornerInfoContent } = {
   "landing-page": {
     left: ["software developer", "19 years old"],
     right: ["scroll down"],
@@ -32,17 +25,12 @@ const cornerInfoTemplate: cornerInfoTemplateType = {
 
 const App: FC = () => {
   const [currentPage, setCurrentPage] = useState("");
-  const [cornerInfoContent, setCornerInfoContent] = useState<{
-    left: string[],
-    right: string[]
-  }>({
-    left: [],
-    right: [],
-  });
+  const [cornerInfoContent, setCornerInfoContent] = useState<CornerInfoContent | null>(null);
   const [observerConfig, setObserverConfig] = useState<{ root: HTMLElement | null; rootMargin: string }>({
     root: null,
     rootMargin: "-50%",
   });
+  const [isLoaded, setIsLoaded] = useState(false);
   const deviceType = useDeviceTypeContext();
   console.log(deviceType);
 
