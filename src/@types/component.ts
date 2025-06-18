@@ -8,6 +8,11 @@ export interface PageProps {
 
 export type PageRef = Ref<HTMLElement>;
 
+// 3DSkillsetPage.tsx
+export interface ThreeDSkillsetPageProps extends PageProps {
+  isLoaded: boolean;
+}
+
 // Badge.tsx
 export interface BadgeProps {
   quantity: number,

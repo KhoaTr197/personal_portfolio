@@ -20,7 +20,6 @@ const CornerInfo = ({
   position,
   textTransform="lowercase",
 }: CornerInfoProps) => {
-  console.log(className);
   const styles = getStyles({position, textTransform})
   return (
     <div className={`${className} ${styles}`}>

@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import SkillGlobe from "../components/3D_Skillset/SkillGlobe";
 import Devicon from 'devicons-react'
 import { PiMouseLeftClickFill } from "react-icons/pi";
-import { PageProps, PageRef } from "../@types/component";
+import { PageProps, PageRef, ThreeDSkillsetPageProps } from "../@types/component";
 import { SelectedSkill, Skill } from "../@types/state";
 
 const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
@@ -64,7 +64,7 @@ const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
   },
 }
 
-const ThreeDSkillsetPage = forwardRef(({ }: PageProps, ref: PageRef) => {
+const ThreeDSkillsetPage = forwardRef(({ isLoaded }: ThreeDSkillsetPageProps, ref: PageRef) => {
   const [skills, setSkills] = useState<Skill[] | null>(null);
   const [transitionDuration] = useState(1000); //ms
   const [selectedSkill, setSelectedSkill] = useState<SelectedSkill | null>(null);
@@ -95,6 +95,7 @@ const ThreeDSkillsetPage = forwardRef(({ }: PageProps, ref: PageRef) => {
   return (
     <section ref={ref} id='skillset-page' className="w-full h-[200vh] bg-black md:h-screen relative snap-start">
       <Canvas
+        frameloop={isLoaded ? "always" : "never"}
         camera={{ fov: 70, near: 0.1, far: 1000 }}
         className="w-full h-full pt-20"
       >
