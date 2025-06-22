@@ -7,6 +7,14 @@ export interface CornerInfoContent {
   className?: string;
 }
 
+// ShowcasePage.tsx
+export interface Project {
+  name: string;
+  description: string;
+  image: string;
+  url: string;
+}
+
 // AboutPage.tsx
 export interface AboutContent {
   summary: string;
