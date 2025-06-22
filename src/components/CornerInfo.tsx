@@ -1,9 +1,9 @@
-import { CornerInfoProps } from '../@types/component';
+import { CornerInfoProps } from '@/types/component';
 
 const getStyles = ({
-  position, 
+  position,
   textTransform
-}: Pick<CornerInfoProps, "position" | "textTransform" >) => {
+}: Pick<CornerInfoProps, "position" | "textTransform">) => {
   const baseStyles = 'w-max absolute';
   const positionStyles = {
     "top-left": `top-4 left-4`,
@@ -18,9 +18,9 @@ const CornerInfo = ({
   className,
   children,
   position,
-  textTransform="lowercase",
+  textTransform = "lowercase",
 }: CornerInfoProps) => {
-  const styles = getStyles({position, textTransform})
+  const styles = getStyles({ position, textTransform })
   return (
     <div className={`${className} ${styles}`}>
       {children}

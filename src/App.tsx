@@ -1,42 +1,27 @@
 import { FC, useEffect, useState } from "react";
-import { Header, CornerInfo, Typewriter } from "./components";
-import Pages from "./pages";
+import { Header, CornerInfo, Typewriter } from "@/components";
+import Pages from "@/pages";
 import { useObserver } from "./hook/useObserver";
-import { useDeviceTypeContext } from "./context/DeviceTypeContext";
-import { CornerInfoContent } from "./@types/state";
-
-const cornerInfoMap: { [index: string]: CornerInfoContent } = {
-  "landing-page": {
-    left: ["software developer", "19 years old"],
-    right: ["scroll down"],
-  },
-  "about-page": {
-    left: ["about"],
-    right: ["skills"],
-  },
-  "skillset-page": {
-    left: ["skills"],
-    right: ["works"],
-  },
-  "showcase-page": {
-    left: ["works"],
-    right: ["contact"],
-  },
-  "contact-page": {
-    left: [""],
-    right: [""],
-  },
-};
+import { useDeviceTypeContext } from "@/context/DeviceTypeContext";
+import { CornerInfoContent } from "@/types/state";
 
 const App: FC = () => {
   const [currentPage, setCurrentPage] = useState("");
-  const [cornerInfoContent, setCornerInfoContent] = useState<CornerInfoContent | null>(null);
+  const [cornerInfoContent, setCornerInfoContent] = useState<{ [index: string]: CornerInfoContent } | null>(null);
   const [observerConfig, setObserverConfig] = useState<{ root: HTMLElement | null; rootMargin: string }>({
     root: null,
     rootMargin: "-50%",
   });
-  const [isLoaded, setIsLoaded] = useState(false);
   const deviceType = useDeviceTypeContext();
+
+  useEffect(() => {
+    fetch("public/content/corner_info.json")
+      .then(res => res.json())
+      .then(data => {
+        setCornerInfoContent(data);
+        setCurrentPage(Object.keys(data)[0]);
+      });
+  }, []);
 
   const sectionRefs = useObserver(
     {
