@@ -3,8 +3,12 @@
     "left": ["software developer", "19 years old"],
     "right": ["scroll down"]
   },
-  "skillset-page": {
+  "about-page": {
     "left": ["about"],
+    "right": ["skillset"]
+  },
+  "skillset-page": {
+    "left": ["skillset"],
     "right": ["works"]
   },
   "showcase-page": {
