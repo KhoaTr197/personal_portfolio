@@ -4,7 +4,7 @@ import * as THREE from "three";
 import SkillNode from "./SkillNode";
 import { Html, OrbitControls } from "@react-three/drei";
 import { OrbitControls as OrbitControlsType } from 'three-stdlib';
-import { SelectedSkill, Skill } from "../../@types/state";
+import { SelectedSkill, Skill } from "@/types/state";
 
 const initializeGlobe = (radius: number, detail: number) => {
   const geometry = new THREE.IcosahedronGeometry(radius, detail);
@@ -178,7 +178,7 @@ const SkillGlobe = forwardRef(({
           key={index}
           position={pos}
           skill={skills[index]}
-          onClick={selectedSkill ? () => {} : focusOn}
+          onClick={selectedSkill ? () => { } : focusOn}
           onPointerEnter={nodePointerEnter}
           onPointerLeave={nodePointerLeave}
         />

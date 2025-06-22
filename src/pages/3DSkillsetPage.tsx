@@ -1,10 +1,10 @@
 import { forwardRef, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import SkillGlobe from "../components/3D_Skillset/SkillGlobe";
+import SkillGlobe from "@/components/3D_Skillset/SkillGlobe";
 import Devicon from 'devicons-react'
 import { PiMouseLeftClickFill } from "react-icons/pi";
-import { PageRef, ThreeDSkillsetPageProps } from "../@types/component";
-import { SelectedSkill, Skill } from "../@types/state";
+import { PageRef, ThreeDSkillsetPageProps } from "@/types/component";
+import { SelectedSkill, Skill } from "@/types/state";
 
 const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
   'JavaScript': {

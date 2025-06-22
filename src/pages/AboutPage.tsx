@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState } from "react";
-import { AboutContent } from "../@types/state";
-import { PageProps, PageRef } from "../@types/component";
-import { Badge } from "../components";
+import { AboutContent } from "@/types/state";
+import { PageProps, PageRef } from "@/types/component";
+import { Badge } from "@/components";
 
 const About = forwardRef(({}: PageProps, ref: PageRef) => {
   const [about, setAbout] = useState<AboutContent | null>(null);

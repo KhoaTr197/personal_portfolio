@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Skill } from '../../@types/state';
+import { Skill } from '@/types/state';
 
 const SkillNode = ({
   position,
