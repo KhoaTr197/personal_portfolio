@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { Header, CornerInfo, Typewriter } from "@/components";
 import Pages from "@/pages";
 import { useObserver } from "./hook/useObserver";
@@ -8,6 +8,7 @@ import { CornerInfoContent } from "@/types/state";
 const App: FC = () => {
   const [currentPage, setCurrentPage] = useState("");
   const [cornerInfoContent, setCornerInfoContent] = useState<{ [index: string]: CornerInfoContent } | null>(null);
+  const [currentCornerInfo, setCurrentCornerInfo] = useState<CornerInfoContent | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [observerConfig, setObserverConfig] = useState<{ root: HTMLElement | null; rootMargin: string }>({
     root: null,
@@ -24,6 +25,40 @@ const App: FC = () => {
       });
   }, []);
 
+  useEffect(() => {
+    setObserverConfig({
+      root: document.getElementById("app"),
+      rootMargin: "-50%",
+    });
+  }, []);
+
+  const handleIntersection = useCallback((entry: IntersectionObserverEntry) => {
+    if (!entry.isIntersecting || !cornerInfoContent) return;
+
+    const page = entry.target.id;
+    const content = cornerInfoContent[page];
+    if (entry.target.getAttribute("data-bg") === "#FFE") {
+      setCurrentCornerInfo({
+        left: content.left,
+        right: content.right,
+        className: "*:text-[#000]",
+      });
+    }
+    else {
+      setCurrentCornerInfo({
+        left: content.left,
+        right: content.right,
+        className: "*:text-[#FFE]",
+      });
+    };
+
+    if (page === "skillset-page") {
+      setIsLoaded(true);
+    }
+
+    setCurrentPage(entry.target.id);
+  }, [cornerInfoContent]);
+
   const sectionRefs = useObserver(
     {
       Landing: null,
@@ -32,49 +67,9 @@ const App: FC = () => {
       Showcase: null,
       Contact: null
     },
-    (entry: IntersectionObserverEntry) => {
-      if (entry.isIntersecting && cornerInfoContent) {
-        const page = entry.target.id;
-        const content = cornerInfoContent[page];
-        if (entry.target.getAttribute("data-bg") === "#FFE") {
-          setCornerInfoContent(prev => {
-            const newContent = { ...prev };
-            newContent[page] = {
-              left: content.left,
-              right: content.right,
-              className: "*:text-[#000]",
-            }
-            return newContent;
-          });
-        }
-        else {
-          setCornerInfoContent(prev => {
-            const newContent = { ...prev };
-            newContent[page] = {
-              left: content.left,
-              right: content.right,
-              className: "*:text-[#FFE]",
-            }
-            return newContent;
-          });
-        };
-
-        if (page === "skillset-page") {
-          setIsLoaded(true);
-        }
-
-        setCurrentPage(entry.target.id);
-      }
-    },
+    handleIntersection,
     observerConfig
   );
-
-  useEffect(() => {
-    setObserverConfig({
-      root: document.getElementById("app"),
-      rootMargin: "-50%",
-    });
-  }, []);
 
   const handleClick = () => {
     if (sectionRefs.current && "Contact" in sectionRefs.current) {
@@ -121,12 +116,13 @@ const App: FC = () => {
             sectionRefs.current["Contact"] = el;
         }}
       />
-      {currentPage != "contact-page" && cornerInfoContent && (
+      {currentPage != "contact-page" && currentCornerInfo && (
         <CornerInfo
           position="bottom-left"
           textTransform="uppercase"
+          className={currentCornerInfo?.className || ""}
         >
-          {cornerInfoContent[currentPage]?.left.map((info) => (
+          {currentCornerInfo?.left.map((info) => (
             <div className="text-xs sm:text-sm flex" key={info}>
               <span>[</span>
               <Typewriter text={info} />
@@ -135,12 +131,13 @@ const App: FC = () => {
           ))}
         </CornerInfo>
       )}
-      {currentPage != "contact-page" && cornerInfoContent && (
+      {currentPage != "contact-page" && currentCornerInfo && (
         <CornerInfo
           position="bottom-right"
           textTransform="uppercase"
+          className={currentCornerInfo?.className || ""}
         >
-          {cornerInfoContent[currentPage]?.right.map((info) => (
+          {currentCornerInfo?.right.map((info) => (
             <div className="text-xs sm:text-sm flex" key={info}>
               <span>[</span>
               <span className="mr-1">&darr;</span>

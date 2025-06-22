@@ -13,13 +13,11 @@ export const useObserver = (
   const ref = useRef<ElementRef>(initialRef);
 
   useEffect(() => {
-    if (!ref) return;
+    if (!ref.current) return;
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          callbackFn(entry);
-        }
+        callbackFn(entry);
       });
     }, config);
 
@@ -37,12 +35,9 @@ export const useObserver = (
     });
 
     return () => {
-      elementsToObserve.forEach((sectionRef) => {
-        if (sectionRef instanceof Element)
-          observer.unobserve(sectionRef);
-      });
+      observer.disconnect();
     };
-  }, [ref, config]);
+  }, [config, callbackFn]);
 
   return ref;
 }
