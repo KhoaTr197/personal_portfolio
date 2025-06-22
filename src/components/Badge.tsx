@@ -1,4 +1,4 @@
-import { BadgeProps } from '../@types/component';
+import { BadgeProps } from '@/types/component';
 
 const Badge = ({
   quantity,

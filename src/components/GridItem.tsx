@@ -1,8 +1,8 @@
-import { GridItemProps } from '../@types/component';
+import { GridItemProps } from '@/types/component';
 
 const getItemStyles = ({
   size,
-  background=''
+  background = ''
 }: Pick<GridItemProps, "size" | "coord" | "background">) => {
   return {
     gridRowEnd: `span ${size[1]}`,
@@ -18,7 +18,7 @@ const GridItem = ({
   background,
   children
 }: GridItemProps) => {
-  const itemStyles = getItemStyles({size, coord, background});  
+  const itemStyles = getItemStyles({ size, coord, background });
 
   return (
     <div className={`overflow-hidden row-auto col-auto ${styles}`} style={itemStyles}>

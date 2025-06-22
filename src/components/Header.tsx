@@ -1,6 +1,6 @@
-import { Typewriter } from "./index";
-import Icons from "../assets/icons";
-import { HeaderProps } from "../@types/component";
+import Typewriter from "@/components/Typewriter";
+import Icons from "@/assets/icons";
+import { HeaderProps } from "@/types/component";
 
 const Header = ({
   onClick
@@ -10,13 +10,13 @@ const Header = ({
       <nav className="h-full flex justify-between items-center mx-4">
         <div className="w-20 md:w-40">
           <a href="">
-            <Icons.Logo style="w-full"/>
+            <Icons.Logo style="w-full" />
           </a>
         </div>
         <div className="quote grow-0 text-sm md:text-base">
           <Typewriter text="passionate" />
-          <Typewriter text="resolve" delay={80}/>
-          <Typewriter text="inspired" delay={80}/>
+          <Typewriter text="resolve" delay={80} />
+          <Typewriter text="inspired" delay={80} />
         </div>
         <div className="w-fit md:w-40 text-right">
           <p className="w-fit ml-auto cursor-pointer text-sm md:text-base" onClick={onClick}>

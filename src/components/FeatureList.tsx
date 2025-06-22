@@ -1,9 +1,9 @@
-import { FeatureListProps } from '../@types/component'
+import { FeatureListProps } from '@/types/component'
 
 const FeatureList = ({
   title,
   children,
-  style=''
+  style = ''
 }: FeatureListProps) => {
   return (
     <div className={style}>
