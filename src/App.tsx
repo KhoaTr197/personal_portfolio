@@ -15,7 +15,7 @@ const App: FC = () => {
   const deviceType = useDeviceTypeContext();
 
   useEffect(() => {
-    fetch("public/content/corner_info.json")
+    fetch("/content/corner_info.json")
       .then(res => res.json())
       .then(data => {
         setCornerInfoContent(data);
