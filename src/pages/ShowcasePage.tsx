@@ -1,38 +1,28 @@
-import { forwardRef } from "react";
-import { Grid } from "../components";
-import ExternalLinkIcon from "../assets/icons/ExternalLink";
-import weatherAppImg from "../assets/images/projects/weather_tracker_app.jpg";
-import { PageProps, PageRef } from "../@types/component";
+import { forwardRef, useEffect, useState } from "react";
+import { Grid } from "@/components";
+import ExternalLinkIcon from "@/assets/icons/ExternalLink";
+import { PageProps, PageRef } from "@/types/component";
+import { Project } from "@/types/state";
 
-const projects = [
-  {
-    name: "Weather App",
-    image: weatherAppImg,
-    url: "http://weather-app-khoatr-vite-react.netlify.app",
-  },
-  {
-    name: "See more in GitHub",
-    url: "http://github.com/KhoaTr197?tab=repositories",
-  },
-  {
-    name: "Kickz",
-    url: "https://github.com/KhoaTr197/kickz",
-  },
-  {
-    name: "Kickz API",
-    url: "https://github.com/KhoaTr197/kickz_api",
-  },
-];
+const Showcase = forwardRef(({ }: PageProps, ref: PageRef) => {
+  const [projects, setProjects] = useState<Project[] | null>(null)
 
-const projectsLength = projects.length;
+  useEffect(() => {
+    fetch("/content/projects.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setProjects(data);
+      });
+  }, []);
 
-const Showcase = forwardRef(({}: PageProps, ref: PageRef) => {
+  console.log(projects);
+
   return (
     <section ref={ref} id="showcase-page" className="w-full h-screen relative snap-start">
       <div className="h-full flex justify-center items-center">
         <Grid.Layout size={[4, 4]} gap={16} styles="w-[313px] md:w-[616px] h-[313px] md:h-[616px]">
-          {projects.map((project, idx) => {
-            if (idx + 1 == Math.round(projectsLength / 2))
+          {projects && projects.map((project, idx) => {
+            if (idx + 1 == Math.round(projects.length / 2))
               return (
                 <Grid.Item
                   key={project.name}
@@ -58,7 +48,7 @@ const Showcase = forwardRef(({}: PageProps, ref: PageRef) => {
                 <Grid.Item
                   key={project.name}
                   size={[2, 2]}
-                  background={project.image}
+                  background={`/images/projects/${project.image}`}
                   styles={`relative hover:scale-1.015 transition-transform duration-300 bg-contain bg-center rounded-3xl shadow-[0_0_16px_0_rgba(0,0,0,0.1)]`}
                 >
                   <a

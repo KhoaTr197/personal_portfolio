@@ -55,11 +55,11 @@ const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
   const [skills, setSkills] = useState<Skillset | null>(null);
 
   useEffect(() => {
-    fetch("public/content/about_me.json")
+    fetch("/content/about_me.json")
       .then(res => res.json())
       .then(data => setAbout(data));
 
-    fetch("public/content/skillset.json")
+    fetch("/content/skillset.json")
       .then(res => res.json())
       .then(data => setSkills(data));
   }, []);
