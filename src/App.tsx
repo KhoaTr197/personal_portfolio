@@ -8,6 +8,7 @@ import { CornerInfoContent } from "@/types/state";
 const App: FC = () => {
   const [currentPage, setCurrentPage] = useState("");
   const [cornerInfoContent, setCornerInfoContent] = useState<{ [index: string]: CornerInfoContent } | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [observerConfig, setObserverConfig] = useState<{ root: HTMLElement | null; rootMargin: string }>({
     root: null,
     rootMargin: "-50%",
@@ -32,21 +33,29 @@ const App: FC = () => {
       Contact: null
     },
     (entry: IntersectionObserverEntry) => {
-      if (entry.isIntersecting) {
+      if (entry.isIntersecting && cornerInfoContent) {
         const page = entry.target.id;
-        const content = cornerInfoMap[page];
+        const content = cornerInfoContent[page];
         if (entry.target.getAttribute("data-bg") === "#FFE") {
-          setCornerInfoContent({
-            left: content.left,
-            right: content.right,
-            className: "*:text-[#000]",
+          setCornerInfoContent(prev => {
+            const newContent = { ...prev };
+            newContent[page] = {
+              left: content.left,
+              right: content.right,
+              className: "*:text-[#000]",
+            }
+            return newContent;
           });
         }
         else {
-          setCornerInfoContent({
-            left: content.left,
-            right: content.right,
-            className: "*:text-[#FFE]",
+          setCornerInfoContent(prev => {
+            const newContent = { ...prev };
+            newContent[page] = {
+              left: content.left,
+              right: content.right,
+              className: "*:text-[#FFE]",
+            }
+            return newContent;
           });
         };
 
@@ -114,11 +123,10 @@ const App: FC = () => {
       />
       {currentPage != "contact-page" && cornerInfoContent && (
         <CornerInfo
-          className={cornerInfoContent.className ? cornerInfoContent.className : ""}
           position="bottom-left"
           textTransform="uppercase"
         >
-          {cornerInfoContent.left.map((info) => (
+          {cornerInfoContent[currentPage]?.left.map((info) => (
             <div className="text-xs sm:text-sm flex" key={info}>
               <span>[</span>
               <Typewriter text={info} />
@@ -129,11 +137,10 @@ const App: FC = () => {
       )}
       {currentPage != "contact-page" && cornerInfoContent && (
         <CornerInfo
-          className={cornerInfoContent.className ? cornerInfoContent.className : ""}
           position="bottom-right"
           textTransform="uppercase"
         >
-          {cornerInfoContent.right.map((info) => (
+          {cornerInfoContent[currentPage]?.right.map((info) => (
             <div className="text-xs sm:text-sm flex" key={info}>
               <span>[</span>
               <span className="mr-1">&darr;</span>
