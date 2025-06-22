@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
-import { Marquee } from "../components";
-import { useDeviceTypeContext } from "../context/DeviceTypeContext";
-import { PageProps, PageRef } from "../@types/component";
+import { Marquee } from "@/components";
+import { useDeviceTypeContext } from "@/context/DeviceTypeContext";
+import { PageProps, PageRef } from "@/types/component";
 
-const Landing = forwardRef(({}: PageProps, ref: PageRef) => {
+const Landing = forwardRef(({ }: PageProps, ref: PageRef) => {
   const marqueeConfig: {
     [index: string]: number
   } = {

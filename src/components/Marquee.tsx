@@ -1,9 +1,9 @@
-import { MarqueeProps } from "../@types/component"
+import { MarqueeProps } from "@/types/component"
 
 const Marquee = ({
   items,
-  duration=20,
-  direction='normal',
+  duration = 20,
+  direction = 'normal',
   marqueeBarStyle,
   marqueeTextStyle
 }: MarqueeProps) => {
@@ -11,12 +11,12 @@ const Marquee = ({
 
   return (
     <div className={`w-full ${marqueeBarStyle} overflow-x-hidden overflow-y-clip`}>
-      <ul 
-      className={`flex items-center justify-center w-max ${marqueeTextStyle} animate-infinite-scroll`}
-      style={{
-        animationDuration: animationDuration,
-        animationDirection: direction
-      }}>
+      <ul
+        className={`flex items-center justify-center w-max ${marqueeTextStyle} animate-infinite-scroll`}
+        style={{
+          animationDuration: animationDuration,
+          animationDirection: direction
+        }}>
         {items.map((item, idx) => {
           return (
             <li key={idx}>
@@ -31,7 +31,7 @@ const Marquee = ({
             </li>
           )
         })}
-      </ul>              
+      </ul>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { TypewriterPropsType } from '../@types/component';
+import { TypewriterPropsType } from '@/types/component';
 
 const Typewriter = ({
   text,
@@ -10,8 +10,8 @@ const Typewriter = ({
   const [textLength] = useState(text.length)
 
   useEffect(() => {
-    const intervalId = setInterval(()=>{
-      if(currentText.length < textLength) {
+    const intervalId = setInterval(() => {
+      if (currentText.length < textLength) {
         setCurrentText(currentText + text[currentText.length])
       }
       else {
@@ -19,7 +19,7 @@ const Typewriter = ({
       }
     }, delay)
 
-    return () => clearInterval(intervalId); 
+    return () => clearInterval(intervalId);
   }, [currentText, text, delay])
 
   return (

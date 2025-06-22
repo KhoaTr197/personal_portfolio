@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode, useEffect, useState } from "react";
-import { Marquee } from "../components";
-import Icons from "../assets/icons";
-import { PageProps, PageRef } from "../@types/component";
+import { Marquee } from "@/components";
+import Icons from "@/assets/icons";
+import { PageProps, PageRef } from "@/types/component";
 
 interface ContactInfo {
   telphone: string;
@@ -16,25 +16,25 @@ interface SocialLink {
 }
 
 const socialIconMap: Record<string, ReactNode> = {
-  Facebook: <Icons.Facebook size={96}/>,
-  Instagram: <Icons.Instagram size={96}/>,
-  X: <Icons.X size={96}/>,
-  Linkedin: <Icons.Linkedin size={96}/>,
-  Reddit: <Icons.Reddit size={96}/>,
-  Discord: <Icons.Discord size={96}/>,
-  GitHub: <Icons.GitHub size={96}/>,
+  Facebook: <Icons.Facebook size={96} />,
+  Instagram: <Icons.Instagram size={96} />,
+  X: <Icons.X size={96} />,
+  Linkedin: <Icons.Linkedin size={96} />,
+  Reddit: <Icons.Reddit size={96} />,
+  Discord: <Icons.Discord size={96} />,
+  GitHub: <Icons.GitHub size={96} />,
 };
 
-const Contact = forwardRef(({}: PageProps, ref: PageRef) => {
+const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLink[] | null>(null);
 
   useEffect(() => {
-    fetch("/content/contact_info.json")
+    fetch("public/content/contact_info.json")
       .then(res => res.json())
       .then(data => setContactInfo(data));
 
-    fetch("/content/social_links.json")
+    fetch("public/content/social_links.json")
       .then(res => res.json())
       .then(data => setSocialLinks(data));
   }, []);
@@ -53,11 +53,11 @@ const Contact = forwardRef(({}: PageProps, ref: PageRef) => {
               <div className="text-2xl sm:text-4xl uppercase">contact info</div>
               <ul className="flex flex-col mt-8 gap-6 lg:gap-14">
                 <li className="md:text-xl lg:text-2xl inline-block">
-                  <Icons.Phone size={32} style="mr-2 inline"/>
+                  <Icons.Phone size={32} style="mr-2 inline" />
                   {contactInfo?.telphone}
                 </li>
                 <li className="md:text-xl lg:text-2xl inline-block">
-                  <Icons.Mail size={32} style="mr-2 inline"/>
+                  <Icons.Mail size={32} style="mr-2 inline" />
                   {contactInfo?.email}
                 </li>
                 <li className="font-extralight uppercase">
