@@ -3,7 +3,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "public/*": ["./public/*"]
     }
   },
   "files": [],

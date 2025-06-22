@@ -30,11 +30,11 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
   const [socialLinks, setSocialLinks] = useState<SocialLink[] | null>(null);
 
   useEffect(() => {
-    fetch("public/content/contact_info.json")
+    fetch("/content/contact_info.json")
       .then(res => res.json())
       .then(data => setContactInfo(data));
 
-    fetch("public/content/social_links.json")
+    fetch("/content/social_links.json")
       .then(res => res.json())
       .then(data => setSocialLinks(data));
   }, []);
