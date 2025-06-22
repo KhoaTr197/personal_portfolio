@@ -1,0 +1,18 @@
+{
+  "landing-page": {
+    "left": ["software developer", "19 years old"],
+    "right": ["scroll down"]
+  },
+  "skillset-page": {
+    "left": ["about"],
+    "right": ["works"]
+  },
+  "showcase-page": {
+    "left": ["works"],
+    "right": ["contact"]
+  },
+  "contact-page": {
+    "left": [""],
+    "right": [""]
+  }
+}
