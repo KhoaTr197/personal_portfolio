@@ -48,8 +48,8 @@ const SkillGlobe = forwardRef(({
   selectedSkill: SelectedSkill | null;
   onSelectSkill: (skill: SelectedSkill | null) => void;
 }, ref) => {
-  if (!skills) return null;
-
+  if(!skills) return <></>;
+  
   const { camera } = useThree();
   const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: THREE.Vector3 } | null>(null);
   const tempSkill = useRef<SelectedSkill | null>(null);
@@ -70,9 +70,7 @@ const SkillGlobe = forwardRef(({
 
   // Expose methods or refs to parent
   useImperativeHandle(ref, () => ({
-    controls: controlsRef.current,
-    group: groupRef.current,
-    camera
+    clearFocus,
   }));
 
   const skillLength = skills.length;
@@ -115,12 +113,6 @@ const SkillGlobe = forwardRef(({
       transistionType.current = null;
     }
   });
-
-  useImperativeHandle(ref, () => ({
-    clearFocus() {
-      clearFocus();
-    }
-  }));
 
   // Event handlers
   const nodePointerEnter = useCallback((skill: { name: string; position: THREE.Vector3 }) => {
