@@ -60,6 +60,7 @@ export interface HeaderProps {
 // Marquee.tsx
 export interface MarqueeProps{
   items: string[],
+  separator?: string,
   duration?: number,
   direction?: 'normal' | 'reverse'
   marqueeBarStyle?: string,

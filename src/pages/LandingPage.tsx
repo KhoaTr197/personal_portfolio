@@ -9,7 +9,7 @@ const Landing = forwardRef(({ }: PageProps, ref: PageRef) => {
   } = {
     "phone": 15,
     "tablet": 30,
-    "desktop": 50
+    "desktop": 30
   }
   const deviceType = useDeviceTypeContext();
 
@@ -20,9 +20,10 @@ const Landing = forwardRef(({ }: PageProps, ref: PageRef) => {
       className="w-full h-screen bg-black text-white content-center relative snap-start"
     >
       <Marquee
-        items={["-", "Trần Hoàng Minh Khoa", "-", "Trần Hoàng Minh Khoa"]}
+        items={["Trần Hoàng Minh Khoa"]}
+        separator={" - "}
         duration={marqueeConfig[deviceType.type]}
-        marqueeTextStyle="*:mx-8 mb-20 md:mb-0 text-9xl leading-tight"
+        marqueeTextStyle="*:mx-8 mb-20 md:mb-0 text-6xl/normal md:text-9xl/normal"
       />
     </section>
   );
