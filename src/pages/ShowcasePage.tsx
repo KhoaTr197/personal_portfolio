@@ -1,19 +1,12 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useState } from "react";
 import { Grid } from "@/components";
 import ExternalLinkIcon from "@/assets/icons/ExternalLink";
 import { PageProps, PageRef } from "@/types/component";
-import { Project } from "@/types/state";
+import { Project } from "@/types/data";
+import projectsData from "@/data/projects";
 
 const Showcase = forwardRef(({ }: PageProps, ref: PageRef) => {
-  const [projects, setProjects] = useState<Project[] | null>(null)
-
-  useEffect(() => {
-    fetch("/content/projects.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setProjects(data);
-      });
-  }, []);
+  const [projects] = useState<Project[] | null>(projectsData);
 
   return (
     <section ref={ref} id="showcase-page" className="w-full h-screen relative snap-start">

@@ -3,11 +3,16 @@ import { Header, CornerInfo, Typewriter } from "@/components";
 import Pages from "@/pages";
 import { useObserver } from "./hook/useObserver";
 import { useDeviceTypeContext } from "@/context/DeviceTypeContext";
-import { CornerInfoContent } from "@/types/state";
+import { CornerInfoContent } from "@/types/data";
+import cornerInfo from "@/data/cornerInfo"
 
 const App: FC = () => {
   const [currentPage, setCurrentPage] = useState("");
   const [cornerInfoContent, setCornerInfoContent] = useState<{ [index: string]: CornerInfoContent } | null>(null);
+  const [currentPage, setCurrentPage] = useState(Object.keys(cornerInfo)[0]);
+  const [cornerInfoContent] = useState<{ [index: string]: CornerInfoContent } | null>(cornerInfo);
+  const [currentCornerInfo, setCurrentCornerInfo] = useState<CornerInfoContent | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [observerConfig, setObserverConfig] = useState<{ root: HTMLElement | null; rootMargin: string }>({
     root: null,
     rootMargin: "-50%",
