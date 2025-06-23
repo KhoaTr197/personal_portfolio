@@ -13,6 +13,7 @@ export interface Project {
   description: string;
   image: string;
   url: string;
+  isOther?: boolean;
 }
 
 // AboutPage.tsx
