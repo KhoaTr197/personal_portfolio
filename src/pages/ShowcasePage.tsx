@@ -1,25 +1,18 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useState } from "react";
 import { Grid } from "@/components";
 import ExternalLinkIcon from "@/assets/icons/ExternalLink";
 import { PageProps, PageRef } from "@/types/component";
-import { Project } from "@/types/state";
+import { Project } from "@/types/data";
+import projectsData from "@/data/projects";
 
 const Showcase = forwardRef(({ }: PageProps, ref: PageRef) => {
-  const [projects, setProjects] = useState<Project[] | null>(null)
-
-  useEffect(() => {
-    fetch("/content/projects.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setProjects(data);
-      });
-  }, []);
+  const [projects] = useState<Project[] | null>(projectsData);
 
   return (
     <section ref={ref} id="showcase-page" className="w-full h-screen relative snap-start">
       <div className="h-full flex justify-center items-center">
         <Grid.Layout size={[4, 4]} gap={16} styles="w-[313px] md:w-[616px] h-[313px] md:h-[616px]">
-          {projects && projects.map((project, idx) => {
+          {projects && projects.map((project) => {
             const background = project.isOther ? "" : `/images/projects/${project.image}`;
             if (project.isOther)
               return (

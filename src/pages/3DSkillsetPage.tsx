@@ -1,10 +1,12 @@
-import { forwardRef, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { forwardRef, ReactNode, useCallback, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import SkillGlobe from "@/components/3D_Skillset/SkillGlobe";
 import Devicon from 'devicons-react'
 import { PiMouseLeftClickFill } from "react-icons/pi";
 import { PageRef, ThreeDSkillsetPageProps } from "@/types/component";
-import { SelectedSkill, Skill } from "@/types/state";
+import { SelectedSkill, SkillState } from "@/types/state";
+import skillsData from "@/data/skills";
+import { Skill } from "@/types/data";
 
 const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
   'JavaScript': {
@@ -65,28 +67,21 @@ const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
 }
 
 const ThreeDSkillsetPage = forwardRef(({ isLoaded }: ThreeDSkillsetPageProps, ref: PageRef) => {
-  const [skills, setSkills] = useState<Skill[] | null>(null);
+  const [skills] = useState<SkillState[] | null>(() => {
+    return skillsData.map((skill: Skill) => {
+      const iconData = skillIconMap[skill.name];
+      return {
+        ...skill,
+        icon: {
+          component: iconData.icon,
+          forceFill: iconData.forceFill,
+        },
+      };
+    });
+  });
   const [transitionDuration] = useState(1000); //ms
   const [selectedSkill, setSelectedSkill] = useState<SelectedSkill | null>(null);
   const globeRef = useRef<any>();
-
-  useEffect(() => {
-    fetch("/content/skillset.json")
-      .then(res => res.json())
-      .then(data => {
-        const newData: Skill[] = data.map((skill: Skill) => {
-          const iconData = skillIconMap[skill.name];
-          return {
-            ...skill,
-            icon: {
-              component: iconData.icon,
-              forceFill: iconData.forceFill,
-            },
-          };
-        });
-        setSkills(newData)
-      });
-  }, []);
 
   const handleSelectSkill = useCallback((skill: SelectedSkill | null) => {
     setSelectedSkill(skill);

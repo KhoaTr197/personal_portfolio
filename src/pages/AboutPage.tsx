@@ -1,16 +1,11 @@
-import { forwardRef, useEffect, useState } from "react";
-import { AboutContent } from "@/types/state";
+import { forwardRef, useState } from "react";
+import { AboutContent } from "@/types/data";
 import { PageProps, PageRef } from "@/types/component";
 import { Badge } from "@/components";
+import aboutMe from "@/data/aboutMe";
 
 const About = forwardRef(({}: PageProps, ref: PageRef) => {
-  const [about, setAbout] = useState<AboutContent | null>(null);
-
-  useEffect(() => {
-    fetch("/content/about_me.json")
-      .then(res => res.json())
-      .then(data => setAbout(data));
-  }, []);
+  const [about] = useState<AboutContent | null>(aboutMe);
 
   return (
     <section

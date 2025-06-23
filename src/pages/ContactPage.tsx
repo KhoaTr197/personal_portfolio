@@ -1,19 +1,10 @@
-import { forwardRef, ReactNode, useEffect, useState } from "react";
+import { forwardRef, ReactNode, useState } from "react";
 import { Marquee } from "@/components";
 import Icons from "@/assets/icons";
 import { PageProps, PageRef } from "@/types/component";
-
-interface ContactInfo {
-  telphone: string;
-  email: string;
-  copyright: string;
-}
-
-interface SocialLink {
-  key: string;
-  icon: string;
-  url: string;
-}
+import { ContactInfo, SocialLink } from "@/types/data";
+import contactInfoData from "@/data/contactInfo";
+import socialLinksData from "@/data/socialLinks";
 
 const socialIconMap: Record<string, ReactNode> = {
   Facebook: <Icons.Facebook size={96} />,
@@ -26,18 +17,8 @@ const socialIconMap: Record<string, ReactNode> = {
 };
 
 const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
-  const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
-  const [socialLinks, setSocialLinks] = useState<SocialLink[] | null>(null);
-
-  useEffect(() => {
-    fetch("/content/contact_info.json")
-      .then(res => res.json())
-      .then(data => setContactInfo(data));
-
-    fetch("/content/social_links.json")
-      .then(res => res.json())
-      .then(data => setSocialLinks(data));
-  }, []);
+  const [contactInfo] = useState<ContactInfo | null>(contactInfoData);
+  const [socialLinks] = useState<SocialLink[] | null>(socialLinksData);
 
   return (
     <section ref={ref} id="contact-page" className="w-full h-screen relative snap-start">
