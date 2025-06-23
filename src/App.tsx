@@ -7,26 +7,13 @@ import { CornerInfoContent } from "@/types/data";
 import cornerInfo from "@/data/cornerInfo"
 
 const App: FC = () => {
-  const [currentPage, setCurrentPage] = useState("");
-  const [cornerInfoContent, setCornerInfoContent] = useState<{ [index: string]: CornerInfoContent } | null>(null);
   const [currentPage, setCurrentPage] = useState(Object.keys(cornerInfo)[0]);
   const [cornerInfoContent] = useState<{ [index: string]: CornerInfoContent } | null>(cornerInfo);
-  const [currentCornerInfo, setCurrentCornerInfo] = useState<CornerInfoContent | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [observerConfig, setObserverConfig] = useState<{ root: HTMLElement | null; rootMargin: string }>({
     root: null,
     rootMargin: "-50%",
   });
   const deviceType = useDeviceTypeContext();
-
-  useEffect(() => {
-    fetch("/content/corner_info.json")
-      .then(res => res.json())
-      .then(data => {
-        setCornerInfoContent(data);
-        setCurrentPage(Object.keys(data)[0]);
-      });
-  }, []);
 
   const sectionRefs = useObserver(
     {
