@@ -2,6 +2,7 @@ import { MarqueeProps } from "@/types/component"
 
 const Marquee = ({
   items,
+  separator = ' ',
   duration = 20,
   direction = 'normal',
   marqueeBarStyle,
@@ -17,20 +18,12 @@ const Marquee = ({
           animationDuration: animationDuration,
           animationDirection: direction
         }}>
-        {items.map((item, idx) => {
-          return (
-            <li key={idx}>
-              {item}
-            </li>
-          )
-        })}
-        {items.map((item, idx) => {
-          return (
-            <li key={idx}>
-              {item}
-            </li>
-          )
-        })}
+        {items.concat(items, items).map((item, index) => (
+          <li key={index}>
+            {item}
+            {index !== (items.length / 3 - 1) && separator}
+          </li>
+        ))}
       </ul>
     </div>
   )
