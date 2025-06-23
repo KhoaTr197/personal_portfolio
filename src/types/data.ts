@@ -12,11 +12,19 @@ export interface Project {
   isOther?: boolean;
 }
 
-export interface Skill {
+export interface Language {
   name: string;
   url: string;
-  group?: string;
-  description: string;
+}
+
+export interface TechStack {
+  name: string;
+  url: string;
+}
+
+export interface Skill {
+  languages: Language[];
+  techStacks: TechStack[];
 }
 
 export interface ContactInfo {
