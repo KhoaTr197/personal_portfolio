@@ -1,4 +1,6 @@
-const projects = [
+import { Project } from "@/types/data";
+
+const projects: Project[] = [
   {
     name: 'Weather App',
     image: 'weather_tracker_app.avif',

@@ -1,4 +1,6 @@
-const socialLinks = [
+import { SocialLink } from "@/types/data";
+
+const socialLinks: SocialLink[] = [
   {
     key: 'Facebook',
     icon: 'Facebook',

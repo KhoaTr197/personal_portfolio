@@ -1,4 +1,6 @@
-const aboutMe = {
+import { AboutContent } from "@/types/data";
+
+const aboutMe: AboutContent = {
   totalProjects: 5,
   yearsExperience: 3,
   summary:

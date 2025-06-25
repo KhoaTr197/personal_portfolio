@@ -1,84 +1,14 @@
-import { forwardRef, ReactNode, useCallback, useRef, useState } from "react";
+import { forwardRef, useCallback, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import SkillGlobe from "@/components/3D_Skillset/SkillGlobe";
-import Devicon from 'devicons-react'
 import { PiMouseLeftClickFill } from "react-icons/pi";
 import { PageRef, ThreeDSkillsetPageProps } from "@/types/component";
-import { SelectedSkill, SkillState } from "@/types/state";
+import { SelectedSkill } from "@/types/state";
 import skillsData from "@/data/skills";
 import { Skill } from "@/types/data";
 
-const skillIconMap: Record<string, { icon: ReactNode, forceFill?: string }> = {
-  'JavaScript': {
-    icon: <Devicon.JavascriptOriginal size={48} />,
-  },
-  'TypeScript': {
-    icon: <Devicon.TypescriptOriginal size={48} />,
-  },
-  'C++': {
-    icon: <Devicon.CplusplusOriginal size={48} />,
-  },
-  'PHP': {
-    icon: <Devicon.PhpOriginal size={48} />,
-  },
-  'Python': {
-    icon: <Devicon.PythonOriginal size={48} />,
-  },
-  'HTML': {
-    icon: <Devicon.Html5Original size={48} />,
-  },
-  'CSS': {
-    icon: <Devicon.Css3Original size={48} />,
-  },
-  'NodeJS': {
-    icon: <Devicon.NodejsOriginal size={48} />,
-  },
-  'ExpressJS': {
-    icon: <Devicon.ExpressOriginal fill='#fff' size={48} />,
-  },
-  'React': {
-    icon: <Devicon.ReactOriginal size={48} />,
-  },
-  'Firebase': {
-    icon: <Devicon.FirebaseOriginal size={48} />,
-  },
-  'MongoDB': {
-    icon: <Devicon.MongodbOriginal size={48} />,
-  },
-  'MySQL': {
-    icon: <Devicon.MysqlOriginal size={48} />,
-  },
-  'Vite': {
-    icon: <Devicon.VitejsOriginal size={48} />,
-  },
-  'Tailwind CSS': {
-    icon: <Devicon.TailwindcssOriginal size={48} />,
-  },
-  'Figma': {
-    icon: <Devicon.FigmaOriginal size={48} />,
-  },
-  'Docker': {
-    icon: <Devicon.DockerPlainWordmark size={48} />,
-  },
-  'GitHub': {
-    icon: <Devicon.GithubOriginal size={48} />,
-    forceFill: "#fff"
-  },
-}
-
 const ThreeDSkillsetPage = forwardRef(({ isLoaded }: ThreeDSkillsetPageProps, ref: PageRef) => {
-  const [skills] = useState<SkillState[] | null>(() => {
-    return skillsData.map((skill: Skill) => {
-      const iconData = skillIconMap[skill.name];
-      return {
-        ...skill,
-        icon: {
-          component: iconData.icon,
-          forceFill: iconData.forceFill,
-        },
-      };
-    });
-  });
+  const [skills] = useState<Skill[] | null>(skillsData);
   const [transitionDuration] = useState(1000); //ms
   const [selectedSkill, setSelectedSkill] = useState<SelectedSkill | null>(null);
   const globeRef = useRef<any>();

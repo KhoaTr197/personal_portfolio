@@ -1,4 +1,6 @@
-const cornerInfo = {
+import { CornerInfo } from "@/types/data";
+
+const cornerInfo: CornerInfo = {
   'landing-page': {
     left: ['software developer', '19 years old'],
     right: ['scroll down'],
