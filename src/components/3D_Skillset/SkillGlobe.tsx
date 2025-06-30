@@ -4,7 +4,7 @@ import * as THREE from "three";
 import SkillNode from "./SkillNode";
 import { Html, OrbitControls } from "@react-three/drei";
 import { OrbitControls as OrbitControlsType } from 'three-stdlib';
-import { SelectedSkill, Skill } from "@/types/state";
+import { Skill } from "@/types/data";
 
 const initializeGlobe = (radius: number, detail: number) => {
   const geometry = new THREE.IcosahedronGeometry(radius, detail);
@@ -45,14 +45,14 @@ const SkillGlobe = forwardRef(({
     focusTransitionSpeed?: number;
   };
   skills: Skill[] | null;
-  selectedSkill: SelectedSkill | null;
-  onSelectSkill: (skill: SelectedSkill | null) => void;
+  selectedSkill: Skill | null;
+  onSelectSkill: (skill: Skill | null) => void;
 }, ref) => {
   if(!skills) return <></>;
   
   const { camera } = useThree();
   const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: THREE.Vector3 } | null>(null);
-  const tempSkill = useRef<SelectedSkill | null>(null);
+  const tempSkill = useRef<Skill | null>(null);
   const groupRef = useRef<THREE.Group>(null);
   const controlsRef = useRef<OrbitControlsType>(null);
   const targetCameraPos = useRef<THREE.Vector3 | null>(null);
@@ -127,9 +127,9 @@ const SkillGlobe = forwardRef(({
     setHoveredSkill(null);
   }, []);
 
-  const focusOn = useCallback(({ name, position, description }: { name: string; position: THREE.Vector3, description: string }) => {
+  const focusOn = useCallback(({ skill, position }: { skill: Skill; position: THREE.Vector3}) => {
     if (!controlsRef.current) return;
-    tempSkill.current = { name, description };
+    tempSkill.current = skill;
 
     const direction = position.clone().normalize();
     targetCameraPos.current = direction.clone().multiplyScalar(4);

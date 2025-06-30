@@ -59,7 +59,7 @@ export interface HeaderProps {
 }
 
 // Marquee.tsx
-export interface MarqueeProps{
+export interface MarqueeProps {
   items: string[],
   separator?: string,
   duration?: number,
@@ -73,4 +73,22 @@ export interface TypewriterPropsType {
   delay?: number,
   style?: string,
   children?: ReactNode
+}
+
+export type LevelBarLayout = 'horizontal' | 'vertical';
+
+export interface LevelBarConfig {
+  size?: number,
+  layout?: LevelBarLayout,
+  mainBarStyle?: string
+  color?: {
+    [key: string]: string
+  }
+}
+
+export interface LevelBarProps {
+  level: number,
+  maxLevel: number,
+  legend?: string[],
+  config?: LevelBarConfig
 }

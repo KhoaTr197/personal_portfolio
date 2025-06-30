@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { Skill } from '@/types/state';
+import { Skill } from '@/types/data';
 
 const SkillNode = ({
   position,
@@ -12,7 +12,7 @@ const SkillNode = ({
 }: {
   position: THREE.Vector3;
   skill: Skill;
-  onClick: ({ name, position, description }: { name: string, position: THREE.Vector3, description: string })  => void;
+  onClick: ({ skill, position }: { skill: Skill, position: THREE.Vector3 })  => void;
   onPointerEnter: (skill: { name: string, position: THREE.Vector3 }) => void;
   onPointerLeave: () => void;
 }) => {
@@ -71,9 +71,8 @@ const SkillNode = ({
         <mesh
           ref={meshRef}
           onClick={() => onClick({
-            name: skill.name,
+            skill: skill,
             position,
-            description: skill.description,
           })}
           onPointerEnter={(e) => {
             e.stopPropagation(); // Prevent bubbling to globe

@@ -6,7 +6,8 @@ const skillset: Skill[] = [
     name: "HTML",
     url: "https://en.wikipedia.org/wiki/HTML",
     group: "web_development",
-    description: "Hypertext Markup Language (HTML) is the standard markup language for structuring content on the web, forming the backbone of web pages and applications. I self-taught HTML during my final year of high school, driven by a curiosity to how the web works and want to create my own website.",
+    proficiency: 3,
+    description: "HTML is the standard markup language for structuring web content, forming the backbone of websites and applications. I self-taught HTML in high school, driven by curiosity about web mechanics, and built my first website.",
     icon: {
       component: <Devicon.Html5Original size={48} />,
     }
@@ -15,8 +16,9 @@ const skillset: Skill[] = [
     name: "CSS",
     url: "https://en.wikipedia.org/wiki/CSS",
     group: "web_development",
+    proficiency: 3,
     description:
-      "Cascading Style Sheets (CSS) is a styling language used to define the visual presentation of web documents, enabling responsive and visually appealing designs. I self-learned CSS in my last year of high school alongside HTML to enhance the aesthetics and functionality of my web projects.",
+      "CSS is a styling language that defines the visual presentation of web documents, enabling responsive and appealing designs. I learned CSS in high school alongside HTML to create visually engaging and functional web projects.",
     icon: {
       component: <Devicon.Css3Original size={48} />,
     },
@@ -25,8 +27,9 @@ const skillset: Skill[] = [
     name: "JavaScript",
     url: "https://en.wikipedia.org/wiki/JavaScript",
     group: "programming_languages",
+    proficiency: 3,
     description:
-      "JavaScript is a versatile programming language that powers interactive and dynamic web experiences, a core pillar of modern web development. I self-taught JavaScript during my final year of high school to add interactivity to my web projects, motivated by a desire to build engaging user interfaces.",
+      "JavaScript is a versatile language that powers interactive and dynamic web experiences. I self-taught JavaScript in high school to add interactivity to my web projects, creating engaging user interfaces.",
     icon: {
       component: <Devicon.JavascriptOriginal size={48} />,
     },
@@ -35,8 +38,9 @@ const skillset: Skill[] = [
     name: "TypeScript",
     url: "https://www.typescriptlang.org/",
     group: "programming_languages",
+    proficiency: 2,
     description:
-      "TypeScript, a superset of JavaScript developed by Microsoft, enhances JavaScript with static typing for improved code reliability and scalability. I began learning TypeScript in my first year of college, aiming to write more robust and maintainable code for complex applications.",
+      "TypeScript, a JavaScript superset by Microsoft, adds static typing for reliable and scalable code. I learned TypeScript after learning JavaScript in my first year of college to build more robust, more maintainable web applications.",
     icon: {
       component: <Devicon.TypescriptOriginal size={48} />,
     },
@@ -45,8 +49,9 @@ const skillset: Skill[] = [
     name: "C++",
     url: "https://en.wikipedia.org/wiki/C%2B%2B",
     group: "programming_languages",
+    proficiency: 2,
     description:
-      "C++ is a powerful, general-purpose programming language known for its performance and use in system-level and application development. I studied C++ during my first year of college as part of my IT curriculum, gaining a strong foundation in low-level programming and problem-solving.",
+      "C++ is a high-performance language used in system-level and application development. I studied C++ in my first year of college, mastering low-level programming and problem-solving for efficient applications.",
     icon: {
       component: <Devicon.CplusplusOriginal size={48} />,
     },
@@ -55,8 +60,9 @@ const skillset: Skill[] = [
     name: "PHP",
     url: "https://www.php.net/",
     group: "programming_languages",
+    proficiency: 2,
     description:
-      "PHP is a server-side scripting language widely used for dynamic web development and backend logic. I learnt PHP in the second half of my first college semester to build server-side applications, motivated by its prevalence in web development frameworks and content management systems. I also made a website using PHP and MySQL for the subject project.",
+      "PHP is a server-side scripting language for dynamic web development and backend logic. I learned PHP in my first college semester to build server-side applications. I developed a dynamic website using PHP and MySQL for a course project.",
     icon: {
       component: <Devicon.PhpOriginal size={48} />,
     },
@@ -65,8 +71,9 @@ const skillset: Skill[] = [
     name: "Python",
     url: "https://www.python.org/",
     group: "programming_languages",
+    proficiency: 2,
     description:
-      "Python is a high-level, interpreted programming language valued for its readability and versatility in web development, data science, and automation. I learnt Python in the second half of my second college semester to explore its applications in web development and data analysis. And spend more time to learn Machine Learning.",
+      "Python is a versatile, readable language programming language used in web development, data science, and automation. I learnt Python in my second college semester to explore its applications in web development and data analysis. And spend more time to learn Machine Learning.",
     icon: {
       component: <Devicon.PythonOriginal size={48} />,
     },
@@ -75,8 +82,9 @@ const skillset: Skill[] = [
     name: "NodeJS",
     url: "https://nodejs.org/en",
     group: "web_development",
+    proficiency: 2,
     description:
-      "Node.js is an open-source, cross-platform, back-end JavaScript runtime environment that executes JavaScript code outside of a browser. I’ve self-learned NodeJS in my second half semester of the first year.",
+      "Node.js is an open-source, cross-platform, back-end JavaScript runtime environment that executes JavaScript code outside of a browser. I’ve self-learned when i wanted to create some backend for my web projects.",
     icon: {
       component: <Devicon.NodejsOriginal size={48} />,
     },
@@ -85,8 +93,9 @@ const skillset: Skill[] = [
     name: "ExpressJS",
     url: "https://expressjs.com/",
     group: "web_development",
+    proficiency: 2,
     description:
-      "Express.js, or simply Express, is a back end web application framework for Node.js, released as free and open-source software under the MIT License. I’ve self-learned ExpressJS in my second half semester of the first year.",
+      "Express.js, or simply Express, is a back end web application framework for Node.js. I’ve self-learned it when i wanted to create some backend for my web projects.",
     icon: {
       component: <Devicon.ExpressOriginal fill="#fff" size={48} />,
     },
@@ -95,8 +104,9 @@ const skillset: Skill[] = [
     name: "React",
     url: "https://react.dev/",
     group: "web_development",
+    proficiency: 2,
     description:
-      "React is a free and open-source front-end JavaScript library for building user interfaces based on UI components. I’ve self-learned React in my second half semester of the first year.",
+      "React is a free and open-source front-end JavaScript library for building user interfaces based on UI components. I’ve self-learned React after learning JavaScript.",
     icon: {
       component: <Devicon.ReactOriginal size={48} />,
     },
@@ -105,8 +115,9 @@ const skillset: Skill[] = [
     name: "Firebase",
     url: "https://firebase.google.com/",
     group: "baas",
+    proficiency: 1,
     description:
-      "Firebase is a platform developed by Google for creating mobile and web applications. I’ve self-learned Firebase in my second half semester of the first year.",
+      "Firebase is a platform developed by Google for creating mobile and web applications. I self-taught Firebase in my first year of college to add backend services to my web projects.",
     icon: {
       component: <Devicon.FirebaseOriginal size={48} />,
     },
@@ -115,8 +126,9 @@ const skillset: Skill[] = [
     name: "MongoDB",
     url: "https://www.mongodb.com/",
     group: "database",
+    proficiency: 1,
     description:
-      "MongoDB is a source-available cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas. I’ve self-learned MongoDB in my second half semester of the first year.",
+      "MongoDB is a source-available cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas. I explored it when I was learning Firebase as an alternative.",
     icon: {
       component: <Devicon.MongodbOriginal size={48} />,
     },
@@ -125,8 +137,9 @@ const skillset: Skill[] = [
     name: "MySQL",
     url: "https://www.mysql.com/",
     group: "database",
+    proficiency: 2,
     description:
-      "MySQL is an open-source relational database management system. I’ve self-learned MySQL in my second half semester of the first year.",
+      "MySQL is an open-source relational database management system. I used MySQL for some course projects.",
     icon: {
       component: <Devicon.MysqlOriginal size={48} />,
     },
@@ -135,8 +148,9 @@ const skillset: Skill[] = [
     name: "Vite",
     url: "https://vite.dev/",
     group: "developing_tools",
+    proficiency: 2,
     description:
-      "Vite is a build tool that allows you to serve your code in development mode and build it for production. I’ve self-learned Vite in my second half semester of the first year.",
+      "Vite is a build tool that allows you to serve your code in development mode and build it for production. I’ve been using it from day one when i started learning React, leveraging its speed for efficient development.",
     icon: {
       component: <Devicon.VitejsOriginal size={48} />,
     },
@@ -145,8 +159,9 @@ const skillset: Skill[] = [
     name: "Tailwind CSS",
     url: "https://tailwindcss.com/",
     group: "web_development",
+    proficiency: 2,
     description:
-      "Tailwind CSS is a utility-first CSS framework for rapidly building custom user interfaces. I’ve self-learned Tailwind CSS in my second half semester of the first year.",
+      "Tailwind CSS is a utility-first CSS framework for rapidly building custom user interfaces. I found it out when was finding a framework for my porftolio project aka this website.",
     icon: {
       component: <Devicon.TailwindcssOriginal size={48} />,
     },
@@ -155,8 +170,9 @@ const skillset: Skill[] = [
     name: "Figma",
     url: "https://www.figma.com/",
     group: "design_tools",
+    proficiency: 1,
     description:
-      "Figma is a vector graphics editor and prototyping tool which is focused on creating user interfaces for websites and mobile applications. I’ve self-learned Figma in my second half semester of the first year.",
+      "Figma is a collaborative tool for designing and prototyping user interfaces for web and mobile apps. I used Figma to create intuitive designs for my web projects.",
     icon: {
       component: <Devicon.FigmaOriginal size={48} />,
     },
@@ -165,18 +181,31 @@ const skillset: Skill[] = [
     name: "Docker",
     url: "https://www.docker.com/",
     group: "developing_tools",
+    proficiency: 1,
     description:
-      "Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers. I’ve self-learned Docker in my second half semester of the first year.",
+      "Docker is a platform that uses containers for consistent development, testing, and production environments. I self-taught Docker in my first year of college, applying it to development, streamline deployment in course projects.",
     icon: {
       component: <Devicon.DockerPlainWordmark size={48} />,
+    },
+  },
+  {
+    name: "Git",
+    url: "https://git-scm.com/",
+    group: "developing_tools",
+    proficiency: 2,
+    description:
+      "Git is a distributed version-control system for tracking code changes. I learned Git in my first year of college to manage collaborative software projects effectively.",
+    icon: {
+      component: <Devicon.GitOriginal size={48} />,
     },
   },
   {
     name: "GitHub",
     url: "https://github.com/",
     group: "developing_tools",
+    proficiency: 2,
     description:
-      "GitHub is a web-based hosting service for version control using Git. I’ve self-learned GitHub in my second half semester of the first year.",
+      "GitHub is a web-based platform for version control and collaboration using Git. I’ve used GitHub since my first year of college to host and collaborate on course projects.",
     icon: {
       component: <Devicon.GithubOriginal size={48} />,
       forceFill: "#fff",

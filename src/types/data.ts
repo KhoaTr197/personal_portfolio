@@ -22,6 +22,7 @@ export interface Skill {
   name: string;
   url: string;
   group?: string;
+  proficiency: number;
   description: string;
   icon: {
     component: ReactNode;
