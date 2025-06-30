@@ -72,3 +72,21 @@ export interface TypewriterPropsType {
   style?: string,
   children?: ReactNode
 }
+
+export type LevelBarLayout = 'horizontal' | 'vertical';
+
+export interface LevelBarConfig {
+  size?: number,
+  layout?: LevelBarLayout,
+  mainBarStyle?: string
+  color?: {
+    [key: string]: string
+  }
+}
+
+export interface LevelBarProps {
+  level: number,
+  maxLevel: number,
+  legend?: string[],
+  config?: LevelBarConfig
+}

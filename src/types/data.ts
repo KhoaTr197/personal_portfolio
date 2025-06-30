@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface CornerInfoContent {
   left: string[],
   right: string[],
@@ -15,16 +17,13 @@ export interface Project {
 export interface Language {
   name: string;
   url: string;
-}
-
-export interface TechStack {
-  name: string;
-  url: string;
-}
-
-export interface Skill {
-  languages: Language[];
-  techStacks: TechStack[];
+  group?: string;
+  proficiency: number;
+  description: string;
+  icon: {
+    component: ReactNode;
+    forceFill?: string;
+  };
 }
 
 export interface ContactInfo {
