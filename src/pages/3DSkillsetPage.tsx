@@ -13,8 +13,6 @@ const ThreeDSkillsetPage = forwardRef(({ isLoaded }: ThreeDSkillsetPageProps, re
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const globeRef = useRef<any>();
 
-  console.log(selectedSkill);
-
   const handleSelectSkill = useCallback((skill: Skill | null) => {
     setSelectedSkill(skill);
   }, []);

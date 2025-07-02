@@ -52,15 +52,19 @@ const SkillGlobe = forwardRef(({
   
   const { camera } = useThree();
   const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: THREE.Vector3 } | null>(null);
+
   const tempSkill = useRef<Skill | null>(null);
   const groupRef = useRef<THREE.Group>(null);
   const controlsRef = useRef<OrbitControlsType>(null);
   const targetCameraPos = useRef<THREE.Vector3 | null>(null);
   const targetControlTarget = useRef<THREE.Vector3 | null>(null);
+
   const startTime = useRef<number | null>(null);
   const startCameraPos = useRef<THREE.Vector3 | null>(null);
   const startControlTarget = useRef<THREE.Vector3 | null>(null);
   const transistionType = useRef<'focus' | 'clear' | null>(null);
+  const isTransitioning = useRef(false);
+
   const {
     globeRadius = 2.5,
     globeDetail = 1,
@@ -111,6 +115,8 @@ const SkillGlobe = forwardRef(({
       targetCameraPos.current = null;
       targetControlTarget.current = null;
       transistionType.current = null;
+
+      isTransitioning.current = false;
     }
   });
 
@@ -128,7 +134,7 @@ const SkillGlobe = forwardRef(({
   }, []);
 
   const focusOn = useCallback(({ skill, position }: { skill: Skill; position: THREE.Vector3}) => {
-    if (!controlsRef.current) return;
+    if (!controlsRef.current || isTransitioning.current) return;
     tempSkill.current = skill;
 
     const direction = position.clone().normalize();
@@ -139,10 +145,12 @@ const SkillGlobe = forwardRef(({
     startControlTarget.current = controlsRef.current.target.clone();
     startTime.current = performance.now();
     transistionType.current = 'focus';
+
+    isTransitioning.current = true;
   }, []);
 
   const clearFocus = useCallback(() => {
-    if (!controlsRef.current) return;
+    if (!controlsRef.current || isTransitioning.current) return;
     onSelectSkill(null);
 
     targetCameraPos.current = startCameraPos.current;
@@ -152,6 +160,8 @@ const SkillGlobe = forwardRef(({
     startControlTarget.current = controlsRef.current.target.clone();
     startTime.current = performance.now();
     transistionType.current = 'clear';
+
+    isTransitioning.current = true;
   }, []);
 
   return (
