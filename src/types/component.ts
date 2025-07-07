@@ -58,13 +58,12 @@ export interface HeaderProps {
 }
 
 // Marquee.tsx
-export interface MarqueeProps{
-  items: string[],
-  separator?: string,
+export interface MarqueeProps {
   duration?: number,
-  direction?: 'normal' | 'reverse'
+  gap?: number | string,
+  direction?: 'left-to-right' | 'right-to-left',
   marqueeBarStyle?: string,
-  marqueeTextStyle?: string,
+  children?: ReactNode
 }
 
 export interface TypewriterPropsType {

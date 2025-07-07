@@ -1,32 +1,101 @@
 import { MarqueeProps } from "@/types/component"
+import { Children, forwardRef, Fragment, useCallback, useEffect, useRef, useState } from "react"
 
-const Marquee = ({
-  items,
-  separator = ' ',
-  duration = 20,
-  direction = 'normal',
+const Marquee = forwardRef(({
+  duration,
+  direction,
   marqueeBarStyle,
-  marqueeTextStyle
-}: MarqueeProps) => {
-  const animationDuration = String(duration) + 's'
+  children,
+}: MarqueeProps, ref: React.Ref<HTMLDivElement>) => {
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [marqueeWidth, setMarqueeWidth] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+  const [multiplier, setMultiplier] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null)
+  const marqueeRef = useRef<HTMLDivElement>(null)
 
-  return (
-    <div className={`w-full ${marqueeBarStyle} overflow-x-hidden overflow-y-clip`}>
-      <ul
-        className={`flex items-center justify-center w-max ${marqueeTextStyle} animate-infinite-scroll`}
+  const calculateWidth = useCallback(() => {
+    if (!containerRef.current || !marqueeRef.current) return;
+
+    const containerWidth = containerRef.current.getBoundingClientRect().width;
+    const marqueeWidth = marqueeRef.current.getBoundingClientRect().width;
+
+    if (marqueeWidth && containerWidth) {
+      setMultiplier(marqueeWidth < containerWidth ? Math.ceil(containerWidth / marqueeWidth) : 1);
+    } else {
+      setMultiplier(1);
+    }
+
+    setContainerWidth(containerWidth);
+    setMarqueeWidth(marqueeWidth);
+
+  }, [containerRef]);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
+    calculateWidth();
+  }, [calculateWidth, containerRef, isMounted]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  console.log(multiplier, containerWidth, marqueeWidth);
+
+  const multiplyChildren = useCallback((multiplier: number) => {
+    const multiplierArr = [...Array(Number.isFinite(multiplier) && multiplier >= 0 ? Math.ceil(multiplier) : 0)];
+
+    return multiplierArr.map((_, idx) => (
+      <Fragment key={idx}>
+        {Children.map(children, (child) => {
+          return (
+            <div>
+              {child}
+            </div>
+          );
+        })}
+      </Fragment>
+    ));
+  }, [children]);
+
+  return !isMounted ? null : (
+    <div
+      ref={containerRef}
+      className={`marquee-container flex min-w-full w-fit ${marqueeBarStyle} overflow-x-hidden`}
+    >
+      <div
+        className="marquee flex animate-infinite-scroll overflow-x-hidden"
         style={{
-          animationDuration: animationDuration,
-          animationDirection: direction
-        }}>
-        {items.concat(items, items).map((item, index) => (
-          <li key={index}>
-            {item}
-            {index !== (items.length / 3 - 1) && separator}
-          </li>
-        ))}
-      </ul>
-    </div>
+          animationDuration: `${duration}s`,
+          animationDirection: direction,
+        }}
+      >
+        {/* Initial Marquee */}
+        <div
+          ref={marqueeRef}
+          className="marquee-initial flex"
+        >
+          {Children.map(children, (child) => (
+            <div>
+              {child}
+            </div>
+          ))}
+          {multiplyChildren(multiplier - 1)}
+        </div>
+      </div>
+      {/* Duplicated Marquee */}
+      <div
+        className="marquee flex animate-infinite-scroll"
+        style={{
+          animationDuration: `${duration}s`,
+          animationDirection: direction,
+        }}
+      >
+        {multiplyChildren(multiplier)}
+      </div>
+    </div >
   )
-}
+})
 
 export default Marquee
