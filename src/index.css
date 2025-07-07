@@ -9,6 +9,9 @@ html {
   width: 0;
   height: 0;
 }
+pre {
+  font-family: "JetBrains Mono", monospace;
+}
 
 @layer components {
   .tooltip {

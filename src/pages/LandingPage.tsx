@@ -20,11 +20,11 @@ const Landing = forwardRef(({ }: PageProps, ref: PageRef) => {
       className="w-full h-screen bg-black text-white content-center relative snap-start"
     >
       <Marquee
-        items={["Trần Hoàng Minh Khoa"]}
-        separator={" - "}
         duration={marqueeConfig[deviceType.type]}
-        marqueeTextStyle="*:mx-8 mb-20 md:mb-0 text-6xl/normal md:text-9xl/normal"
-      />
+        marqueeBarStyle="mb-20 md:mb-0"
+      >
+        <pre className="text-6xl/normal md:text-9xl/normal text-nowrap">- Trần Hoàng Minh Khoa </pre>
+      </Marquee>
     </section>
   );
 });

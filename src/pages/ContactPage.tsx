@@ -25,10 +25,11 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
       <div className="h-full pt-16 md:pt-40">
         <div className="h-full flex flex-col bg-black">
           <Marquee
-            items={["-", "Contact", "-", "Contact", "-", "Contact"]}
+            duration={30}
             marqueeBarStyle="bg-[#FFE]"
-            marqueeTextStyle="*:mx-8 text-6xl md:text-9xl text-black leading-tight"
-          />
+          >
+            <pre className="text-6xl md:text-9xl text-black leading-tight text-nowrap">- Contact </pre>
+          </Marquee>
           <footer className="flex-grow flex flex-col lg:flex-row">
             <div className="w-full lg:w-2/5 text-center lg:text-left xl:w-2/6 px-8 md:px-4 py-8">
               <div className="text-2xl sm:text-4xl uppercase">contact info</div>
@@ -61,14 +62,11 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
             </div>
           </footer>
           <Marquee
-            items={[
-              "-//-", "You reach the end of the website",
-              "-//-", "You reach the end of the website",
-              "-//-", "You reach the end of the website",
-            ]}
+            duration={30}
             marqueeBarStyle="bg-[#FFE]"
-            marqueeTextStyle="*:mx-2 text-2xl md:text-4xl text-black leading-tight uppercase"
-          />
+          >
+            <pre className="text-2xl md:text-4xl text-black leading-tight uppercase text-nowrap">-//- You reach the end of the website </pre>
+          </Marquee>
         </div>
       </div>
     </section>
