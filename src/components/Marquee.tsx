@@ -7,8 +7,6 @@ const Marquee = forwardRef(({
   marqueeBarStyle,
   children,
 }: MarqueeProps, ref: React.Ref<HTMLDivElement>) => {
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [marqueeWidth, setMarqueeWidth] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null)
@@ -25,23 +23,30 @@ const Marquee = forwardRef(({
     } else {
       setMultiplier(1);
     }
-
-    setContainerWidth(containerWidth);
-    setMarqueeWidth(marqueeWidth);
-
   }, [containerRef]);
 
+  // Calculate width on mount and on ref change
   useEffect(() => {
     if (!isMounted) return;
 
     calculateWidth();
+
+    if (!marqueeRef.current || !containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver(() => calculateWidth());
+    resizeObserver.observe(containerRef.current);
+    resizeObserver.observe(marqueeRef.current);
+    return () => {
+      if (!resizeObserver) return;
+      resizeObserver.disconnect();
+    };
+
   }, [calculateWidth, containerRef, isMounted]);
 
+  // Set isMounted to true on mount
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  console.log(multiplier, containerWidth, marqueeWidth);
 
   const multiplyChildren = useCallback((multiplier: number) => {
     const multiplierArr = [...Array(Number.isFinite(multiplier) && multiplier >= 0 ? Math.ceil(multiplier) : 0)];
