@@ -14,7 +14,7 @@ export interface Project {
   isOther?: boolean;
 }
 
-export interface Language {
+export interface Skill {
   name: string;
   url: string;
   group?: string;

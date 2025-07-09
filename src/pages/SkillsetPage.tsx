@@ -1,38 +1,13 @@
-import { forwardRef, ReactNode, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { FeatureList, Badge } from '@/components'
-import Devicon from 'devicons-react'
 import { PageProps, PageRef } from '@/types/component';
 import { AboutContent, Skill } from '@/types/data';
 import aboutMe from '@/data/aboutMe';
 import skillsData from '@/data/skills';
 
-const languageIconMap: Record<string, ReactNode> = {
-  'JavaScript': <Devicon.JavascriptOriginal size={48} />,
-  'TypeScript': <Devicon.TypescriptOriginal size={48} />,
-  'C++': <Devicon.CplusplusOriginal size={48} />,
-  'PHP': <Devicon.PhpOriginal size={48} />,
-  'Python': <Devicon.PythonOriginal size={48} />
-}
-
-const techStackIconMap: Record<string, ReactNode> = {
-  'HTML': <Devicon.Html5Original size={48} />,
-  'CSS': <Devicon.Css3Original size={48} />,
-  'NodeJS': <Devicon.NodejsOriginal size={48} />,
-  'ExpressJS': <Devicon.ExpressOriginal fill='#fff' size={48} />,
-  'React': <Devicon.ReactOriginal size={48} />,
-  'Firebase': <Devicon.FirebaseOriginal size={48} />,
-  'MongoDB': <Devicon.MongodbOriginal size={48} />,
-  'MySQL': <Devicon.MysqlOriginal size={48} />,
-  'Vite': <Devicon.VitejsOriginal size={48} />,
-  'Tailwind CSS': <Devicon.TailwindcssOriginal size={48} />,
-  'Figma': <Devicon.FigmaOriginal size={48} />,
-  'Docker': <Devicon.DockerOriginal size={48} />,
-  'GitHub': <Devicon.GithubOriginal className='[&>g]:fill-white' size={48} />
-}
-
 const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
   const [about] = useState<AboutContent | null>(aboutMe);
-  const [skills] = useState<Skill | null>(skillsData);
+  const [skills] = useState<{ languages: Skill[], techStacks: Skill[] } | null>(skillsData);
 
   return (
     <section ref={ref} id='skillset-page' className='w-full h-[200vh] md:h-screen relative snap-start'>
@@ -44,11 +19,11 @@ const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
               style='h-1/3'
             >
               {skills?.languages.map(language => {
-                const Icon = languageIconMap[language.name];
+                const Icon = language.icon;
                 return (
-                  <li key={language.name}>
+                  <li key={language.name} className='pr-4 border-r-4 border-red-500 rounded'>
                     <a className='*:size-16 lg:*:size-24 tooltip' href={language.url} target='_blank' data-tooltip={language.name}>
-                      {Icon}
+                      {Icon.component}
                     </a>
                   </li>
                 )
@@ -59,11 +34,13 @@ const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
               style='h-2/3'
             >
               {skills?.techStacks.map(techStack => {
-                const Icon = techStackIconMap[techStack.name];
+                const Icon = techStack.icon;
                 return (
-                  <a key={techStack.name} className='tooltip' href={techStack.url} target='_blank' data-tooltip={techStack.name}>
-                    {Icon}
-                  </a>
+                  <li key={techStack.name} className='pr-4 border-r-4 border-red-500 rounded'>
+                    <a key={techStack.name} className='tooltip' href={techStack.url} target='_blank' data-tooltip={techStack.name}>
+                      {Icon.component}
+                    </a>
+                  </li>
                 )
               })}
             </FeatureList>
