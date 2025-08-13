@@ -21,7 +21,7 @@ export interface Skill {
   proficiency: number;
   description: string;
   icon: {
-    component: ReactNode;
+    component: (size: number) => ReactNode;
     forceFill?: string;
   };
 }

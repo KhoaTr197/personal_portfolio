@@ -4,10 +4,27 @@ import { PageProps, PageRef } from '@/types/component';
 import { AboutContent, Skill } from '@/types/data';
 import aboutMe from '@/data/aboutMe';
 import skillsData from '@/data/skills';
+import LevelBar from '@/components/LevelBar';
+import { useDeviceTypeContext } from '@/context/DeviceTypeContext';
 
 const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
   const [about] = useState<AboutContent | null>(aboutMe);
   const [skills] = useState<{ languages: Skill[], techStacks: Skill[] } | null>(skillsData);
+  const color: {
+    [index: number]: string
+  } = {
+    1: "bg-[#FFE]",
+    2: "bg-[#FFDB58]",
+    3: "bg-[#FF9500]",
+  }
+  const iconSize: {
+    [index: string]: number
+  } = {
+    "mobile": 32,
+    "tablet": 48,
+    "desktop": 48
+  }
+  const deviceType = useDeviceTypeContext();
 
   return (
     <section ref={ref} id='skillset-page' className='w-full h-[200vh] md:h-screen relative snap-start'>
@@ -16,34 +33,53 @@ const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
           <div className="h-[70%] md:h-full pt-20 md:pt-12 px-4 bg-black">
             <FeatureList
               title='LANGUAGES'
-              style='h-1/3'
+              style='h-1/4'
             >
               {skills?.languages.map(language => {
                 const Icon = language.icon;
+                const size = iconSize[deviceType.type];
                 return (
-                  <li key={language.name} className='pr-4 border-r-4 border-red-500 rounded'>
-                    <a className='*:size-16 lg:*:size-24 tooltip' href={language.url} target='_blank' data-tooltip={language.name}>
-                      {Icon.component}
+                  <li key={language.name} className={`relative`} style={{ width: size, height: size }}>
+                    <a className='tooltip' href={language.url} target='_blank' data-tooltip={language.name}>
+                      {Icon.component(size)}
                     </a>
+                    <span className={`absolute -bottom-2 left-0 h-1 w-full rounded ${color[language.proficiency]}`}></span>
                   </li>
                 )
               })}
             </FeatureList>
             <FeatureList
               title='SKILLS'
-              style='h-2/3'
+              style='h-1/2'
             >
               {skills?.techStacks.map(techStack => {
                 const Icon = techStack.icon;
+                const size = iconSize[deviceType.type];
+                console.log(size, Icon.component((size)));
                 return (
-                  <li key={techStack.name} className='pr-4 border-r-4 border-red-500 rounded'>
-                    <a key={techStack.name} className='tooltip' href={techStack.url} target='_blank' data-tooltip={techStack.name}>
-                      {Icon.component}
+                  <li key={techStack.name} className={`relative`} style={{ width: size, height: size }}>
+                    <a className='tooltip' href={techStack.url} target='_blank' data-tooltip={techStack.name}>
+                      {Icon.component(size)}
                     </a>
+                    <span className={`absolute -bottom-2 left-0 h-1 w-full rounded ${color[techStack.proficiency]}`}></span>
                   </li>
                 )
               })}
             </FeatureList>
+            <div
+              className="text-xs h-1/4 flex flex-col-reverse"
+            >
+              <div className="py-4">
+                <LevelBar
+                  level={3}
+                  maxLevel={3}
+                  legend={["Beginner", "Intermediate", "Advanced"]}
+                  config={{
+                    layout: "vertical",
+                    size: 4,
+                  }} />
+              </div>
+            </div>
           </div>
         </div>
         <div className="h-1/2 md:h-full md:w-2/3 snap-start md:snap-align-none">
