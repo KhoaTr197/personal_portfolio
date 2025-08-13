@@ -1,5 +1,5 @@
 import { MarqueeProps } from "@/types/component"
-import { Children, forwardRef, Fragment, useCallback, useEffect, useRef, useState } from "react"
+import { Children, Fragment, useCallback, useEffect, useRef, useState } from "react";
 
 const Marquee = ({
   duration,
