@@ -20,7 +20,7 @@ const ThreeDSkillsetPage = forwardRef(({ isLoaded }: ThreeDSkillsetPageProps, re
   return (
     <section ref={ref} id='skillset-page' className="w-full h-[200vh] bg-black md:h-screen relative snap-start">
       <Canvas
-        frameloop={isLoaded ? "always" : "never"}
+        frameloop={isLoaded ? "demand" : "never"}
         camera={{ fov: 70, near: 0.1, far: 1000 }}
         className="w-full h-full pt-20"
       >

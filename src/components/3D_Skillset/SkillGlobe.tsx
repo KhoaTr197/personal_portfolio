@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useMemo, useRef, useState, useImperativeHandle } from "react";
+import { forwardRef, useCallback, useMemo, useRef, useState, useImperativeHandle, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import SkillNode from "./SkillNode";
@@ -48,8 +48,8 @@ const SkillGlobe = forwardRef(({
   selectedSkill: Skill | null;
   onSelectSkill: (skill: Skill | null) => void;
 }, ref) => {
-  if(!skills) return <></>;
-  
+  if (!skills) return <></>;
+
   const { camera } = useThree();
   const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: THREE.Vector3 } | null>(null);
 
@@ -78,8 +78,8 @@ const SkillGlobe = forwardRef(({
   }));
 
   const skillLength = skills.length;
-  const { geometry, vertices } = useMemo(() => initializeGlobe(globeRadius, globeDetail), []);
-  const skillPositions = useMemo(() => vertices.sort(() => Math.random() - 0.5).slice(0, skillLength), []);
+  const { geometry, vertices } = useMemo(() => initializeGlobe(globeRadius, globeDetail), [globeRadius, globeDetail]);
+  const skillPositions = useMemo(() => vertices.sort(() => Math.random() - 0.5).slice(0, skillLength), [vertices, skillLength]);
 
   useFrame(() => {
     if (
@@ -133,7 +133,7 @@ const SkillGlobe = forwardRef(({
     setHoveredSkill(null);
   }, []);
 
-  const focusOn = useCallback(({ skill, position }: { skill: Skill; position: THREE.Vector3}) => {
+  const focusOn = useCallback(({ skill, position }: { skill: Skill; position: THREE.Vector3 }) => {
     if (!controlsRef.current || isTransitioning.current) return;
     tempSkill.current = skill;
 
