@@ -1,14 +1,12 @@
 import { MarqueeProps } from "@/types/component"
 import { Children, forwardRef, Fragment, useCallback, useEffect, useRef, useState } from "react"
 
-const Marquee = forwardRef(({
+const Marquee = ({
   duration,
   direction,
   marqueeBarStyle,
   children,
-}: MarqueeProps, ref: React.Ref<HTMLDivElement>) => {
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [marqueeWidth, setMarqueeWidth] = useState(0);
+}: MarqueeProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null)
@@ -26,9 +24,6 @@ const Marquee = forwardRef(({
       setMultiplier(1);
     }
 
-    setContainerWidth(containerWidth);
-    setMarqueeWidth(marqueeWidth);
-
   }, [containerRef]);
 
   useEffect(() => {
@@ -40,8 +35,6 @@ const Marquee = forwardRef(({
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  console.log(multiplier, containerWidth, marqueeWidth);
 
   const multiplyChildren = useCallback((multiplier: number) => {
     const multiplierArr = [...Array(Number.isFinite(multiplier) && multiplier >= 0 ? Math.ceil(multiplier) : 0)];
@@ -96,6 +89,6 @@ const Marquee = forwardRef(({
       </div>
     </div >
   )
-})
+}
 
 export default Marquee
