@@ -14,6 +14,13 @@ pre {
 }
 
 @layer components {
+  .hover-effect {
+    transition: transform 100ms;
+  }
+  .hover-effect:hover {
+    transform: scale(0.95);
+    filter: brightness(0.75);
+  }
   .tooltip {
     position: relative;
     display: inline-block;
