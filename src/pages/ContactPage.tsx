@@ -34,13 +34,17 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
             <div className="w-full lg:w-2/5 text-center lg:text-left xl:w-2/6 px-8 md:px-4 py-8">
               <div className="text-2xl sm:text-4xl uppercase">contact info</div>
               <ul className="flex flex-col mt-8 gap-6 lg:gap-14">
-                <li className="md:text-xl lg:text-2xl inline-block">
-                  <Icons.Phone size={32} style="mr-2 inline" />
-                  {contactInfo?.telphone}
+                <li className="md:text-xl lg:text-2xl">
+                  <a className="block hover-effect" href={`tel:${contactInfo?.telphone}`} target="_blank">
+                    <Icons.Phone size={32} style="mr-2 inline" />
+                    {contactInfo?.telphone}
+                  </a>
                 </li>
-                <li className="md:text-xl lg:text-2xl inline-block">
-                  <Icons.Mail size={32} style="mr-2 inline" />
-                  {contactInfo?.email}
+                <li className="md:text-xl lg:text-2xl">
+                  <a className="block hover-effect" href={`mailto:${contactInfo?.email}`} target="_blank">
+                    <Icons.Mail size={32} style="mr-2 inline" />
+                    {contactInfo?.email}
+                  </a>
                 </li>
                 <li className="font-extralight uppercase">
                   &copy; {contactInfo?.copyright}
@@ -54,7 +58,7 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
                   const Icon = socialIconMap[link.icon];
                   return (
                     <li key={link.key}>
-                      <a className='block *:size-12 md:*:size-16 lg:*:size-24 hover:scale-95 hover:brightness-75 transition-transform duration-100' href={link.url} target="_blank">{Icon}</a>
+                      <a className='block *:size-12 md:*:size-16 lg:*:size-24 hover-effect' href={link.url} target="_blank">{Icon}</a>
                     </li>
                   )
                 })}

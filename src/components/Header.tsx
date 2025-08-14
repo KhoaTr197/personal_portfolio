@@ -19,7 +19,7 @@ const Header = ({
           <Typewriter text="inspired" delay={80} />
         </div>
         <div className="w-fit md:w-40 text-right">
-          <p className="w-fit ml-auto cursor-pointer text-sm md:text-base" onClick={onClick}>
+          <p className="w-fit ml-auto cursor-pointer text-sm md:text-base hover-effect" onClick={onClick}>
             <span className='inline-block mr-1 animate-cta'>&gt;</span>
             Contact
           </p>
