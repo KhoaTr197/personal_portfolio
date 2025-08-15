@@ -20,7 +20,7 @@ const Badge = forwardRef<BadgeRef, BadgeProps>(({
     },
     reset() {
       if (odometerRef.current)
-        if (odometerRef.current.reset) odometerRef.current.reset();
+        odometerRef.current.reset();
     }
   }))
 
