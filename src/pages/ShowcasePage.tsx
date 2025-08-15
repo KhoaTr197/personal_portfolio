@@ -22,7 +22,7 @@ const Showcase = forwardRef(({ }: PageProps, ref: PageRef) => {
                   styles={`relative hover:scale-1.015 transition-transform duration-300 bg-[#FFE] rounded-3xl shadow-[0_0_16px_0_rgba(0,0,0,0.1)]`}
                 >
                   <a
-                    className="block w-full h-full p-4 text-black"
+                    className="block w-full h-full p-2 md:p-4 text-black"
                     href={project.url}
                     target="_blank"
                   >
@@ -48,7 +48,7 @@ const Showcase = forwardRef(({ }: PageProps, ref: PageRef) => {
                     href={project.url}
                     target="_blank"
                   >
-                    <div className="absolute text-center left-0 right-0 bottom-4">
+                    <div className="absolute text-center left-0 right-0 bottom-2 md:bottom-4">
                       <span className="inline-flex items-center text-xs md:text-3xl font-medium text-[#FFE]">
                         {project.name}
                         <ExternalLinkIcon
