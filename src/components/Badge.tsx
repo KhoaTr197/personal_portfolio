@@ -27,7 +27,7 @@ const Badge = forwardRef<BadgeRef, BadgeProps>(({
   return (
     <div className='w-fit flex flex-col items-center md:items-end'>
       <div className='w-fit lg:w-48 text-[5rem] md:text-8xl lg:text-10xl relative leading-none'>
-        <div className='absolute top-0 right-full text-[4rem] w-fit h-fit'>{sign}</div>
+        <div className='absolute top-0 right-full text-4xl lg:text-[4rem] w-fit h-fit'>{sign}</div>
         <Odometer
           ref={odometerRef}
           value={0}

@@ -30,9 +30,9 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
           >
             <pre className="text-6xl md:text-9xl text-black leading-tight text-nowrap">- Contact </pre>
           </Marquee>
-          <footer className="flex-grow flex flex-col lg:flex-row">
+          <footer className="flex-grow flex flex-col-reverse md:flex-col lg:flex-row">
             <div className="w-full lg:w-2/5 text-center lg:text-left xl:w-2/6 px-8 md:px-4 py-8">
-              <div className="text-2xl sm:text-4xl uppercase">contact info</div>
+              <div className="text-2xl sm:text-4xl uppercase underline underline-offset-4">contact info</div>
               <ul className="flex flex-col mt-8 gap-6 lg:gap-14">
                 <li className="md:text-xl lg:text-2xl">
                   <a className="block hover-effect" href={`tel:${contactInfo?.telphone}`} target="_blank">
@@ -52,7 +52,7 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
               </ul>
             </div>
             <div className="w-full lg:w-3/5 xl:w-4/6 text-center lg:text-left px-8 md:x-4 md:py-8">
-              <div className="text-2xl sm:text-4xl uppercase">social media</div>
+              <div className="text-2xl sm:text-4xl uppercase underline underline-offset-4">social media</div>
               <ul className="lg:w-full mx-auto mt-8 flex flex-wrap justify-center lg:justify-normal gap-8 xl:gap-12">
                 {socialLinks?.map((link: any) => {
                   const Icon = socialIconMap[link.icon];
