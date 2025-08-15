@@ -1,9 +1,10 @@
-import { ReactNode, Ref } from "react";
+import { CSSProperties, ReactNode, Ref } from "react";
 import { DeviceType } from "./deviceType";
 
 export interface PageProps {
   children?: React.ReactNode;
   deviceType?: DeviceType;
+  shouldPlayAnimation?: boolean;
 }
 
 export type PageRef = Ref<HTMLElement>;
@@ -17,6 +18,10 @@ export interface ThreeDSkillsetPageProps extends PageProps {
 export interface BadgeProps {
   quantity: number,
   info: string
+}
+
+export interface BadgeRef extends OdometerRef {
+
 }
 
 // CornerInfo.tsx
@@ -67,6 +72,7 @@ export interface MarqueeProps {
   children?: ReactNode
 }
 
+// Typewriter.tsx
 export interface TypewriterPropsType {
   text: string
   delay?: number,
@@ -74,6 +80,7 @@ export interface TypewriterPropsType {
   children?: ReactNode
 }
 
+// LevelBar.tsx
 export type LevelBarLayout = 'horizontal' | 'vertical';
 
 export interface LevelBarConfig {
@@ -90,4 +97,47 @@ export interface LevelBarProps {
   maxLevel: number,
   legend?: string[],
   config?: LevelBarConfig
+}
+
+// Odometer.tsx
+export type OdometerTransition = {
+  type: CSSProperties['transitionTimingFunction'],
+  duration: number,
+}
+
+export type OdometerConfig = OdometerTransition & {
+  digitHeight: number,
+  autoStart: boolean,
+}
+export interface OdometerProps {
+  value: number,
+  target: number,
+  format?: string,
+  className?: string,
+  autoStart?: boolean,
+  duration?: number,
+  transition?: OdometerTransition
+}
+
+export interface MinimalOdometerRef {
+  start: () => void;
+  stop: () => void;
+  reset: () => void;
+}
+
+export interface OdometerRef extends MinimalOdometerRef {
+  nextTick?: () => void;
+  toggle?: () => void;
+  getValue?: () => number;
+}
+
+export interface OdometerDiscProps {
+  value: number,
+  config: OdometerConfig,
+}
+
+export interface OdometerDiscRef {
+  getValue: () => number;
+  setValue: (newValue: number) => void;
+  nextTick: () => void;
 }

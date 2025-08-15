@@ -76,6 +76,7 @@ const App: FC = () => {
     >
       <Header onClick={handleClick} />
       <Pages.Landing
+        shouldPlayAnimation={currentPage === "landing-page"}
         ref={(el: HTMLElement | null) => {
           if (sectionRefs.current && "Landing" in sectionRefs.current)
             sectionRefs.current["Landing"] = el;
@@ -97,12 +98,14 @@ const App: FC = () => {
         isLoaded={isLoaded}
       />
       <Pages.Showcase
+        shouldPlayAnimation={currentPage === "showcase-page"}
         ref={(el: HTMLElement | null) => {
           if (sectionRefs.current && "Showcase" in sectionRefs.current)
             sectionRefs.current["Showcase"] = el;
         }}
       />
       <Pages.Contact
+        shouldPlayAnimation={currentPage === "contact-page"}
         ref={(el: HTMLElement | null) => {
           if (sectionRefs.current && "Contact" in sectionRefs.current)
             sectionRefs.current["Contact"] = el;
