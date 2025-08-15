@@ -83,6 +83,7 @@ const App: FC = () => {
         }}
       />
       <Pages.About
+        shouldPlayAnimation={currentPage === "about-page"}
         ref={(el: HTMLElement | null) => {
           if (sectionRefs.current && "About" in sectionRefs.current)
             sectionRefs.current["About"] = el;
@@ -90,6 +91,7 @@ const App: FC = () => {
         deviceType={deviceType}
       />
       <Pages.ThreeDSkillset
+        shouldPlayAnimation={currentPage === "skillset-page"}
         ref={(el: HTMLElement | null) => {
           if (sectionRefs.current && "Skillset" in sectionRefs.current)
             sectionRefs.current["Skillset"] = el;
