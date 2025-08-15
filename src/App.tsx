@@ -23,7 +23,7 @@ const App: FC = () => {
       Contact: null
     },
     (entry: IntersectionObserverEntry) => {
-      if (entry.isIntersecting && cornerInfoContent) {
+      if (entry.isIntersecting) {
         setCurrentPage(entry.target.id);
       }
     },
@@ -50,12 +50,14 @@ const App: FC = () => {
     >
       <Header onClick={handleClick} />
       <Pages.Landing
+        shouldPlayAnimation={currentPage === "landing-page"}
         ref={(el: HTMLElement | null) => {
           if (sectionRefs.current && "Landing" in sectionRefs.current)
             sectionRefs.current["Landing"] = el;
         }}
       />
       <Pages.Skillset
+        shouldPlayAnimation={currentPage === "skillset-page"}
         ref={(el: HTMLElement | null) => {
           if (sectionRefs.current && "Skillset" in sectionRefs.current)
             sectionRefs.current["Skillset"] = el;
@@ -63,12 +65,14 @@ const App: FC = () => {
         deviceType={deviceType}
       />
       <Pages.Showcase
+        shouldPlayAnimation={currentPage === "showcase-page"}
         ref={(el: HTMLElement | null) => {
           if (sectionRefs.current && "Showcase" in sectionRefs.current)
             sectionRefs.current["Showcase"] = el;
         }}
       />
       <Pages.Contact
+        shouldPlayAnimation={currentPage === "contact-page"}
         ref={(el: HTMLElement | null) => {
           if (sectionRefs.current && "Contact" in sectionRefs.current)
             sectionRefs.current["Contact"] = el;

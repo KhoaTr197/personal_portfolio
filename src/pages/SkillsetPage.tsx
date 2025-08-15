@@ -1,13 +1,15 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { FeatureList, Badge } from '@/components'
-import { PageProps, PageRef } from '@/types/component';
+import { BadgeRef, PageProps } from '@/types/component';
 import { AboutContent, Skill } from '@/types/data';
 import aboutMe from '@/data/aboutMe';
 import skillsData from '@/data/skills';
 import LevelBar from '@/components/LevelBar';
 import { useDeviceTypeContext } from '@/context/DeviceTypeContext';
 
-const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
+const Skillset = forwardRef<HTMLElement, PageProps>(({
+  shouldPlayAnimation
+}, ref) => {
   const [about] = useState<AboutContent | null>(aboutMe);
   const [skills] = useState<{ languages: Skill[], techStacks: Skill[] } | null>(skillsData);
   const color: {
@@ -25,6 +27,19 @@ const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
     "desktop": 48
   }
   const deviceType = useDeviceTypeContext();
+  const badgeRefs = useRef<BadgeRef[]>([]);
+
+  useEffect(() => {
+    if (shouldPlayAnimation) {
+      badgeRefs.current.forEach((ref) => {
+        ref.start();
+      });
+    } else {
+      badgeRefs.current.forEach((ref) => {
+        ref.reset();
+      });
+    }
+  }, [shouldPlayAnimation])
 
   return (
     <section ref={ref} id='skillset-page' className='w-full h-[200vh] md:h-screen relative snap-start'>
@@ -55,7 +70,6 @@ const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
               {skills?.techStacks.map(techStack => {
                 const Icon = techStack.icon;
                 const size = iconSize[deviceType.type];
-                console.log(size, Icon.component((size)));
                 return (
                   <li key={techStack.name} className={`relative`} style={{ width: size, height: size }}>
                     <a className='tooltip' href={techStack.url} target='_blank' data-tooltip={techStack.name}>
@@ -87,10 +101,16 @@ const Skillset = forwardRef(({ }: PageProps, ref: PageRef) => {
             <p className='md:text-3xl xl:text-4xl font-medium'>{about?.summary}</p>
             <div className="pt-16 xl:pt-24 flex justify-around xl:justify-evenly">
               <Badge
+                ref={(el: BadgeRef | null) => {
+                  if (el) badgeRefs.current.push(el)
+                }}
                 quantity={about?.totalProjects || 0}
                 info='total projects'
               />
               <Badge
+                ref={(el: BadgeRef | null) => {
+                  if (el) badgeRefs.current.push(el)
+                }}
                 quantity={about?.yearsExperience || 0}
                 info='year of experience'
               />

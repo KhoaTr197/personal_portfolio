@@ -8,7 +8,7 @@ export default {
     extend: {
       animation: {
         'infinite-scroll': 'infinite-scroll linear infinite',
-        'cta': 'cta 1.5s ease-in-out infinite' //call-to-action
+        'cta': 'cta 1.5s ease-in-out infinite', //call-to-action
       },
       keyframes: {
         'infinite-scroll': {
