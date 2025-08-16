@@ -1,9 +1,9 @@
-import { memo, useCallback, useMemo, useRef } from 'react';
-import * as THREE from 'three';
+import { useCallback, useMemo, useRef } from 'react';
+import { Mesh, Matrix4, Vector3, Quaternion, DoubleSide } from 'three';
 import { SkillNodeInterface, SkillNodeProps } from '@/types/component';
 import { ThreeEvent } from '@react-three/fiber';
 
-const SkillNode = memo(({
+const SkillNode = ({
   position,
   skill,
   texture,
@@ -11,11 +11,11 @@ const SkillNode = memo(({
   onPointerEnter,
   onPointerLeave,
 }: SkillNodeProps) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const meshRef = useRef<Mesh>(null);
 
   const quaternion = useMemo(() => {
-    const lookAtMatrix = new THREE.Matrix4().lookAt(position, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 1, 0));
-    return new THREE.Quaternion().setFromRotationMatrix(lookAtMatrix);
+    const lookAtMatrix = new Matrix4().lookAt(position, new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+    return new Quaternion().setFromRotationMatrix(lookAtMatrix);
   }, [position]);
 
   const handleClick = useCallback(() => {
@@ -47,10 +47,10 @@ const SkillNode = memo(({
         transparent
         depthWrite={false}
         toneMapped={false}
-        side={THREE.DoubleSide}
+        side={DoubleSide}
       />
     </mesh>
   ) : null;
-});
+};
 
 export default SkillNode;

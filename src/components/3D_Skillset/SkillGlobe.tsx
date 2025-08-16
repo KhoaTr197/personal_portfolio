@@ -1,6 +1,6 @@
-import { forwardRef, useCallback, useMemo, useRef, useState, useImperativeHandle, useEffect, memo } from "react";
+import { forwardRef, useCallback, useMemo, useRef, useState, useImperativeHandle, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import * as THREE from "three";
+import { IcosahedronGeometry, Vector3, Group } from "three";
 import SkillNode from "./SkillNode";
 import { Html, OrbitControls } from "@react-three/drei";
 import { OrbitControls as OrbitControlsType } from 'three-stdlib';
@@ -9,13 +9,13 @@ import { SkillGlobeProps, SkillGlobeRef, SkillNodeInterface, TransistionPos } fr
 
 // Initialize globe
 const initializeGlobe = (radius: number, detail: number) => {
-  const geometry = new THREE.IcosahedronGeometry(radius, detail);
+  const geometry = new IcosahedronGeometry(radius, detail);
   const posAttr = geometry.attributes.position;
-  const verts: THREE.Vector3[] = [];
+  const verts: Vector3[] = [];
   const seen = new Set<string>();
 
   for (let i = 0; i < posAttr.count; i++) {
-    const v = new THREE.Vector3().fromBufferAttribute(posAttr, i);
+    const v = new Vector3().fromBufferAttribute(posAttr, i);
     const key = v.toArray().map(n => n.toFixed(4)).join(',');
     if (!seen.has(key)) {
       seen.add(key);
@@ -37,10 +37,10 @@ const SkillGlobe = forwardRef<SkillGlobeRef, SkillGlobeProps>(({
 
   const { camera } = useThree();
   const skillTextures = useMemo(() => skills?.map((skill) => getSkillTexture(skill)) ?? [], [skills]);
-  const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: THREE.Vector3 } | null>(null);
+  const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: Vector3 } | null>(null);
 
-  const tempSkillVec = useRef<THREE.Vector3>(new THREE.Vector3()); // Temp vector for interpolation
-  const groupRef = useRef<THREE.Group | null>(null); // Local group ref for the SkillGlobe component
+  const tempSkillVec = useRef<Vector3>(new Vector3()); // Temp vector for interpolation
+  const groupRef = useRef<Group | null>(null); // Local group ref for the SkillGlobe component
   const controlsRef = useRef<OrbitControlsType | null>(null);
 
   // Transition variables
