@@ -1,3 +1,7 @@
+import { renderToStaticMarkup } from "react-dom/server";
+import { Skill } from "@/types/data";
+import * as THREE from "three";
+
 export function formatNumber(num: number, formatStr: string): string {
   if (!formatStr) return num.toString();
 
@@ -26,4 +30,44 @@ export function formatNumber(num: number, formatStr: string): string {
   }
 
   return result;
+}
+
+// Ease-in-out function
+export function easeInOutQuad(t: number): number {
+  // t < 0.5: t^2
+  // t >= 0.5: -2(t-1)^2 + 1
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
+
+// Texture
+const textureCache = new Map<string, THREE.Texture>();
+
+export function getSkillTexture(skill: Skill): THREE.Texture {
+  const key = skill.name + (skill.icon.forceFill || '');
+  if (textureCache.has(key)) {
+    return textureCache.get(key)!;
+  }
+
+  let svgMarkup = renderToStaticMarkup(skill.icon.component);
+  if (skill.icon.forceFill) {
+    svgMarkup = svgMarkup.replace(/fill=".*?"/, `fill="${skill.icon.forceFill}"`);
+  }
+  const blob = new Blob([svgMarkup], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+
+  const img = new window.Image();
+  const texture = new THREE.Texture();
+  img.onload = () => {
+    texture.image = img;
+    texture.needsUpdate = true;
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.generateMipmaps = false;
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    URL.revokeObjectURL(url);
+  };
+  img.src = url;
+
+  textureCache.set(key, texture);
+  return texture;
 }

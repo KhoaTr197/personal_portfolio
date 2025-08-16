@@ -1,11 +1,13 @@
-import { forwardRef, useCallback, useMemo, useRef, useState, useImperativeHandle, useEffect } from "react";
+import { forwardRef, useCallback, useMemo, useRef, useState, useImperativeHandle, useEffect, memo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import SkillNode from "./SkillNode";
 import { Html, OrbitControls } from "@react-three/drei";
 import { OrbitControls as OrbitControlsType } from 'three-stdlib';
-import { Skill } from "@/types/data";
+import { easeInOutQuad, getSkillTexture } from "@/utils";
+import { SkillGlobeProps, SkillGlobeRef, SkillNodeInterface, TransistionPos } from "@/types/component";
 
+// Initialize globe
 const initializeGlobe = (radius: number, detail: number) => {
   const geometry = new THREE.IcosahedronGeometry(radius, detail);
   const posAttr = geometry.attributes.position;
@@ -25,107 +27,108 @@ const initializeGlobe = (radius: number, detail: number) => {
   return { geometry, vertices: verts.filter(v => Math.abs(v.y) < yThreshold) };
 };
 
-// Ease-in-out function
-function easeInOutQuad(t: number): number {
-  // t < 0.5: t^2
-  // t >= 0.5: -2(t-1)^2 + 1
-  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-}
-
-const SkillGlobe = forwardRef(({
+const SkillGlobe = forwardRef<SkillGlobeRef, SkillGlobeProps>(({
   config,
   skills,
   selectedSkill,
-  onSelectSkill
-}: {
-  config: {
-    globeRadius?: number;
-    globeDetail?: number;
-    globeColor?: string;
-    focusTransitionSpeed?: number;
-  };
-  skills: Skill[] | null;
-  selectedSkill: Skill | null;
-  onSelectSkill: (skill: Skill | null) => void;
+  onSkillSelected
 }, ref) => {
-  if (!skills) return <></>;
+  if (!skills) return null;
 
   const { camera } = useThree();
+  const skillTextures = useMemo(() => skills?.map((skill) => getSkillTexture(skill)) ?? [], [skills]);
   const [hoveredSkill, setHoveredSkill] = useState<{ name: string; position: THREE.Vector3 } | null>(null);
 
-  const tempSkill = useRef<Skill | null>(null);
-  const groupRef = useRef<THREE.Group>(null);
-  const controlsRef = useRef<OrbitControlsType>(null);
-  const targetCameraPos = useRef<THREE.Vector3 | null>(null);
-  const targetControlTarget = useRef<THREE.Vector3 | null>(null);
+  const tempSkillVec = useRef<THREE.Vector3>(new THREE.Vector3()); // Temp vector for interpolation
+  const groupRef = useRef<THREE.Group | null>(null); // Local group ref for the SkillGlobe component
+  const controlsRef = useRef<OrbitControlsType | null>(null);
 
+  // Transition variables
+  const startPos = useRef<TransistionPos>({
+    camera: null,
+    target: null,
+  });
+  const targetPos = useRef<TransistionPos>({
+    camera: null,
+    target: null,
+  });
   const startTime = useRef<number | null>(null);
-  const startCameraPos = useRef<THREE.Vector3 | null>(null);
-  const startControlTarget = useRef<THREE.Vector3 | null>(null);
   const transistionType = useRef<'focus' | 'clear' | null>(null);
   const isTransitioning = useRef(false);
 
-  const {
-    globeRadius = 2.5,
-    globeDetail = 1,
-    globeColor = '#000',
-    focusTransitionSpeed = 1000
-  } = config;
+  const globeConfig = useMemo(() => ({
+    radius: 2.5,
+    detail: 1,
+    color: '#000',
+    focusTransitionSpeed: 1000,
+    ...config,
+  }), [config]);
 
   // Expose methods or refs to parent
   useImperativeHandle(ref, () => ({
+    focusOn,
     clearFocus,
+    isTransitioning: () => isTransitioning.current,
   }));
 
+  // Initialize globe and skill positions
   const skillLength = skills.length;
-  const { geometry, vertices } = useMemo(() => initializeGlobe(globeRadius, globeDetail), [globeRadius, globeDetail]);
+  const { geometry, vertices } = useMemo(() => initializeGlobe(globeConfig.radius, globeConfig.detail), [globeConfig.radius, globeConfig.detail]);
   const skillPositions = useMemo(() => vertices.sort(() => Math.random() - 0.5).slice(0, skillLength), [vertices, skillLength]);
 
+  // Transition animation
   useFrame(() => {
     if (
-      !startCameraPos.current ||
-      !startControlTarget.current ||
-      !targetCameraPos.current ||
-      !targetControlTarget.current ||
+      !startPos.current.camera ||
+      !startPos.current.target ||
+      !targetPos.current.camera ||
+      !targetPos.current.target ||
       !controlsRef.current ||
       !startTime.current
     ) return;
+
     const elapsedTime = performance.now() - startTime.current;
-    const alpha = easeInOutQuad(Math.min(elapsedTime / focusTransitionSpeed, 1)); //apply ease-in-out for smooth transition
+    //apply ease-in-out for smooth transition
+    const alpha = easeInOutQuad(Math.min(elapsedTime / globeConfig.focusTransitionSpeed, 1));
 
     // Interpolate camera position and target
-    const currentCamPos = startCameraPos.current.clone().lerp(targetCameraPos.current, alpha);
-    const currentTarget = startControlTarget.current.clone().lerp(targetControlTarget.current, alpha);
-
-    camera.position.copy(currentCamPos);
-    controlsRef.current.target.copy(currentTarget);
+    tempSkillVec.current.copy(startPos.current.camera).lerp(targetPos.current.camera, alpha);
+    camera.position.copy(tempSkillVec.current);
+    tempSkillVec.current.copy(startPos.current.target).lerp(targetPos.current.target, alpha);
+    controlsRef.current.target.copy(tempSkillVec.current);
 
     if (alpha >= 1) {
       // Set final position
       if (transistionType.current === 'clear') {
-        camera.position.copy(targetCameraPos.current);
-        controlsRef.current.target.copy(targetControlTarget.current);
+        camera.position.copy(targetPos.current.camera);
+        controlsRef.current.target.copy(targetPos.current.target);
         controlsRef.current.update();
+
+        startPos.current = {
+          camera: null,
+          target: null,
+        };
       }
-      else if (transistionType.current === 'focus') {
-        onSelectSkill(tempSkill.current);
-        tempSkill.current = null;
-      }
+
       // Clear targets to stop interpolation
-      targetCameraPos.current = null;
-      targetControlTarget.current = null;
+      targetPos.current = {
+        camera: null,
+        target: null,
+      };
       transistionType.current = null;
 
       isTransitioning.current = false;
+
+      controlsRef.current.enableRotate = true; // Re-enable manual rotation
     }
   });
 
   // Event handlers
-  const nodePointerEnter = useCallback((skill: { name: string; position: THREE.Vector3 }) => {
+  const nodePointerEnter = useCallback(({ skill, position }: SkillNodeInterface) => {
     if (selectedSkill) return;
     setHoveredSkill({
       name: skill.name,
-      position: skill.position.clone().add(new THREE.Vector3(0, 0.35, 0))
+      position: position.clone()
     });
   }, [selectedSkill]);
 
@@ -133,61 +136,90 @@ const SkillGlobe = forwardRef(({
     setHoveredSkill(null);
   }, []);
 
-  const focusOn = useCallback(({ skill, position }: { skill: Skill; position: THREE.Vector3 }) => {
+  // Update state -> get positions -> set transition type & disable manual rotation
+  const focusOn = useCallback(({ skill, position }: SkillNodeInterface) => {
     if (!controlsRef.current || isTransitioning.current) return;
-    tempSkill.current = skill;
+    onSkillSelected(skill);
+    tempSkillVec.current.copy(position); // Copy the position for later use
 
     const direction = position.clone().normalize();
-    targetCameraPos.current = direction.clone().multiplyScalar(4);
-    targetControlTarget.current = direction.clone().multiplyScalar(2);
 
-    startCameraPos.current = camera.position.clone();
-    startControlTarget.current = controlsRef.current.target.clone();
+    startPos.current = {
+      camera: camera.position.clone(),
+      target: controlsRef.current.target.clone(),
+    };
+
+    targetPos.current = {
+      camera: direction.clone().multiplyScalar(4),
+      target: direction.clone(),
+    };
+
     startTime.current = performance.now();
     transistionType.current = 'focus';
 
     isTransitioning.current = true;
+    controlsRef.current.enableRotate = false;
   }, []);
 
+  // Update state -> get positions -> set transition type (the "enable manual rotation" is done in the last frame of transition)
   const clearFocus = useCallback(() => {
-    if (!controlsRef.current || isTransitioning.current) return;
-    onSelectSkill(null);
+    if (!controlsRef.current || isTransitioning.current || !selectedSkill) return;
+    onSkillSelected(null);
 
-    targetCameraPos.current = startCameraPos.current;
-    targetControlTarget.current = startControlTarget.current;
+    targetPos.current = {
+      camera: startPos.current.camera,
+      target: startPos.current.target,
+    };
 
-    startCameraPos.current = camera.position.clone();
-    startControlTarget.current = controlsRef.current.target.clone();
+    startPos.current = {
+      camera: camera.position.clone(),
+      target: controlsRef.current.target.clone(),
+    };
+
     startTime.current = performance.now();
     transistionType.current = 'clear';
 
     isTransitioning.current = true;
-  }, []);
+  }, [selectedSkill]);
+
+  const handleClick = selectedSkill ? null : focusOn;
+
+  // Cleanup
+  useEffect(() => {
+    return () => {
+      controlsRef.current?.dispose();
+      geometry?.dispose();
+    };
+  }, [geometry]);
 
   return (
-    <group ref={groupRef} onPointerMissed={clearFocus}>
+    <group
+      ref={groupRef}
+      onPointerMissed={clearFocus}
+    >
       <mesh geometry={geometry}>
         <meshBasicMaterial
-          color={globeColor}
+          color={globeConfig.color}
           wireframe
           transparent
           opacity={0.3}
         />
       </mesh>
 
-      {skillPositions.map((pos, index) => (
+      {skillPositions.map((pos, idx) => (
         <SkillNode
-          key={index}
+          key={idx}
           position={pos}
-          skill={skills[index]}
-          onClick={selectedSkill ? () => { } : focusOn}
+          skill={skills[idx]}
+          texture={skillTextures[idx]}
+          onClick={handleClick}
           onPointerEnter={nodePointerEnter}
           onPointerLeave={nodePointerLeave}
         />
       ))}
 
       {hoveredSkill && (
-        <Html position={hoveredSkill.position} distanceFactor={8} center occlude>
+        <Html position={hoveredSkill.position} distanceFactor={8} center>
           <div key={hoveredSkill.name} className='tooltip_canvas'>
             {hoveredSkill.name}
           </div>

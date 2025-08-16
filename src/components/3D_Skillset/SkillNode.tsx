@@ -1,99 +1,56 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { Skill } from '@/types/data';
+import { SkillNodeInterface, SkillNodeProps } from '@/types/component';
+import { ThreeEvent } from '@react-three/fiber';
 
-const SkillNode = ({
+const SkillNode = memo(({
   position,
   skill,
+  texture,
   onClick,
   onPointerEnter,
   onPointerLeave,
-}: {
-  position: THREE.Vector3;
-  skill: Skill;
-  onClick: ({ skill, position }: { skill: Skill, position: THREE.Vector3 })  => void;
-  onPointerEnter: (skill: { name: string, position: THREE.Vector3 }) => void;
-  onPointerLeave: () => void;
-}) => {
+}: SkillNodeProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
-  const [texture, setTexture] = useState<THREE.Texture | null>(null);
 
-  const generateTextureFromIcon = useCallback(({ icon }: Skill) => {
-    let svgMarkup = renderToStaticMarkup(icon.component);
-    if (icon?.forceFill) {
-      svgMarkup = svgMarkup.replace(/fill=".*?"/, `fill="${icon?.forceFill}"`);
-    }
-    const blob = new Blob([svgMarkup], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
+  const quaternion = useMemo(() => {
+    const lookAtMatrix = new THREE.Matrix4().lookAt(position, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 1, 0));
+    return new THREE.Quaternion().setFromRotationMatrix(lookAtMatrix);
+  }, [position]);
 
-    const img = new Image();
-    img.onload = () => {
-      const texture = new THREE.Texture(img);
-      texture.needsUpdate = true;
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.generateMipmaps = false;
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-      setTexture(texture);
-      URL.revokeObjectURL(url);
-    };
-    img.src = url;
-    return () => URL.revokeObjectURL(url);
-  }, []);
+  const handleClick = useCallback(() => {
+    onClick?.({ skill, position } as SkillNodeInterface);
+  }, [onClick, skill, position]);
 
-  useEffect(() => {
-    const cleanup = generateTextureFromIcon(skill);
-    return () => {
-      if (texture) texture.dispose();
-      cleanup();
-    };
-  }, [skill.icon]);
+  const handlePointerEnter = useCallback((e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    onPointerEnter({ skill, position });
+  }, [onPointerEnter, skill, position]);
 
-  useEffect(() => {
-    if (meshRef.current) {
-      meshRef.current.position.copy(position);
+  const handlePointerLeave = useCallback((e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation();
+    onPointerLeave();
+  }, [onPointerLeave]);
 
-      // Rotate the plane to face outward from the sphere center
-      meshRef.current.quaternion.setFromRotationMatrix(
-        new THREE.Matrix4().lookAt(
-          position,
-          new THREE.Vector3(0, 0, 0),
-          new THREE.Vector3(0, 1, 0) // up vector
-        )
-      );
-    }
-  }, [position, texture]);
-
-  return (
-    <group>
-      {texture && (
-        <mesh
-          ref={meshRef}
-          onClick={() => onClick({
-            skill: skill,
-            position,
-          })}
-          onPointerEnter={(e) => {
-            e.stopPropagation(); // Prevent bubbling to globe
-            onPointerEnter({ name: skill.name, position });
-          }}
-          onPointerLeave={(e) => {
-            e.stopPropagation();
-            onPointerLeave();
-          }}
-        >
-          <planeGeometry args={[0.4, 0.4]} />
-          <meshBasicMaterial
-            map={texture}
-            transparent
-            toneMapped={false}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
-      )}
-    </group >
-  );
-};
+  return texture ? (
+    <mesh
+      position={position}
+      quaternion={quaternion}
+      ref={meshRef}
+      onClick={handleClick}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+    >
+      <planeGeometry args={[0.4, 0.4]} />
+      <meshBasicMaterial
+        map={texture}
+        transparent
+        depthWrite={false}
+        toneMapped={false}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  ) : null;
+});
 
 export default SkillNode;

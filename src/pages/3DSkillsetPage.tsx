@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useRef, useState } from "react";
+import { forwardRef, useCallback, useMemo, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import SkillGlobe from "@/components/3D_Skillset/SkillGlobe";
 import { PiMouseLeftClickFill } from "react-icons/pi";
@@ -8,31 +8,35 @@ import { Skill } from "@/types/data";
 import LevelBar from "@/components/LevelBar";
 
 const ThreeDSkillsetPage = forwardRef(({ isLoaded }: ThreeDSkillsetPageProps, ref: PageRef) => {
-  const [skills] = useState<Skill[] | null>(skillsData);
-  const [transitionDuration] = useState(1000); //ms
+  const skills = useMemo<Skill[] | null>(() => skillsData, []);
+  const transitionDuration = 1000; //ms
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
-  const globeRef = useRef<any>();
+  const globeRef = useRef<any>(null);
 
-  const handleSelectSkill = useCallback((skill: Skill | null) => {
-    setSelectedSkill(skill);
+  const handleClearFocus = useCallback(() => {
+    globeRef.current.clearFocus();
   }, []);
 
   return (
-    <section ref={ref} id='skillset-page' className="w-full h-[200vh] bg-black md:h-screen relative snap-start">
+    <section
+      ref={ref}
+      id='skillset-page'
+      className="w-full h-[200vh] bg-black md:h-screen relative snap-start"
+    >
       <Canvas
-        frameloop={isLoaded ? "demand" : "never"}
+        frameloop={isLoaded ? "always" : "never"}
         camera={{ fov: 70, near: 0.1, far: 1000 }}
         className="w-full h-full pt-20"
       >
         <SkillGlobe
           ref={globeRef}
           config={{
-            globeColor: "#fff",
+            color: "#fff",
             focusTransitionSpeed: transitionDuration,
           }}
           skills={skills}
           selectedSkill={selectedSkill}
-          onSelectSkill={handleSelectSkill}
+          onSkillSelected={setSelectedSkill}
         />
       </Canvas>
       {/* Instruction Modal */}
@@ -81,7 +85,7 @@ const ThreeDSkillsetPage = forwardRef(({ isLoaded }: ThreeDSkillsetPageProps, re
           </div>
           <p className="">{selectedSkill.description}</p>
           <button
-            onClick={() => globeRef.current.clearFocus()}
+            onClick={handleClearFocus}
             className="mt-2 text-blue-500 hover:underline"
           >
             Close

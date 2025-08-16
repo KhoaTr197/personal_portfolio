@@ -1,5 +1,7 @@
-import { CSSProperties, ReactNode, Ref } from "react";
+import { CSSProperties, ReactNode, Ref, Dispatch, SetStateAction } from "react";
 import { DeviceType } from "./deviceType";
+import { Skill } from "./data";
+import * as THREE from "three";
 
 export interface PageProps {
   children?: React.ReactNode;
@@ -12,6 +14,42 @@ export type PageRef = Ref<HTMLElement>;
 // 3DSkillsetPage.tsx
 export interface ThreeDSkillsetPageProps extends PageProps {
   isLoaded: boolean;
+}
+
+// SkillGlobe.tsx
+export type TransistionPos = {
+  camera: THREE.Vector3 | null;
+  target: THREE.Vector3 | null
+}
+export type SkillGlobeConfig = {
+  radius?: number;
+  detail?: number;
+  color?: string;
+  focusTransitionSpeed?: number;
+};
+export interface SkillGlobeProps {
+  config: SkillGlobeConfig;
+  skills: Skill[] | null;
+  selectedSkill: Skill | null;
+  onSkillSelected: Dispatch<SetStateAction<Skill | null>>;
+}
+
+export interface SkillGlobeRef {
+  focusOn: (skill: SkillNodeInterface) => void;
+  clearFocus: () => void;
+  isTransitioning: () => boolean;
+}
+
+// SkillNode.tsx
+export interface SkillNodeInterface {
+  skill: Skill;
+  position: THREE.Vector3;
+};
+export interface SkillNodeProps extends SkillNodeInterface {
+  texture: THREE.Texture;
+  onClick: (({ skill, position }: SkillNodeInterface) => void) | null;
+  onPointerEnter: ({ skill, position }: SkillNodeInterface) => void;
+  onPointerLeave: () => void;
 }
 
 // Badge.tsx
