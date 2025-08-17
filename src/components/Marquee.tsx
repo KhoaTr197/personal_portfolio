@@ -62,6 +62,9 @@ const Marquee = ({
     <div
       ref={containerRef}
       className={`marquee-container flex min-w-full w-fit ${marqueeBarStyle} overflow-x-hidden`}
+      style={{
+        height: marqueeRef.current?.getBoundingClientRect().height,
+      }}
     >
       {/* Initial Marquee - Need to clone initial children to fill the marquee container */}
       <div
