@@ -13,6 +13,8 @@ export interface MarqueeConfig {
 
 export interface SkillsetConfig {
   fov: number;
+  near: number;
+  far: number;
 }
 
 const appConfig: ResponsiveAppConfig = {
@@ -20,18 +22,22 @@ const appConfig: ResponsiveAppConfig = {
     marquee: { duration: 15 },
     skillset: {
       fov: 80,
+      near: 0.1,
+      far: 1000,
     }
   },
   "tablet": {
     marquee: { duration: 30 },
     skillset: {
-      fov: 70,
+      fov: 80,
     }
   },
   "desktop": {
     marquee: { duration: 30 },
     skillset: {
       fov: 70,
+      near: 0.1,
+      far: 1000,
     }
   },
 };
