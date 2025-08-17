@@ -7,19 +7,14 @@ import skillsData from "@/data/skills";
 import { Skill } from "@/types/data";
 import LevelBar from "@/components/LevelBar";
 import { useDeviceTypeContext } from "@/context/DeviceTypeContext";
+import appConfig, { SkillsetConfig } from "@/config";
 
 const ThreeDSkillsetPage = forwardRef(({ isLoaded }: ThreeDSkillsetPageProps, ref: PageRef) => {
   const skills = useMemo<Skill[] | null>(() => skillsData, []);
   const transitionDuration = 1000; //ms
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
-  const threeConfig: any = {
-    fov: {
-      "mobile": 100,
-      "tablet": 70,
-      "desktop": 70,
-    }
-  }
   const deviceType = useDeviceTypeContext();
+  const [config] = useState<SkillsetConfig>(appConfig[deviceType.type].skillset);
   const globeRef = useRef<any>(null);
 
   const handleClearFocus = useCallback(() => {
@@ -30,27 +25,29 @@ const ThreeDSkillsetPage = forwardRef(({ isLoaded }: ThreeDSkillsetPageProps, re
     <section
       ref={ref}
       id='skillset-page'
-      className="w-full h-screen bg-black md:h-screen relative snap-start"
+      className="w-full h-screen bg-black md:h-screen relative snap-start touch-auto"
     >
-      <Canvas
-        frameloop={isLoaded ? "always" : "never"}
-        camera={{ fov: threeConfig.fov[deviceType.type], near: 0.1, far: 1000 }}
-        className="w-full h-full pt-20"
-      >
-        <SkillGlobe
-          ref={globeRef}
-          config={{
-            color: "#fff",
-            focusTransitionSpeed: transitionDuration,
-          }}
-          skills={skills}
-          selectedSkill={selectedSkill}
-          onSkillSelected={setSelectedSkill}
-        />
-      </Canvas>
+      <div className="w-full h-full lg:w-full lg:h-full pt-32 pb-20 lg:pt-20">
+        <Canvas
+          frameloop={isLoaded ? "always" : "never"}
+          camera={{ fov: config.fov, near: 0.1, far: 1000 }}
+          className=""
+        >
+          <SkillGlobe
+            ref={globeRef}
+            config={{
+              color: "#fff",
+              focusTransitionSpeed: transitionDuration,
+            }}
+            skills={skills}
+            selectedSkill={selectedSkill}
+            onSkillSelected={setSelectedSkill}
+          />
+        </Canvas>
+      </div>
       {/* Instruction Modal */}
       <div
-        className="absolute top-24 right-4 w-40 md:w-80 bg-[rgba(28,28,28,0.9)] z-40 shadow-lg rounded-lg px-4 py-2 text-xs"
+        className="absolute top-24 right-4 w-40 md:w-80 bg-[rgba(28,28,28,0.9)] z-40 shadow-lg rounded-lg px-3 py-2 text-xs"
       >
         <p className="mt-2">
           Click on a skill to see more.

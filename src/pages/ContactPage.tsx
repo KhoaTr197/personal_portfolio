@@ -26,11 +26,11 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
         <div className="h-full flex flex-col bg-black">
           <Marquee
             duration={30}
-            marqueeBarStyle="bg-[#FFE]"
+            marqueeBarStyle="flex-[0_0_auto] bg-[#FFE]"
           >
             <pre className="text-6xl md:text-9xl text-black leading-tight text-nowrap">- Contact </pre>
           </Marquee>
-          <footer className="flex-grow flex flex-col-reverse md:flex-col lg:flex-row">
+          <footer className="flex flex-[1_0_auto]  flex-col-reverse justify-end lg:mt-0 lg:flex-row">
             <div className="w-full lg:w-2/5 text-center lg:text-left xl:w-2/6 px-8 md:px-4 py-8">
               <div className="text-2xl sm:text-4xl uppercase underline underline-offset-4">contact info</div>
               <ul className="flex flex-col mt-8 gap-6 lg:gap-14">
@@ -51,14 +51,14 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
                 </li>
               </ul>
             </div>
-            <div className="w-full lg:w-3/5 xl:w-4/6 text-center lg:text-left px-8 md:x-4 md:py-8">
+            <div className="w-full lg:w-3/5 xl:w-4/6 text-center lg:text-left px-8 md:px-4 py-8">
               <div className="text-2xl sm:text-4xl uppercase underline underline-offset-4">social media</div>
               <ul className="lg:w-full mx-auto mt-8 flex flex-wrap justify-center lg:justify-normal gap-8 xl:gap-12">
                 {socialLinks?.map((link: any) => {
                   const Icon = socialIconMap[link.icon];
                   return (
                     <li key={link.key}>
-                      <a className='block *:size-12 md:*:size-16 lg:*:size-24 hover-effect' href={link.url} target="_blank">{Icon}</a>
+                      <a className='block *:size-12 md:*:size-16 lg:*:size-24 hover-effect' href={link.url} target="_blank" aria-label={link.key}>{Icon}</a>
                     </li>
                   )
                 })}
@@ -67,7 +67,7 @@ const Contact = forwardRef(({ }: PageProps, ref: PageRef) => {
           </footer>
           <Marquee
             duration={30}
-            marqueeBarStyle="bg-[#FFE]"
+            marqueeBarStyle="flex-[0_0_auto] bg-[#FFE]"
           >
             <pre className="text-2xl md:text-4xl text-black leading-tight uppercase text-nowrap">-//- You reach the end of the website </pre>
           </Marquee>
