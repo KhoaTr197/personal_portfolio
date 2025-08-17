@@ -25,7 +25,7 @@ const appConfig: ResponsiveAppConfig = {
   "tablet": {
     marquee: { duration: 30 },
     skillset: {
-      fov: 70,
+      fov: 80,
     }
   },
   "desktop": {
