@@ -7,7 +7,7 @@ const Landing = forwardRef(({ }: PageProps, ref: PageRef) => {
   const marqueeConfig: {
     [index: string]: number
   } = {
-    "phone": 15,
+    "mobile": 15,
     "tablet": 30,
     "desktop": 30
   }
