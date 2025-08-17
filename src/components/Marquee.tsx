@@ -61,7 +61,7 @@ const Marquee = ({
   return !isMounted ? null : (
     <div
       ref={containerRef}
-      className={`marquee-container flex min-w-full w-fit ${marqueeBarStyle} overflow-x-hidden`}
+      className={`marquee-container flex min-w-full w-fit ${marqueeBarStyle} overflow-x-hidden touch-none pointer-events-none`}
       style={{
         height: marqueeRef.current?.getBoundingClientRect().height,
       }}
